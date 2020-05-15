@@ -1,11 +1,8 @@
 /*
  Name:		NewESPWebduino.ino
  Created:	5/15/2020 10:50:11 PM
- Author:	giaco
+ Author:	giaco dd
 */
-
-
-
 
 // the setup function runs once when you press reset or power the board
 void setup() {
