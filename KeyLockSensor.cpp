@@ -26,8 +26,8 @@ void ICACHE_RAM_ATTR updateEncoder2() {
 	if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) position--;
 	lastPosition = encoded; //store this value for next time 
 
-	//Serial.print("CUR POS = ");
-	//Serial.println(position);
+	Serial.print("CUR POS = ");
+	Serial.println(position);
 }
 
 void KeyLockSensor::getJson(JsonObject& json) {
