@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.5.0.min.js"></script>
+</head>
+<body>
+    <h1>Onewire Sensors - %SENSORNAME%</h1>
+
+    <form action="/get">
+        id :<input type="text" id="sensorid" disabled><br>
+        name: <input type="text" id="name"><br>
+        Pin1:
+        <select id="pin">
+            <option value='D1'>D1</option>
+            <option value='D2'>D2</option>
+            <option value='D3'>D3</option>
+            <option value="D4">D4</option>
+            <option value="D5">D5</option>
+            <option value="D6">D6</option>
+            <option value="D7">D7</option>
+            <option value="D8">D8</option>
+            <option value="D9">D9</option>
+            <option value="D10">D10</option>
+        </select><br>
+
+        <input type="submit" value="Save">
+    </form><br>
+
+</body>
+<script>
+    
+    $(document).ready(function () {
+        myFunction();
+
+    });
+
+    function myFunction() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var sensor = JSON.parse(this.responseText);
+                $("#sensorid").val(sensor.sensorid);
+                $("#name").val(sensor.name);
+                $("#pin").val(sensor.pin);
+                
+            }
+        };
+        xhttp.open("GET", "/getsensor?sensorid=1", true);
+        xhttp.send();
+    }
+
+</script>
+</html>

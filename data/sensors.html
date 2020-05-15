@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.5.0.min.js"></script>
+</head>
+<body>
+    <h1>Sensors</h1>
+
+    <div id="sensors"></div>
+
+    <form action="/sensor">
+        <input type="text" id="sensorid" name="sensorid" value="0" hidden>  <!--- serve a passare campo sensorid = 0-->
+        <select name="type" id="type">
+            <option value='onewiresensor'>Onewire</option>
+            <option value='temperaturesensor'>Temperature</option>
+            <option value='keylocksensor'>Keylock</option>
+            <option value='rotaryencodersensor'>RotaryEncoder</option>
+        </select>
+        <button type="submit" name='action' value='add'>Add</button>
+    </form>
+
+    <p>
+        <a href="/"><button class="button">Main</button></a>
+    </p>
+
+</body>
+<script>
+
+    $(document).ready(function () {
+        loadValue();
+    });
+
+    function loadValue() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var jarray = JSON.parse(this.responseText);
+
+                for (var i = 0, len = jarray.length; i < len; i++) {
+                    console.log(jarray[i]);
+                    console.log(jarray[i].sensorid.toString());
+
+                    var str = "<div >" + jarray[i].sensorid.toString() + ". " + jarray[i].name + " [" + jarray[i].type + "]"
+                        + " <a href='/sensor?sensorid=" + jarray[i].sensorid.toString() + "&action=edit'>edit</a>"
+                        + " <a href='/sensor?sensorid=" + jarray[i].sensorid.toString() + "&action=delete'>delete</a>"
+                        + "</div > ";
+                    console.log(str);
+                    $('#sensors').append(str);
+
+                    //<button type="submit" name='bsubmit' value='add'>Submit</button>
+                    //<a href='/sensor?sensorid=0&action=add'>add</a>
+                }
+
+
+            }
+        };
+        xhttp.open("GET", "/getsensors", true);
+        xhttp.send();
+    }
+</script>
+</html>

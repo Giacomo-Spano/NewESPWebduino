@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Configuration</h1>
+
+
+    <form action="/get">
+        <table class="formtable" >
+            <tbody>
+                <tr>
+                    <td>
+                        <label class="formlabel">First Name:</label>
+                    </td>
+                    <td>
+                        <input class="forminput" type="text" name="first">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class='formlabel'>Name:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="name" name="name" value="%NAME%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class='formlabel'>MQTT server:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="mqtt_server" name="mqtt_server" value="%MQTT_SERVER%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class='formlabel' for="mqtt_port">MQTT port:</label>
+                    </td>
+                    <td>
+                        <input class='FBInput' type="number" min="0" max="9999" step="1" id="mqtt_port" name="mqtt_port" value="%MQTT_PORT%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="mqtt_user">MQTT user:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="mqtt_user" name="mqtt_user" value="%MQTT_USER%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="mqtt_password">MQTT password:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="mqtt_password" name="mqtt_password" value="%MQTT_PASSWORD%">
+                    <td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="mqtt_topic">MQTT topic:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="mqtt_topic" name="mqtt_topic" value="%MQTT_TOPIC%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="server_name">Server name:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="server_name" name="server_name" value="%SERVER_NAME%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="server_port">Server port:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="number" min="0" max="9999" step="1" id="server_port" name="server_port" value="%SERVER_PORT%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="user">User:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="user" name="user" value="%USER%">
+                    <td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="password">Password:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="password" name="password" value="%PASSWORD%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="user2">User2:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="user2" name="user2" value="%USER2%">
+                </tr>
+                <tr>
+                    <td>
+                        <label class="formlabel" for="password2">Password2:</label>
+                    </td>
+                    <td>
+                        <input class='forminput' type="text" id="password2" name="password2" value="%PASSWORD2%">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <input class="button" type="submit" value="Save">
+
+
+    </form>
+
+
+
+</body>
+<script>
+
+</script>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.5.0.min.js"></script>
+</head>
+<body>
+    <h1>[<label id="LabelID">[]</label>] <label id="LabelName">[]</label> - <label id="LabelType">[]</label></h1>
+
+
+    <form action="/setsensor" id="inputForm">
+
+        <input type="text" name="sensorid" id="sensorid"><br>
+        <input type="text" name="type" id="type">
+
+        <div class="form-field form-required">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" />
+        </div>
+        <div class="form-field form-required">
+            <input type="checkbox" id="enabled" name="enabled" value="enabled">
+            <label for="name">Enabled</label>
+        </div>
+        <div class="form-field form-required">
+            <label for="type">Pin</label>
+            <select name="pin" id="pin">
+                <option value='D1'>D1</option>
+                <option value='D2'>D2</option>
+                <option value='D3'>D3</option>
+                <option value="D4">D4</option>
+                <option value="D5">D5</option>
+                <option value="D6">D6</option>
+                <option value="D7">D7</option>
+                <option value="D8">D8</option>
+                <option value="D9">D9</option>
+                <option value="D10">D10</option>
+            </select><br>
+        </div>
+
+        <input type="submit" value="Save">
+    </form><br>
+
+</body>
+<script>
+
+    $(document).ready(function () {
+
+        var sensorid = getUrlVars()["sensorid"];
+        var type = getUrlVars()["type"];
+        var pin = "D1";
+        var name = "new sensor";
+        $("#sensorid").val(sensorid);
+        $("#name").val(name);
+        $("#pin").val(pin);
+        $("#type").val(type);
+
+        $("#LabelID").text(sensorid);
+        $("#LabelName").text(name);
+        $("#LabelType").text(type);
+
+        if (sensorid != 0)
+            loadValue(sensorid);
+
+        $("#inputForm").submit(function (event) {
+
+            event.preventDefault(); // inibisce invio submit
+
+            var ary = $(this).serializeArray();
+            var obj = {};
+            for (var a = 0; a < ary.length; a++) {
+                obj[ary[a].name] = ary[a].value;
+            }
+            console.log(JSON.stringify(obj));
+
+            xhr = new XMLHttpRequest();
+            var url = "/setsensor";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //var json = JSON.parse(xhr.responseText);
+                    console.log("sensor saved");
+                    //$(location).attr('/sensors.html', url);
+                    window.location.href = '/sensors';
+                }
+            }
+            var data = JSON.stringify(obj);//JSON.stringify({ "prova": "provola" });
+            xhr.send(data);
+        });
+    });
+
+    function loadValue(sensordid) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var sensor = JSON.parse(this.responseText);
+                $("#sensorid").val(sensor.sensorid);
+                $("#type").val(sensor.type);
+                $("#name").val(sensor.name);
+                $("#pin").val(sensor.pin);
+
+                $("#LabelID").text(sensor.sensorid);
+                $("#LabelName").text(sensor.name);
+                $("#LabelType").text(sensor.type);
+            }
+        };
+        xhttp.open("GET", "/getsensor?sensorid=" + sensordid + "&type='" + type + "'", true);
+        xhttp.send();
+    }
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+</script>
+</html>
