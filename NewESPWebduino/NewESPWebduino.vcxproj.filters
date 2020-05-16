@@ -61,7 +61,7 @@
     <ClInclude Include="..\Shield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\TemperatureSensor.h">
+    <ClInclude Include="src\TemperatureSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -94,6 +94,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\TemperatureSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TemperatureSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

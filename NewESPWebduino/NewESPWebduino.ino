@@ -1,22 +1,9 @@
 /*
  Name:		NewESPWebduino.ino
  Created:	5/15/2020 10:50:11 PM
- Author:	giaco dd
+ Author:	Giacomo
 */
 
-/*
- Name:		stepper.ino
- Created:	4/13/2020 12:31:02 PM
- Author:	giaco   prova
-*/
-
-
-/*****************************************************
- * Date: 9 july 2018
- * Written by: Usman Ali Butt
- * Property off: microcontroller-project.com
- * ***************************************************/
- //#include <ESP8266WiFi.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>          
 #else
@@ -41,39 +28,6 @@
 #endif
 #include <ESPAsyncWebServer.h>
 
-
-
-/*int PinA = D1;// 2;// D1;
-int PinB = D2; // 4;// D2;
-volatile boolean TurnDetected;  // need volatile for Interrupts
-volatile int master_count = 0;
-
-
-
-volatile int lastEncoded = 0;
-volatile long encoderValue = 0;
-long lastencoderValue = 0;
-int lastMSB = 0;
-int lastLSB = 0;
-void ICACHE_RAM_ATTR updateEncoder() {
-	int MSB = digitalRead(PinA); //MSB = most significant bit
-	int LSB = digitalRead(PinB); //LSB = least significant bit
-
-	int encoded = (MSB << 1) | LSB;
-	//converting the 2 pin value to single number
-	int sum = (lastEncoded << 2) | encoded;
-	//adding it to the previous encoded value
-	if(sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) encoderValue ++;
-	if(sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoderValue --;
-	lastEncoded = encoded; //store this value for next time
-
-	//Serial.println(encoderValue);
-}*/
-
-
-
-
-
 Shield shield;
 KeyLockSensor* keylockSensor;
 
@@ -81,16 +35,21 @@ extern bool mqtt_publish(String topic, String message);
 
 const char* ssid = "FASTWEB-C16E33";
 const char* password = "4GE4MEHHFG";
+const char* http_username = "admin";
+const char* http_password = "admin";
+
 
 AsyncWebServer asyncServer(80);
+AsyncWebSocket ws("/ws"); // access at ws://[esp ip]/ws
+AsyncEventSource events("/events"); // event source (Server-Sent events)
+//flag to use from web update to reboot the ESP
+bool shouldReboot = false;
 
+
+///////////
 const int command_open = 1;
 const int command_close = 2;
 volatile int keylockcommand;
-
-// REPLACE WITH YOUR NETWORK CREDENTIALS
-//const char* ssid = "REPLACE_WITH_YOUR_SSID";
-//const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 
 const char* PARAM_INPUT_1 = "input1";
 const char* PARAM_INPUT_2 = "input2";
@@ -140,9 +99,9 @@ const char index_html[] PROGMEM = R"rawliteral(
   </form>
 </body></html>)rawliteral";
 
-void notFound(AsyncWebServerRequest* request) {
-	request->send(404, "text/plain", "Not found");
-}
+
+
+
 
 
 
@@ -190,6 +149,32 @@ void mqtt_messageReceived(char* topic, byte* payload, unsigned int length) {
 	logger.println(tag, F("<<messageReceived"));
 }
 
+void onRequest(AsyncWebServerRequest* request) {
+	//Handle Unknown Request
+	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onRequest\n\n");
+	request->send(404);
+}
+
+void onBody(AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
+	//Handle body
+	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onBody\n\n");
+}
+
+void onUpload(AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
+	//Handle upload
+	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onUpload\n\n");
+}
+
+void onEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
+	//Handle WebSocket event
+	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onEvent\n\n");
+}
+
+
+void notFound(AsyncWebServerRequest* request) {
+	request->send(404, "text/plain", "Not found");
+}
+
 
 bool initMQTTServer() {
 	logger.println(tag, F("\n\n >>initMQTTServer"));
@@ -222,15 +207,6 @@ void setup() {
 	shield.init();
 
 
-
-
-	/*pinMode(PinA, INPUT_PULLUP); // set pinA as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
-	pinMode(PinB, INPUT_PULLUP); // set pinB as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
-	attachInterrupt(digitalPinToInterrupt(PinA), updateEncoder, CHANGE);
-	attachInterrupt(digitalPinToInterrupt(PinB), updateEncoder, CHANGE);*/
-
-
-
 	// Connect to WiFi network
 	Serial.print("\n\nConnecting to ");
 	Serial.println(ssid);
@@ -248,13 +224,73 @@ void setup() {
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
 
-	// Send web page with input fields to client
+
+
+	// attach AsyncWebSocket
+	ws.onEvent(onEvent);
+	asyncServer.addHandler(&ws);
+
+	// attach AsyncEventSource
+	asyncServer.addHandler(&events);
+
+	// respond to GET requests on URL /heap
+	asyncServer.on("/heap", HTTP_GET, [](AsyncWebServerRequest* request) {
+		request->send(200, "text/plain", String(ESP.getFreeHeap()));
+		});
+
+	// upload a file to /upload
+	asyncServer.on("/upload", HTTP_POST, [](AsyncWebServerRequest* request) {
+		request->send(200);
+		}, onUpload);
+
+	// HTTP basic authentication
+	asyncServer.on("/login", HTTP_GET, [](AsyncWebServerRequest* request) {
+		if (!request->authenticate(http_username, http_password))
+			return request->requestAuthentication();
+		request->send(200, "text/plain", "Login Success!");
+		});
+
+	// Simple Firmware Update Form
+	asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
+		request->send(200, "text/html", "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>");
+		});
+	asyncServer.on("/update", HTTP_POST, [](AsyncWebServerRequest* request) {
+		shouldReboot = !Update.hasError();
+		AsyncWebServerResponse* response = request->beginResponse(200, "text/plain", shouldReboot ? "OK" : "FAIL");
+		response->addHeader("Connection", "close");
+		request->send(response);
+		}, [](AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
+			if (!index) {
+				Serial.printf("Update Start: %s\n", filename.c_str());
+				Update.runAsync(true);
+				if (!Update.begin((ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000)) {
+					Update.printError(Serial);
+				}
+			}
+			if (!Update.hasError()) {
+				if (Update.write(data, len) != len) {
+					Update.printError(Serial);
+				}
+			}
+			if (final) {
+				if (Update.end(true)) {
+					Serial.printf("Update Success: %uB\n", index + len);
+				}
+				else {
+					Update.printError(Serial);
+				}
+			}
+		});
+	
+
+
+	// respond to GET requests on URL /home
 	asyncServer.on("/home", HTTP_GET, [](AsyncWebServerRequest* request) {
 		logger.println(tag, "\n\n /home");
 		request->send_P(200, "text/html", index_html);
 		});
 
-	// Route for root / web page
+	// respond to GET requests on URL /
 	asyncServer.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
 		logger.println(tag, "\n\n /index.html");
 		request->send(SPIFFS, "/index.html", String(), false, processor);
@@ -514,8 +550,24 @@ void setup() {
 			}
 		});
 
-	asyncServer.onNotFound(notFound);
+	
+
+
+	// attach filesystem root at URL /fs
+	asyncServer.serveStatic("/fs", SPIFFS, "/");
+
+	// Catch-All Handlers
+	// Any request that can not find a Handler that canHandle it
+	// ends in the callbacks below.
+	asyncServer.onNotFound(onRequest);
+	asyncServer.onFileUpload(onUpload);
+	asyncServer.onRequestBody(onBody);
+
+	//asyncServer.onNotFound(notFound);
 	asyncServer.begin();
+
+
+
 
 	// Initialize MQTT
 	initMQTTServer();
@@ -612,6 +664,18 @@ void loop() {
 		reconnect();
 		delay(5000);
 	}
+
+
+
+	if (shouldReboot) {
+		Serial.println("Rebooting...");
+		delay(100);
+		ESP.restart();
+	}
+	static char temp[128];
+	sprintf(temp, "Seconds since boot: %u", millis() / 1000);
+	events.send(temp, "time"); //send event "time"
+
 
 	//return;
 	//////////////
