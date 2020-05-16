@@ -19,84 +19,82 @@
     <None Include="src\arduino folders read me.txt">
       <Filter>Misc Files</Filter>
     </None>
-    <None Include="..\data\config.html" />
-    <None Include="..\data\index.html" />
-    <None Include="..\data\jquery-3.5.0.min.js" />
-    <None Include="..\data\keylock.html" />
-    <None Include="..\data\new.html" />
-    <None Include="..\data\onewire.html" />
-    <None Include="..\data\sensor.html" />
-    <None Include="..\data\sensors.html" />
-    <None Include="..\data\style.css" />
-    <None Include="..\data\tempsensor.html" />
+    <None Include="data\config.html" />
+    <None Include="data\index.html" />
+    <None Include="data\jquery-3.5.0.min.js" />
+    <None Include="data\keylock.html" />
+    <None Include="data\new.html" />
+    <None Include="data\onewire.html" />
+    <None Include="data\sensor.html" />
+    <None Include="data\sensors.html" />
+    <None Include="data\style.css" />
+    <None Include="data\tempsensor.html" />
+    <None Include="data\upload.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.NewESPWebduino.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\KeyLockSensor.h">
+    <ClInclude Include="KeyLockSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Logger.h">
+    <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\MQTTClientClass.h">
+    <ClInclude Include="MQTTClientClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\MQTTMessage.h">
+    <ClInclude Include="MQTTMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\OnewireSensor.h">
+    <ClInclude Include="OnewireSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\RotaryEncoderSensor.h">
+    <ClInclude Include="RotaryEncoderSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Sensor.h">
+    <ClInclude Include="Sensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SensorFactory.h">
+    <ClInclude Include="SensorFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shield.h">
+    <ClInclude Include="Shield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TemperatureSensor.h">
+    <ClInclude Include="TemperatureSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\KeyLockSensor.cpp">
+    <ClCompile Include="KeyLockSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Logger.cpp">
+    <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\MQTTClientClass.cpp">
+    <ClCompile Include="MQTTClientClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\MQTTMessage.cpp">
+    <ClCompile Include="MQTTMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\OnewireSensor.cpp">
+    <ClCompile Include="OnewireSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\RotaryEncoderSensor.cpp">
+    <ClCompile Include="RotaryEncoderSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Sensor.cpp">
+    <ClCompile Include="Sensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SensorFactory.cpp">
+    <ClCompile Include="SensorFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shield.cpp">
+    <ClCompile Include="Shield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\TemperatureSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TemperatureSensor.cpp">
+    <ClCompile Include="TemperatureSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
