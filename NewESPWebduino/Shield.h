@@ -288,8 +288,9 @@ public:
 		if (str.equals("D10"))
 			return D10;
 #endif
-		/*else
-#else
+#endif
+	
+#ifdef ESP32
 		if (str.equals("D0"))
 				return 0;
 		if (str.equals("D1"))
@@ -312,8 +313,14 @@ public:
 			return 9;
 		if (str.equals("D10"))
 			return 10;
-		else*/
-#endif // ESP8266
+		if (str.equals("D18"))
+			return 18;
+		if (str.equals("D19"))
+			return 19;
+		if (str.equals("D21"))
+			return 21;
+	
+#endif
 			logger.print(tag, "\n\t PIN NOT FOUND");
 			return 0;
 	}

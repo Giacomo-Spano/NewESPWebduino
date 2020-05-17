@@ -2,9 +2,15 @@
 
 Logger KeyLockSensor::logger;
 String KeyLockSensor::tag = "KeyLockSensor";
+
+#ifdef ESP8266
 int KeyLockSensor::PinA2 = D1;// 2;// D1;
 int KeyLockSensor::PinB2 = D2; // 4;// D2;
-
+#endif
+#ifdef ESP32
+int KeyLockSensor::PinA2 = 18;// D18;// 2;// D1;
+int KeyLockSensor::PinB2 = 19;// D19; // 4;// D2;
+#endif
 
 extern bool mqtt_publish(String topic, String message);
 
@@ -79,9 +85,17 @@ void KeyLockSensor::init()
 	directionPin = 19; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
 	enablePin = 23; //GPI*/
 
+#ifdef ESP8266
 	stepPin = D4; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
 	directionPin = D3; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
 	enablePin = D5; //GPI
+#endif
+#ifdef ESP32
+	stepPin = 19; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
+	directionPin = 18; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
+	enablePin = 21; //GPI
+#endif
+
 
 	//stepPin = pin;
 	pinMode(stepPin, OUTPUT); //Steppin as output

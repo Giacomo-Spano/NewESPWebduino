@@ -27,6 +27,17 @@
 #include <ESPAsyncTCP.h>
 #endif
 #include <ESPAsyncWebServer.h>
+//#include <SPIFFSEditor.h>
+#ifndef ESP8266
+#include <FS.h> //this needs to be first, or it all crashes and burns...
+#include "SPIFFS.h"
+#endif
+
+#ifdef ESP8266
+#include <ESP8266httpUpdate.h>
+#else
+#include <ESP32httpUpdate.h>
+#endif
 
 Shield shield;
 KeyLockSensor* keylockSensor;
@@ -163,6 +174,25 @@ void onBody(AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t in
 void onUpload(AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
 	//Handle upload
 	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onUpload\n\n");
+	if (!index) {
+		Serial.printf("UploadStart: %s\n", filename.c_str());
+	}
+	for (size_t i = 0; i < len; i++) {
+		Serial.write(data[i]);
+	}
+
+
+	File file = SPIFFS.open("/" + filename, "w");
+	if (!file) {
+		logger.print(tag, "error to create file");
+		return;
+	}
+	file.write(data,len);
+	file.close();
+
+	if (final) {
+		Serial.printf("UploadEnd: %s, %u B\n", filename.c_str(), index + len);
+	}
 }
 
 void onEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
@@ -189,8 +219,13 @@ void setup() {
 	Serial.begin(115200);
 	delay(10);
 
+	Serial.print("\n\n\ **************** RESTART *************************\n\n");
+	Serial.print("sw ver = ");
+	Serial.println(shield.getSWVersion());
+	
+	
 	// Initialize SPIFFS
-	//SPIFFS.format();
+	SPIFFS.format();
 	Serial.println(F("Inizializing FS..."));
 	if (SPIFFS.begin()) {
 		Serial.println(F("done."));
@@ -205,7 +240,7 @@ void setup() {
 	shield.readRebootReason();
 	shield.readConfig();
 	shield.init();
-
+	
 
 	// Connect to WiFi network
 	Serial.print("\n\nConnecting to ");
@@ -220,28 +255,66 @@ void setup() {
 		Serial.print(".");
 	}
 	Serial.println("\nWiFi connected");
-	Serial.print("\nIP Address: ");
+	Serial.print("IP Address: x");
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
+
+
+	checkForSWUpdate();
 
 
 
 	// attach AsyncWebSocket
 	ws.onEvent(onEvent);
-	asyncServer.addHandler(&ws);
+	//asyncServer.addHandler(&ws);
 
 	// attach AsyncEventSource
+	//asyncServer.addHandler(&events);
+
+
+	//ws.onEvent(onWsEvent);
+	asyncServer.addHandler(&ws);
+
+	events.onConnect([](AsyncEventSourceClient* client) {
+		client->send("hello!", NULL, millis(), 1000);
+		});
 	asyncServer.addHandler(&events);
+
+
+	asyncServer.on("/heap", HTTP_GET, [](AsyncWebServerRequest* request) {
+		request->send(200, "text/plain", String(ESP.getFreeHeap()));
+		});
+
+	asyncServer.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
+
 
 	// respond to GET requests on URL /heap
 	asyncServer.on("/heap", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(200, "text/plain", String(ESP.getFreeHeap()));
 		});
 
-	// upload a file to /upload
-	asyncServer.on("/upload", HTTP_POST, [](AsyncWebServerRequest* request) {
-		request->send(200);
-		}, onUpload);
+	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
+	asyncServer.on("/getfiles", HTTP_GET, [](AsyncWebServerRequest* request) {
+
+		Serial.print(" /getfiles request received\n");
+		String sensorID;
+		// GET input1 value on <ESP_IP>/get?input1=<inputMessage>
+		request->send(200, "application/json", getFiles());
+		return;
+
+		//Serial.println("errore");
+		//request->send(200, "text/html", "errore <br><a href=\"/\">Return to Home Page</a>");
+		});
+
+	asyncServer.serveStatic("/upload.html", SPIFFS, "/upload.html");
+
+	asyncServer.on("/delete", HTTP_GET, [](AsyncWebServerRequest* request) {
+		if (request->hasParam("filename")) {
+			String filename = request->getParam("filename")->value();
+			deleteFile(filename);
+		}		
+		request->send(200, "text/plain", "File deleted!");
+		});
 
 	// HTTP basic authentication
 	asyncServer.on("/login", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -251,35 +324,15 @@ void setup() {
 		});
 
 	// Simple Firmware Update Form
-	asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
+	/*asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(200, "text/html", "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>");
-		});
-	asyncServer.on("/update", HTTP_POST, [](AsyncWebServerRequest* request) {
-		shouldReboot = !Update.hasError();
-		AsyncWebServerResponse* response = request->beginResponse(200, "text/plain", shouldReboot ? "OK" : "FAIL");
-		response->addHeader("Connection", "close");
-		request->send(response);
-		}, [](AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
-			if (!index) {
-				Serial.printf("Update Start: %s\n", filename.c_str());
-				Update.runAsync(true);
-				if (!Update.begin((ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000)) {
-					Update.printError(Serial);
-				}
-			}
-			if (!Update.hasError()) {
-				if (Update.write(data, len) != len) {
-					Update.printError(Serial);
-				}
-			}
-			if (final) {
-				if (Update.end(true)) {
-					Serial.printf("Update Success: %uB\n", index + len);
-				}
-				else {
-					Update.printError(Serial);
-				}
-			}
+		});*/
+
+
+	// Simple Firmware Update Form
+	asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
+		checkForSWUpdate();
+		request->send(200, "text/html", "HTTP fw updated<br><a href=\"/\">Return to Home Page</a>");
 		});
 	
 
@@ -996,4 +1049,131 @@ void listAllFiles() {
 
 	}*/
 	logger.print(tag, F("\n"));
+}
+
+#ifdef ESP8266
+String getFiles() {
+
+	logger.println(tag, F(">>Shield::getFiles\n"));
+
+	StaticJsonBuffer<1000> jsonArrayBuffer;
+	JsonArray& jarray = jsonArrayBuffer.createArray();
+
+	StaticJsonBuffer<1000> jsonBuffer;
+
+	Dir dir = SPIFFS.openDir("/");
+	while (dir.next()) {
+
+		File f = dir.openFile("r");
+		Serial.print("FILE: ");
+		Serial.println(dir.fileName());
+
+		JsonObject& json = jsonBuffer.createObject();
+		json["filename"] = dir.fileName();
+		json["size"] = f.size();
+		jarray.add(json);
+		f.close();
+	}
+	jarray.printTo(Serial);
+	String str;
+	jarray.printTo(str);
+	logger.println(tag, F("<<Shield::getFiles"));
+	return str;
+}
+#endif
+
+#ifdef ESP32
+String getFiles() {
+
+	logger.println(tag, F(">>Shield::getFiles\n"));
+
+	//StaticJsonBuffer<1000> jsonArrayBuffer;
+	//JsonArray& jarray = jsonArrayBuffer.createArray();
+	//StaticJsonBuffer<1000> jsonBuffer;
+
+	Serial.println("file opened");
+	if (!SPIFFS.begin()) {
+		logger.print(tag, F("\n\t error mounting file system"));
+		return "";
+	}
+
+
+
+	File root = SPIFFS.open("/");
+	File file = root.openNextFile();
+
+	Serial.println("file opened");
+
+	while (file) {
+	
+		Serial.print("FILE: ");
+		Serial.println(file.name());
+	
+		//JsonObject& json = jsonBuffer.createObject();
+
+
+		//json["filename"] = file.name();
+		//json["size"] = file.size();
+		
+
+		//jarray.add(json);
+
+		//f.close();
+	}
+	//root.close();
+
+	//jarray.printTo(Serial);
+	String str;
+	//jarray.printTo(str);
+	logger.println(tag, F("<<Shield::getSensors"));
+	return str;
+}
+#endif
+
+bool deleteFile(String filename) {
+
+	logger.println(tag, F(">>deleteFile\n"));
+
+	return SPIFFS.remove(filename);
+
+	logger.println(tag, F("<<deleteFile"));
+}
+
+void checkForSWUpdate() {
+
+#ifdef ESP8266
+
+	logger.println(tag, F(">>checkForSWUpdate"));
+	//delay(2000);
+
+	String updatePath = "http://192.168.1.203:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
+	logger.print(tag, "\n\t check for sw update " + updatePath);
+	logger.print(tag, "\n\t current version " + shield.swVersion);
+	t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath, shield.swVersion);
+	//t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath);
+
+	switch (ret) {
+	case HTTP_UPDATE_FAILED:
+
+		logger.print(tag, F("\n\t HTTP_UPDATE_FAILD Error "));
+		logger.print(tag, String(ESPhttpUpdate.getLastError()));
+		logger.print(tag, F(" "));
+		logger.print(tag, ESPhttpUpdate.getLastErrorString().c_str());
+
+		shield.setEvent(F("sw Update failed"));
+		break;
+
+	case HTTP_UPDATE_NO_UPDATES:
+		logger.print(tag, F("\n\t HTTP_UPDATE_NO_UPDATES"));
+		shield.setEvent(F("no sw update available"));
+		break;
+
+	case HTTP_UPDATE_OK:
+		logger.print(tag, F("\n\t HTTP_UPDATE_OK"));
+		shield.setEvent(F("sw updated"));
+		break;
+	}
+	logger.println(tag, F("<<checkForSWUpdate"));
+
+#endif
 }
