@@ -225,7 +225,7 @@ void setup() {
 	
 	
 	// Initialize SPIFFS
-	SPIFFS.format();
+	//SPIFFS.format();
 	Serial.println(F("Inizializing FS..."));
 	if (SPIFFS.begin()) {
 		Serial.println(F("done."));
@@ -646,12 +646,15 @@ bool reconnect() {
 			// Once connected, publish an announcement...
 			String topic = "ESPWebduino/" + shield.getName() + "/command/#";
 
-			logger.print(tag, String("\n\t topic = ") + topic);
-			mqttclient.subscribe(topic.c_str());
-
-			//shield.setStatus(F("ONLINE"));
-			logger.print(tag, F("\n\t <<reconnect\n\n"));
-			return true;
+			logger.println(tag, String("\n\n\t Subscribing to topic = ") + topic);
+			if (mqttclient.subscribe(topic.c_str())) {
+				logger.println(tag, String("\n\t subscribed"));
+				logger.print(tag, F("\n\t <<reconnect\n\n"));
+				return true;
+			} 
+			else {
+				logger.println(tag, String("\n\t failed to subscribe"));
+			}			
 		}
 		else {
 			logger.print(tag, F("\n\tfailed, rc="));

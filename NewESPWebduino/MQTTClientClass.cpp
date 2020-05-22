@@ -46,7 +46,7 @@ boolean MQTTClientClass::connected()
 boolean MQTTClientClass::connect(String clientid, String user, String password)
 {
 	//return client->connect(clientid.c_str());
-	logger.print(tag, "\n\t connect clientid:" + clientid + " user:" + user + " password:" + password);
+	logger.print(tag, "\n\t connecting \n\tclientid:" + clientid + "\n\tuser:" + user + "\n\tpassword:" + password);
 	return client->connect(clientid.c_str(), user.c_str(), password.c_str());
 }
 

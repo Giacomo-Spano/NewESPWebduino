@@ -97,14 +97,15 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var sensor = JSON.parse(this.responseText);
-                $("#sensorid").val(sensor.sensorid);
-                $("#type").val(sensor.type);
-                $("#name").val(sensor.name);
-                $("#pin").val(sensor.pin);
 
                 $("#LabelID").text(sensor.sensorid);
                 $("#LabelName").text(sensor.name);
                 $("#LabelType").text(sensor.type);
+
+                $("#sensorid").val(sensor.sensorid);
+                $("#type").val(sensor.type);
+                $("#name").val(sensor.name);
+                $("#pin").val(sensor.pin);                
             }
         };
         xhttp.open("GET", "/getsensor?sensorid=" + sensordid + "&type='" + type + "'", true);

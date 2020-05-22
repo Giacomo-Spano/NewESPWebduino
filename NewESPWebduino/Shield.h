@@ -241,16 +241,28 @@ public:
 			return "D7";
 		if (pin == D8)
 			return "D8";
-#ifdef D9
 		if (pin == D9)
 			return "D9";
-#endif
-#ifdef D10
 		if (pin == D10)
 			return "D10";
 #endif
-		else
-#endif // ESP8266
+
+#ifdef ESP32
+		if (pin == 5)
+			return "D5";
+		if (pin == 18)
+			return "D18";
+		if (pin == 19)
+			return "D19";
+		if (pin == 20)
+			return "D20";
+		if (pin == 21)
+			return "D21";
+		if (pin == 22)
+			return "D22";
+		if (pin == 23)
+			return "D23";
+#endif // ESP32
 			return "";
 	}
 

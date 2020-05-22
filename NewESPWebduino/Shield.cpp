@@ -32,7 +32,7 @@ String Shield::tag = "Shield";
 Shield::Shield()
 {
 	lastRestartDate = "";
-	swVersion = "1.98";
+	swVersion = "1.99";
 
 	id = 0; //// inizializzato a zero perch� viene impostato dalla chiamata a registershield
 	localPort = 80;
@@ -949,42 +949,7 @@ void Shield::readSensorFromFile() {
 bool Shield::writeSensorToFile() {
 
 	logger.print(tag, F("\n\t>>Shield::writeSensorToFile\n"));
-
-	//DynamicJsonBuffer jsonArrayBuffer;
-	/*StaticJsonBuffer<400> jsonArrayBuffer;
-	JsonArray& array = jsonArrayBuffer.createArray();
-
-	StaticJsonBuffer<400> jsonBuffer;
-
-	for (int i = 0; i < sensors.size(); i++)
-	{
-		//StaticJsonBuffer<200> jsonBuffer;
-		JsonObject& json = jsonBuffer.createObject();
-
-		Serial.println("");
-		Sensor* sensor = (Sensor*)sensors.get(i);
-
-		logger.println(tag, "sensorid=" + String(sensor->sensorid));
-		logger.println(tag, "pin=" + String(sensor->pin));
-		logger.println(tag, "pin=" + Shield::getStrPin(sensor->pin));
-		logger.println(tag, "sensorname=" + sensor->sensorname);
-		logger.println(tag, "type=" + sensor->type);
-		logger.println(tag, "enabled=" + String(sensor->enabled));
-
-		json["sensorid"] = sensor->sensorid;
-		json["pin"] = Shield::getStrPin(sensor->pin);
-		json["name"] = sensor->sensorname;
-		json["type"] = sensor->type;
-		json["enabled"] = sensor->enabled;
-		logger.printJson(json);
-		array.add(json);
-		//Serial.print("\narray=");
-		//array.printTo(Serial);
-	}
-	Serial.print("\n\tarray=");
-	array.printTo(Serial);
-	Serial.print("\n\n\n");*/
-
+	
 	File configFile = SPIFFS.open("/sensors.json", "w");
 	if (!configFile) {
 		logger.print(tag, F("\n\t failed to open config file for writing"));
@@ -1022,13 +987,14 @@ String Shield::getSensors() {
 		logger.println(tag, "sensorname=" + sensor->sensorname);
 		logger.println(tag, "type=" + sensor->type);
 		logger.println(tag, "enabled=" + String(sensor->enabled));*/
-
-		json["sensorid"] = sensor->sensorid;
+		
+		sensor->getJson(json);
+		/*json["sensorid"] = sensor->sensorid;
 		json["pin"] = Shield::getStrPin(sensor->pin);
 		json["name"] = sensor->sensorname;
 		json["type"] = sensor->type;
-		json["enabled"] = sensor->enabled;
-		//logger.printJson(json);
+		json["enabled"] = sensor->enabled;*/
+		
 		jarray.add(json);
 	}
 
@@ -1072,7 +1038,7 @@ bool Shield::updateSensor(JsonObject& json) {
 					logger.println(tag, F("\n sensor found\n"));
 					sensor->type = json["type"].asString();
 					sensor->sensorname = json["name"].asString();
-					sensor->pin = Shield::pinFromStr(json["pin"].asString());
+					sensor->pin = Shield::pinFromStr(json["pin"]);
 					writeSensorToFile();
 					break;
 				}
