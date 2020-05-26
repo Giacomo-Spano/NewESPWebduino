@@ -6,6 +6,7 @@
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="jquery-3.5.0.min.js"></script>
+    <script src="espduino.js"></script>
 </head>
 <body>
     <h1>Sensors</h1>
@@ -14,6 +15,7 @@
 
     <form action="/sensor">
         <input type="text" id="sensorid" name="sensorid" value="0" hidden>  <!--- serve a passare campo sensorid = 0-->
+        <input type="text" id="model" name="model" value="ESP" hidden>  <!--- serve a passare campo model-->
         <select name="type" id="type">
             <option value='onewiresensor'>Onewire</option>
             <option value='temperaturesensor'>Temperature</option>
@@ -30,7 +32,14 @@
 </body>
 <script>
 
+    //var model;
+
     $(document).ready(function () {
+
+        //model = getUrlVars()["model"];
+        //console.log("model=" + model);
+        //$('#model').val(model);
+
         loadValue();
     });
 
@@ -46,17 +55,13 @@
                     console.log(jarray[i].sensorid.toString());
 
                     var str = "<div >" + jarray[i].sensorid.toString() + ". " + jarray[i].name + " [" + jarray[i].type + "]"
+                        + " <a href='/sensor?sensorid=" + jarray[i].sensorid.toString() + "&action=view'>view</a>"
                         + " <a href='/sensor?sensorid=" + jarray[i].sensorid.toString() + "&action=edit'>edit</a>"
                         + " <a href='/sensor?sensorid=" + jarray[i].sensorid.toString() + "&action=delete'>delete</a>"
                         + "</div > ";
                     console.log(str);
                     $('#sensors').append(str);
-
-                    //<button type="submit" name='bsubmit' value='add'>Submit</button>
-                    //<a href='/sensor?sensorid=0&action=add'>add</a>
                 }
-
-
             }
         };
         xhttp.open("GET", "/getsensors", true);

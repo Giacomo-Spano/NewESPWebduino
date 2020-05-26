@@ -233,8 +233,8 @@ void Shield::init() {
 
 	readSensorFromFile();
 
-	
-		Sensor* sensor;
+
+	Sensor* sensor;
 	/*#ifdef ESP8266
 		logger.print(tag, F("\n\n\tCREATE ONEWIRE"));
 		sensor = SensorFactory::createSensor(0, "onewiresensor", D6, true, "0", "onewire");
@@ -264,7 +264,7 @@ void Shield::init() {
 		*/
 
 		//writeSensorToFile();
-	
+
 
 
 	//tftDisplay.init();
@@ -437,7 +437,8 @@ void Shield::parseMessageReceived(String topic, String message) {
 			subtopic.replace(id + '/', "");
 			String command = subtopic;
 			logger.print(tag, "\ncommand=" + command);
-			sendSensorCommand(type, id.toInt(), command, message);
+			//sendSensorCommand(type, id.toInt(), command, message);
+			sendSensorCommand(/*type, */id.toInt(), command, message);
 		}
 	}
 	//}
@@ -697,17 +698,9 @@ void Shield::checkStatus()
 
 	if (timeDiff > 1000) {
 		//logger.print(tag, "Shield::checkStatus");
-
 		lastTimeUpdate = currMillis;
-
 		invalidateDisplay();
-
-
 	}
-
-
-
-
 }
 
 void Shield::sendSensorCommand(String type, int id, String command, String payload)
@@ -728,101 +721,58 @@ void Shield::sendSensorCommand(String type, int id, String command, String paylo
 		//logger.print(tag, String(F("\n\t\ command=")) + sensors.get(i)->command);
 		//logger.print(tag, String(F("\n\t\ payload=")) + sensors.get(i)->payload);
 
-		if (type.equals(type) && sensor->sensorid == id)
-			sensor->sendCommand(command, payload);
+		if (type.equals(type)) {
+			if (type.equals("keylocksensor")) {
+				sensor->sendCommand(command, payload);
+				break;
+			}
+			else {
+				if (sensor->sensorid == id) {
+					sensor->sendCommand(command, payload);
+					break;
+				}
+			}
+		}
 	}
 	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
 }
 
+void Shield::sendSensorCommand(int id, String command, String payload)
+{
+	logger.print(tag, F("\n\t >>Shield::sendSensorCommand2"));
+
+	logger.print(tag, String(F("\n\t\ id=")) + id);
+	logger.print(tag, String(F("\n\t\ command=")) + command);
+	logger.print(tag, String(F("\n\t\ payload=")) + payload);
+
+	for (int i = 0; i < sensors.size(); i++) {
+
+		Sensor* sensor = sensors.get(i);
+		logger.print(tag, String(F("\n\t\ id=")) + String(sensors.get(i)->sensorid));
+		if (sensor->sensorid == id) {
+			sensor->sendCommand(command, payload);
+			break;
+		}
+	}
+	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
+}
+
+
+
 void Shield::checkSensorsStatus()
 {
 	//logger.print(tag, F("\n\t >>checkSensorsStatus"));
-	//bool sensorStatusChanged = false;
-
 
 	for (int i = 0; i < sensors.size(); i++)
 	{
 		Sensor* sensor = (Sensor*)sensors.get(i);
-
 		if (!sensor->enabled) {
 			continue;
 		}
 		sensor->updateAvailabilityStatus();
-
 		sensor->checkStatusChange();
 	}
-
-#ifdef dopo
-	for (int i = 0; i < sensors.size(); i++)
-	{
-		Sensor* sensor = (Sensor*)sensors.get(i);
-		if (!sensor->enabled) {
-			continue;
-		}
-
-		bool sendUpdate = false;
-		bool res = sensor->checkStatusChange();
-		if (res) {
-			sendUpdate = true;
-			setEvent(F("SENSOR STATUS CHANGED"));
-			logger.println(tag, F("SENSOR STATUS CHANGED "));
-			logger.print(tag, F("\n\t sensor "));
-			logger.print(tag, sensor->sensorid);
-			logger.print(tag, F("."));
-			logger.print(tag, sensor->sensorname);
-			logger.print(tag, F("\n\t sensor status changed - status: "));
-			logger.print(tag, String(sensor->status));
-		}
-
-		unsigned long timeDiff = millis() - sensor->lastUpdateStatus;
-		if (timeDiff > sensor->updateStatus_interval) {
-			setEvent(F("SENSOR STATUS UPDATE TIMEOUT"));
-			logger.println(tag, F("SENSOR STATUS UPDATE TIMEOUT "));
-			logger.print(tag, F("\n\t sensor "));
-			logger.print(tag, sensor->sensorid);
-			logger.print(tag, F("."));
-			logger.print(tag, sensor->sensorname);
-			logger.print(tag, F("\n\t update status timeout"));
-			sendUpdate = true;
-		}
-
-		if (sendUpdate) {
-			logger.print(tag, F("\n\t SEND SENSOR UPDATE"));
-			/*Command command;
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& json = jsonBuffer.createObject();
-			sensor->getJson(json);*/
-
-			/*StaticJsonBuffer<500> jsonBuffer;
-			JsonObject& json = jsonBuffer.createObject();*/
-
-			//json["date"] = logger.getStrDate();
-
-			/*String str2;
-			json.printTo(str2);
-			logger.print(tag, str2);
-
-			sensor->getJson(json);*/
-
-			/*String str;
-			json.printTo(str);
-			logger.print(tag, str);*/
-			String strJson = sensor->getStrJson();
-
-
-
-			/*bool res = command.sendStrSensorStatus(strJson);
-			logger.print(tag, F("\n\t SENSOR STATUS SENT - res="));
-			logger.print(tag, Logger::boolToString(res));
-			if (res) {
-				sensor->lastUpdateStatus = millis();
-			}*/
-		}
-	}
-#endif
-
 	//logger.print(tag, F("\n\t <<checkSensorsStatus"));
-
 }
 
 bool Shield::requestTime() {
@@ -949,7 +899,7 @@ void Shield::readSensorFromFile() {
 bool Shield::writeSensorToFile() {
 
 	logger.print(tag, F("\n\t>>Shield::writeSensorToFile\n"));
-	
+
 	File configFile = SPIFFS.open("/sensors.json", "w");
 	if (!configFile) {
 		logger.print(tag, F("\n\t failed to open config file for writing"));
@@ -987,14 +937,14 @@ String Shield::getSensors() {
 		logger.println(tag, "sensorname=" + sensor->sensorname);
 		logger.println(tag, "type=" + sensor->type);
 		logger.println(tag, "enabled=" + String(sensor->enabled));*/
-		
+
 		sensor->getJson(json);
 		/*json["sensorid"] = sensor->sensorid;
 		json["pin"] = Shield::getStrPin(sensor->pin);
 		json["name"] = sensor->sensorname;
 		json["type"] = sensor->type;
 		json["enabled"] = sensor->enabled;*/
-		
+
 		jarray.add(json);
 	}
 
@@ -1007,31 +957,36 @@ String Shield::getSensors() {
 
 bool Shield::updateSensor(JsonObject& json) {
 
-	logger.print(tag, F("\n\t>>Shield::updateSensor\n"));
+	logger.print(tag, F("\n\n\t>>Shield::updateSensor\n"));
 	//json.printTo(Serial);
-
 	if (json.containsKey("sensorid") && json.containsKey("type") && json.containsKey("pin")) {
 
 		int sensorid = json["sensorid"].as<int>();
 		String type = json["type"].asString();
-		
-		logger.print(tag, "\n\tsensorid=" + sensorid);
+
+		logger.print(tag, "\n\tsensorid=" + String(sensorid));
 		logger.print(tag, "\n\ttype=" + type);
 
 		if (sensorid == 0) {
-			logger.print(tag, F("\n Add new sensor\n"));
+			logger.print(tag, F("\n\t Add new sensor\n"));
 			int id = 1;
 			if (sensors.size() > 0) {
-				Sensor* lastsensor = (Sensor*)sensors.get(sensors.size()-1);
+				Sensor* lastsensor = (Sensor*)sensors.get(sensors.size() - 1);
 				id = lastsensor->sensorid + 1;
 			}
-			Sensor* sensor = SensorFactory::createSensor(id, type, Shield::pinFromStr(json["pin"].asString()), true/*enabled*/, "0"/*address*/, json["name"].asString());
+			json["sensorid"] = id;
+			/*Sensor* sensor = SensorFactory::createSensor(json);
+			if (sensor == nullptr) {
+				logger.print(tag, "create Sensor Failed!");
+				return false;
+			}
 			sensors.add(sensor);
-			writeSensorToFile();
+			writeSensorToFile();*/
+			return addSensor(json);
 		}
 		else {
 			logger.println(tag, F("\n Update existing sensor\n"));
-			for (int i = 0; i < sensors.size(); i++)
+			/*for (int i = 0; i < sensors.size(); i++)
 			{
 				Sensor* sensor = (Sensor*)sensors.get(i);
 				if (sensor->sensorid == sensorid) {
@@ -1042,12 +997,34 @@ bool Shield::updateSensor(JsonObject& json) {
 					writeSensorToFile();
 					break;
 				}
+			}*/
+			// remove current sensor
+			for (int i = 0; i < sensors.size(); i++) {
+				Sensor* sensor = (Sensor*)sensors.get(i);
+				if (sensor->sensorid == sensorid) {
+					sensors.remove(i);
+					break;
+				}
 			}
+			return addSensor(json);
 		}
-		logger.println(tag, F("\n\t<<Shield::updateSensor\n"));
-		return true;
+		//logger.println(tag, F("\n\t<<Shield::updateSensor\n"));
+		return false;
 	}
 }
+
+bool Shield::addSensor(JsonObject& json) {
+	logger.print(tag, F("\n\t Add new sensor\n"));
+	Sensor* sensor = SensorFactory::createSensor(json);
+	if (sensor == nullptr) {
+		logger.print(tag, "create Sensor Failed!");
+		return false;
+	}
+	sensors.add(sensor);
+	writeSensorToFile();
+	return true;
+}
+
 
 bool  Shield::loadSensors(JsonArray& jsonarray) {
 
@@ -1064,7 +1041,16 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 		jsonarray[i].printTo(Serial);
 		JsonObject& json = jsonarray[i];
 
-		if (json.containsKey("sensorid") && json.containsKey("name") && json.containsKey("type") && json.containsKey("pin")) {
+
+		Sensor* sensor = SensorFactory::createSensor(json);
+		if (sensor == nullptr) {
+			logger.print(tag, "create Sensor Failed!");
+			return false;
+		}
+		sensors.add(sensor);
+		sensor->init();
+
+		/*if (json.containsKey("sensorid") && json.containsKey("name") && json.containsKey("type") && json.containsKey("pin")) {
 			Sensor* sensor = SensorFactory::createSensor(json["sensorid"].as<int>(), json["type"], Shield::pinFromStr(json["pin"]), true, "0", json["name"]);
 			if (sensor != nullptr) {
 				logger.print(tag, F("\n\n\t sensor="));
@@ -1077,7 +1063,7 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 			else {
 				logger.print(tag, "\n\t error: invalid sensor");
 			}
-		}
+		}*/
 	}
 
 	logger.print(tag, F("\n\t<<loadSensors\n"));

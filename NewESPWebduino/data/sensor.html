@@ -6,6 +6,7 @@
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="jquery-3.5.0.min.js"></script>
+    <script src="espduino.js"></script>
 </head>
 <body>
     <h1>[<label id="LabelID">[]</label>] <label id="LabelName">[]</label> - <label id="LabelType">[]</label></h1>
@@ -13,43 +14,39 @@
 
     <form action="/setsensor" id="inputForm">
 
-        <input type="text" name="sensorid" id="sensorid"><br>
-        <input type="text" name="type" id="type">
+        <input type="text" name="sensorid" id="sensorid" hidden><br> <!--- serve a passare campo sensorid = 0-->
+        <input type="text" name="type" id="type" hidden> <!--- serve a passare campo type = 0-->
 
-        <div class="form-field form-required">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" />
+        <div id="inputlist">
+            <div class="form-field form-required">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" />
+            </div>
+            <div class="form-field form-required">
+                <input type="checkbox" id="enabled" name="enabled" value="true" checked>
+                <label for="name">Enabled</label>
+            </div>
+            <div class="form-field form-required" id="pindiv">
+                <label for="type">Pin</label>
+                <select name="pin" id="pin">
+                </select><br>
+            </div>
         </div>
-        <div class="form-field form-required">
-            <input type="checkbox" id="enabled" name="enabled" value="enabled">
-            <label for="name">Enabled</label>
-        </div>
-        <div class="form-field form-required">
-            <label for="type">Pin</label>
-            <select name="pin" id="pin">
-                <option value='D1'>D1</option>
-                <option value='D2'>D2</option>
-                <option value='D3'>D3</option>
-                <option value="D4">D4</option>
-                <option value="D5">D5</option>
-                <option value="D6">D6</option>
-                <option value="D7">D7</option>
-                <option value="D8">D8</option>
-                <option value="D9">D9</option>
-                <option value="D10">D10</option>
-            </select><br>
-        </div>
-
         <input type="submit" value="Save">
     </form><br>
 
 </body>
 <script>
+    //var model;
 
     $(document).ready(function () {
 
         var sensorid = getUrlVars()["sensorid"];
         var type = getUrlVars()["type"];
+        //model = getUrlVars()["model"];
+        console.log("sensorid=" + sensorid);
+        console.log("type=" + type);
+
         var pin = "D1";
         var name = "new sensor";
         $("#sensorid").val(sensorid);
@@ -61,13 +58,11 @@
         $("#LabelName").text(name);
         $("#LabelType").text(type);
 
-        if (sensorid != 0)
-            loadValue(sensorid);
+        loadData(type, sensorid);
 
         $("#inputForm").submit(function (event) {
 
             event.preventDefault(); // inibisce invio submit
-
             var ary = $(this).serializeArray();
             var obj = {};
             for (var a = 0; a < ary.length; a++) {
@@ -92,11 +87,13 @@
         });
     });
 
-    function loadValue(sensordid) {
+    function loadValue(model, sensordid) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var sensor = JSON.parse(this.responseText);
+
+                addCustomSensorField(model, sensor.type);
 
                 $("#LabelID").text(sensor.sensorid);
                 $("#LabelName").text(sensor.name);
@@ -105,22 +102,130 @@
                 $("#sensorid").val(sensor.sensorid);
                 $("#type").val(sensor.type);
                 $("#name").val(sensor.name);
-                $("#pin").val(sensor.pin);                
+                $("#pin").val(sensor.pin);
+                $("#enabled").prop("checked", sensor.enabled);
+
+                if (sensor.type == "keylocksensor") {
+                    $("#steppin").val(sensor.steppin);
+                    $("#directionpin").val(sensor.directionpin);
+                    $("#enablepin").val(sensor.enablepin);
+                    $("#outputapin").val(sensor.outputapin);
+                    $("#outputbpin").val(sensor.outputbpin);
+                }
+
             }
         };
         xhttp.open("GET", "/getsensor?sensorid=" + sensordid + "&type='" + type + "'", true);
         xhttp.send();
     }
 
-    function getUrlVars() {
-        var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        for (var i = 0; i < hashes.length; i++) {
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
+    function loadData(type, sensorid) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                model = this.responseText;
+                console.log("model=" + model);
+                $("#pin").append(pinList(model));
+
+
+
+                if (sensorid != 0) { // edit
+                    loadValue(model, sensorid);
+                } else { // add
+                    addCustomSensorField(model, type);
+                }
+            }
+        };
+        xhttp.open("GET", "/getmodel", true);
+        xhttp.send();
+    }
+
+    function addCustomSensorField(model, type) {
+        if (type == "keylocksensor") {
+            $("#pindiv").hide();
+            // setp pin
+            $("#inputlist").append(
+                "<div class='form-field form-required'>" +
+                "    <label for='type'>Step PIN</label>" +
+                "    <select name='steppin' id='steppin'>" +
+                "</select><br>" +
+                "</div>");
+            $("#steppin").append(pinList(model));
+            // direction pin
+            $("#inputlist").append(
+                "<div class='form-field form-required'>" +
+                "    <label for='type'>Direction PIN</label>" +
+                "    <select name='directionpin' id='directionpin'>" +
+                "</select><br>" +
+                "</div>");
+            $("#directionpin").append(pinList(model));
+            // enable Pin
+            $("#inputlist").append(
+                "<div class='form-field form-required'>" +
+                "    <label for='type'>Enable PIN</label>" +
+                "    <select name='enablepin' id='enablepin'>" +
+                "</select><br>" +
+                "</div>");
+            $("#enablepin").append(pinList(model));
+            // outputA Pin
+            $("#inputlist").append(
+                "<div class='form-field form-required'>" +
+                "    <label for='type'>OutputA PIN</label>" +
+                "    <select name='outputapin' id='outputapin' value='D18'>" +
+                "</select><br>" +
+                "</div>");
+            $("#outputapin").append(pinList(model));
+            // outputB Pin
+            $("#inputlist").append(
+                "<div class='form-field form-required'>" +
+                "    <label for='type'>OutputB PIN</label>" +
+                "    <select name='outputbpin' id='outputbpin'>" +
+                "</select><br>" +
+                "</div>");
+            $("#outputbpin").append(pinList(model));
+
+            if (model == "ESP32") {
+                $("#steppin").val("D18");
+                $("#directionpin").val("D19");
+                $("#enablepin").val("D21");
+                $("#outputapin").val("D22");
+                $("#outputbpin").val("D23");
+            } else if (model == "ESP8266") {
+                $("#steppin").val("D4");
+                $("#directionpin").val("D3");
+                $("#enablepin").val("D5");
+                $("#outputapin").val("D1");
+                $("#outputbpin").val("D2");
+            }
         }
-        return vars;
+    }
+
+    function pinList(model) {
+        var list = "";
+        if (model == "ESP8266") {
+            list = "<p>Text.</p>" +
+                "<option value='D1'>D1</option>" +
+                "<option value='D2'>D2</option>" +
+                "<option value='D3'>D3</option>" +
+                "<option value='D4'>D4</option>" +
+                "<option value='D5'>D5</option>" +
+                "<option value='D6'>D6</option>" +
+                "<option value='D7'>D7</option>" +
+                "<option value='D8'>D8</option>" +
+                "<option value='D9'>D9</option>" +
+                "<option value='D10'>D10</option>";
+        } else if (model == "ESP32") {
+            list = "<p>Text.</p>" +
+                "<option value='D5'>D5</option>" +
+                "<option value='D18'>D18</option>" +
+                "<option value='D19'>D19</option>" +
+                "<option value='D21'>D21</option>" +
+                "<option value='D22'>D22</option>" +
+                "<option value='D23'>D23</option>";
+        }
+
+        console.log("list = " + list);
+        return list
     }
 
 </script>

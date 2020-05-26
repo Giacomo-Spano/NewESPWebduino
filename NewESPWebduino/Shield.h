@@ -84,6 +84,7 @@ public:
 	bool writeSensorToFile();
 	String getSensors();
 	bool updateSensor(JsonObject& json);
+	bool addSensor(JsonObject& json);
 	void parseMessageReceived(String topic, String message);
 	void drawString(int x, int y, String txt, int size, int color);
 	void drawDateTime();
@@ -136,6 +137,7 @@ public:
 	SimpleList<Sensor*> sensors = SimpleList<Sensor*>();
 
 	void sendSensorCommand(String type, int id, String command, String payload);
+	void sendSensorCommand(int id, String command, String payload);
 	
 	Shield();
 	~Shield();
@@ -161,6 +163,17 @@ public:
 	}
 	String getLastRestartDate() { return lastRestartDate; }
 	void setLastRestartDate(String date) { lastRestartDate = date; }
+
+	String getModel()
+	{
+#ifdef ESP8266
+		return "ESP8266";
+#endif
+#ifdef ESP32
+		return "ESP32";
+#endif
+
+	}
 
 	String getMACAddress()
 	{
@@ -254,8 +267,6 @@ public:
 			return "D18";
 		if (pin == 19)
 			return "D19";
-		if (pin == 20)
-			return "D20";
 		if (pin == 21)
 			return "D21";
 		if (pin == 22)
@@ -271,8 +282,8 @@ public:
 
 		str.replace("\r\n", ""); // importante!!
 
-		logger.print(tag, "\n\t >> pinFromStr strPin=");
-		logger.print(tag, str);
+		//logger.print(tag, "\n\t >> pinFromStr strPin=");
+		//logger.print(tag, str);
 #ifdef ESP8266
 		if (str.equalsIgnoreCase("D0"))
 			return D0;
@@ -303,34 +314,18 @@ public:
 #endif
 	
 #ifdef ESP32
-		if (str.equals("D0"))
-				return 0;
-		if (str.equals("D1"))
-			return 1;
-		if (str.equals("D2"))
-			return 2;
-		if (str.equals("D3"))
-			return 3;
-		if (str.equals("D4"))
-			return 4;
 		if (str.equals("D5"))
 			return 5;
-		if (str.equals("D6"))
-			return 6;
-		if (str.equals("D7"))
-			return 7;
-		if (str.equals("D8"))
-			return 8;
-		if (str.equals("D9"))
-			return 9;
-		if (str.equals("D10"))
-			return 10;
 		if (str.equals("D18"))
 			return 18;
 		if (str.equals("D19"))
 			return 19;
 		if (str.equals("D21"))
 			return 21;
+		if (str.equals("D22"))
+			return 22;
+		if (str.equals("D23"))
+			return 23;
 	
 #endif
 			logger.print(tag, "\n\t PIN NOT FOUND");

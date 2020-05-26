@@ -13,6 +13,78 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>xml;json;txt;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{ab7da263-a742-460e-997b-70557d0f5646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly">
+      <UniqueIdentifier>{69fa518c-fe56-4111-b97b-c46b8bbc17ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core">
+      <UniqueIdentifier>{ba4ec920-348c-4285-91f6-3c1d05f908a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\avr">
+      <UniqueIdentifier>{3b92aa4b-39f2-426e-98dc-e7262992de86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\libb64">
+      <UniqueIdentifier>{b589c6a8-d041-49b5-a83d-c83d28ec1c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\spiffs">
+      <UniqueIdentifier>{f1162993-8e6d-49a4-9616-72cc40c39332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\umm_malloc">
+      <UniqueIdentifier>{1986c8bb-7a91-4842-aefa-7ac432c463b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\umm_malloc\dbglog">
+      <UniqueIdentifier>{e93d63ca-d002-4b86-b7e4-57c8f7943bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries">
+      <UniqueIdentifier>{6aecb541-84ed-4541-b6e9-8daa2cac1e3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESP8266WiFi">
+      <UniqueIdentifier>{501ae1a4-ec58-45fb-8660-474e132bce32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\WiFi">
+      <UniqueIdentifier>{17b41dd2-3bdd-4d47-86e0-f578bc5fbd85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESP8266httpUpdate">
+      <UniqueIdentifier>{fa6c82dd-4548-446d-9baf-e28b3951b00c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\AsyncTCP-master">
+      <UniqueIdentifier>{06e7a545-6367-42f7-bb3b-2e1ed53650c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncTCP-master">
+      <UniqueIdentifier>{fbb98e6f-30d2-4126-b012-48115f03d4c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncWebServer-master">
+      <UniqueIdentifier>{44b72035-08dc-4a6e-839c-1d3faa48cc8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\esp32-http-update-master">
+      <UniqueIdentifier>{855db4fc-8833-435e-9c87-1d986b8dd012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Time-master">
+      <UniqueIdentifier>{913449be-e9b0-4339-a2ae-9f949a7989cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ArduinoJson">
+      <UniqueIdentifier>{3fc109f1-6cf9-4275-ba00-50e0fd21f59f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\PubSubClient">
+      <UniqueIdentifier>{77732718-c9e7-4ae0-8cc6-d0f388a7a3de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\SimpleList-master">
+      <UniqueIdentifier>{33fa6be1-a295-45b3-88d2-c3b449db4f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Hash">
+      <UniqueIdentifier>{306d51c3-46d4-446f-b942-89a42d7fbc17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESP8266HTTPClient">
+      <UniqueIdentifier>{482eb609-b2ff-485d-863f-3441bdfff062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\OneWire">
+      <UniqueIdentifier>{d376476c-770b-44a9-84ac-27a56518edf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\DallasTemperature">
+      <UniqueIdentifier>{f55badeb-376a-4dcf-809f-11f4e3719b8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="NewESPWebduino.ino" />
@@ -30,6 +102,85 @@
     <None Include="data\style.css" />
     <None Include="data\tempsensor.html" />
     <None Include="data\upload.html" />
+    <None Include="data\espduino.js" />
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cont.S">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266httpUpdate\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266httpUpdate</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\AsyncTCP-master\library.json">
+      <Filter>src\_micro-api-readonly\libraries\AsyncTCP-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\AsyncTCP-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\AsyncTCP-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\library.json">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\library.json">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\edit.htm">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\esp32-http-update-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\esp32-http-update-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\library.json">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\library.json">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\library.json">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\SimpleList-master\library.json">
+      <Filter>src\_micro-api-readonly\libraries\SimpleList-master</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\SimpleList-master\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\SimpleList-master</Filter>
+    </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
+    </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\library.json">
+      <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\library.json">
+      <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.NewESPWebduino.vsarduino.h">
@@ -65,6 +216,990 @@
     <ClInclude Include="TemperatureSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\AddrList.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\base64.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\binary.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\CallBackList.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cbuf.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Client.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cont.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\coredecls.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_features.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_version.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_waveform.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_version.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\debug.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\eboot_command.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Esp.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\esp8266_peri.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\esp8266_undocumented.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\flash_hal.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\flash_utils.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FS.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FSImpl.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FunctionalInterrupt.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\gdb_hooks.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\HardwareSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\i2s.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\interrupts.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\IPAddress.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\md5.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\MD5Builder.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\pgmspace.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\PolledTimeout.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Print.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Printable.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Schedule.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Server.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\sigma_delta.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\sntp-lwip2.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs_api.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spi_utils.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\StackThunk.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\stdlib_noniso.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Stream.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\StreamString.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\twi.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\twi_util.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\TZ.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\uart.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Udp.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Updater.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Updater_Signing.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\user_config.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\WCharacter.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\wiring_private.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\WString.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\avr\dtostrf.h">
+      <Filter>src\_micro-api-readonly\core\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\avr\pgmspace.h">
+      <Filter>src\_micro-api-readonly\core\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\libb64\cdecode.h">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\libb64\cencode.h">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs.h">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_config.h">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_nucleus.h">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\Notes.h">
+      <Filter>src\_micro-api-readonly\core\umm_malloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\umm_local.h">
+      <Filter>src\_micro-api-readonly\core\umm_malloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\umm_malloc.h">
+      <Filter>src\_micro-api-readonly\core\umm_malloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\umm_malloc_cfg.h">
+      <Filter>src\_micro-api-readonly\core\umm_malloc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\dbglog\dbglog.h">
+      <Filter>src\_micro-api-readonly\core\umm_malloc\dbglog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\variants\nodemcu\pins_arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\BearSSLHelpers.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\CertStoreBearSSL.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFi.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiAP.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiGeneric.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiMulti.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiScan.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiSTA.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiType.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClient.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClientSecure.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClientSecureAxTLS.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClientSecureBearSSL.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServer.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServerSecure.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServerSecureAxTLS.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServerSecureBearSSL.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiUdp.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\ClientContext.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\DataSource.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\slist.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\ssl.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\SSLContext.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\UdpContext.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\WiFiState.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\include\wl_definitions.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_tcp.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_utils.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\board_init.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\cmd_wl.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\console.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\debug.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\fw_download.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\lwipopts.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\lwip_setup.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\nvram.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ping.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\printf-stdarg.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\timer.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\top_defs.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\trace.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\util.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\wifi_spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\wl_cm.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\wl_definitions.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\CONFIG\conf_access.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\CONFIG\conf_at45dbx.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\CONFIG\conf_ebi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\CONFIG\conf_sd_mmc_spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\board.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\arduino.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\led.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\evk1105.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\led.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx_mem.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wlap_api.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wl_api.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wl_fw.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wl_os.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wl_sdio.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\WIFI\HD\wl_spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\CPU\CYCLE_COUNTER\cycle_counter.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\EBI\SMC\smc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\EIC\eic.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\FLASHC\flashc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\GPIO\gpio.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\INTC\intc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PDCA\pdca.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\power_clocks_lib.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\RTC\rtc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\SPI\spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\TC\tc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\USART\usart.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\SERVICES\DELAY\delay.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\SERVICES\MEMORY\CTRL_ACCESS\ctrl_access.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\compiler.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\conf_isp.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\parts.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\debug.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\print_funcs.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_cpu.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_exceptions.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_interrupts.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_io.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_usart.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\mrepeat.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\preprocessor.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\stringz.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\tpaste.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\clocks.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\nor_flash.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\printf-stdarg.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\startup.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\wl_fw.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\CONFIG\conf_access.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\CONFIG\conf_at45dbx.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\board.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\arduino.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\led.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\evk1105.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\led.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx_mem.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\FLASHC\flashc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\GPIO\gpio.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\INTC\intc.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\power_clocks_lib.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\SPI\spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\USART\usart.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\SERVICES\MEMORY\CTRL_ACCESS\ctrl_access.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\compiler.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\conf_isp.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\parts.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\debug.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\print_funcs.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_cpu.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_exceptions.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_interrupts.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_io.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\LIBS\NEWLIB_ADDONS\INCLUDE\nlao_usart.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\mrepeat.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\preprocessor.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\stringz.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\PREPROCESSOR\tpaste.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiClient.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiServer.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiUdp.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\debug.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\server_drv.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\spi_drv.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\wifi_drv.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\wifi_spi.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\wl_definitions.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\wl_types.h">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266httpUpdate\src\ESP8266httpUpdate.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266httpUpdate</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\AsyncTCP-master\src\AsyncTCP.h">
+      <Filter>src\_micro-api-readonly\libraries\AsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\AsyncPrinter.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\async_config.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\DebugPrintMacros.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\ESPAsyncTCP.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\ESPAsyncTCPbuffer.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\SyncClient.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\tcp_axtls.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncEventSource.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncJson.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncWebSocket.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncWebSynchronization.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\ESPAsyncWebServer.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\SPIFFSEditor.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\StringArray.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebAuthentication.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebHandlerImpl.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebResponseImpl.h">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\esp32-http-update-master\src\ESP32httpUpdate.h">
+      <Filter>src\_micro-api-readonly\libraries\esp32-http-update-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\Time.h">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\TimeLib.h">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\ArduinoJson.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\compatibility.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Configuration.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\DynamicJsonBuffer.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonArray.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonArrayImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonArraySubscript.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonBuffer.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonBufferBase.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonBufferImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonObject.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonObjectImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonObjectSubscript.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonPair.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariant.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantBase.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantCasts.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantComparisons.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantOr.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\JsonVariantSubscripts.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\RawJson.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StaticJsonBuffer.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\version.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\Encoding.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonBufferAllocated.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonFloat.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonInteger.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonVariantAs.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonVariantContent.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonVariantDefault.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\JsonVariantType.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\List.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\ListConstIterator.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\ListIterator.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\ListNode.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\NonCopyable.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\ReferenceType.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Data\ValueSaver.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Deserialization\Comments.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Deserialization\JsonParser.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Deserialization\JsonParserImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Deserialization\StringWriter.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\alias_cast.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\attributes.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\ctype.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\isFloat.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\isInteger.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\math.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\parseFloat.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Polyfills\parseInteger.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\DummyPrint.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\DynamicStringBuilder.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\FloatParts.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\IndentedPrint.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\JsonPrintable.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\JsonSerializer.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\JsonSerializerImpl.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\JsonWriter.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\Prettyfier.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\StaticStringBuilder.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\Serialization\StreamPrintAdapter.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\ArduinoStream.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\CharPointer.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\FlashString.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\StdStream.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\StdString.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\StringTraits\StringTraits.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\EnableIf.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\FloatTraits.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsArray.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsBaseOf.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsChar.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsConst.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsFloatingPoint.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsIntegral.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsSame.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsSignedIntegral.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsUnsignedIntegral.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\IsVariant.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\RemoveConst.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\src\ArduinoJson\TypeTraits\RemoveReference.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\third-party\catch\catch.hpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\src\PubSubClient.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Arduino.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\BDDTest.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Buffer.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Client.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\IPAddress.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\ShimClient.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Stream.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\trace.h">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\SimpleList-master\src\SimpleList.h">
+      <Filter>src\_micro-api-readonly\libraries\SimpleList-master</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\src\Hash.h">
+      <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\src\ESP8266HTTPClient.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\OneWire.h">
+      <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.h">
+      <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyLockSensor.cpp">
@@ -97,5 +1232,841 @@
     <ClCompile Include="TemperatureSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\abi.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\base64.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cbuf.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cont_util.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_app_entry_noextra4k.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_eboot_command.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_features.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_flash_utils.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_i2s.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_main.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_noniso.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_phy.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_postmortem.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_si2c.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_sigma_delta.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_spi_utils.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_timer.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_waveform.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring_analog.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring_digital.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring_pulse.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring_pwm.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\core_esp8266_wiring_shift.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\crc32.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\debug.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Esp-frag.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Esp-version.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Esp.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\flash_hal.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FS.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FSnoop.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\FunctionalInterrupt.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\gdb_hooks.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\HardwareSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\heap.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\IPAddress.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\libc_replacements.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\MD5Builder.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Print.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Schedule.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\sntp-lwip2.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs_api.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\sqrt32.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\StackThunk.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Stream.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\StreamString.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\time.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Tone.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\uart.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\Updater.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\WMath.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\WString.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\libb64\cdecode.cpp">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\libb64\cencode.cpp">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_cache.cpp">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_check.cpp">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_gc.cpp">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_hydrogen.cpp">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\spiffs\spiffs_nucleus.cpp">
+      <Filter>src\_micro-api-readonly\core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\umm_malloc\umm_malloc.cpp">
+      <Filter>src\_micro-api-readonly\core\umm_malloc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\BearSSLHelpers.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\CertStoreBearSSL.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFi.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiAP.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiGeneric.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiMulti.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiScan.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiSTA-WPS.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\ESP8266WiFiSTA.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClientSecureAxTLS.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiClientSecureBearSSL.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServerSecureAxTLS.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiServerSecureBearSSL.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\src\WiFiUdp.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_spi.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_tcp.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ard_utils.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\avr32_spi.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\board_init.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\cmd_wl.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\console.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\fw_download_extflash.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\lwip_setup.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\main.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\nvram.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\owl_os.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\ping.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\printf-stdarg.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\timer.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\util.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\wl_cm.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\led.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\led.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx_mem.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\EBI\SMC\smc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\EIC\eic.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\FLASHC\flashc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\GPIO\gpio.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\INTC\intc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PDCA\pdca.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm_conf_clocks.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\power_clocks_lib.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\RTC\rtc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\SPI\spi.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\TC\tc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\DRIVERS\USART\usart.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\SERVICES\DELAY\delay.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\SERVICES\MEMORY\CTRL_ACCESS\ctrl_access.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\debug.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\print_funcs.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\clocks.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\flash_fw.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\nor_flash.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\printf-stdarg.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\startup.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\ARDUINO\led.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\BOARDS\EVK1105\led.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\COMPONENTS\MEMORY\DATA_FLASH\AT45DBX\at45dbx_mem.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\FLASHC\flashc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\GPIO\gpio.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\INTC\intc.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\pm_conf_clocks.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\PM\power_clocks_lib.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\SPI\spi.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\DRIVERS\USART\usart.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\SERVICES\MEMORY\CTRL_ACCESS\ctrl_access.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\debug.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\SOFTWARE_FRAMEWORK\UTILS\DEBUG\print_funcs.c">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFi.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiServer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\WiFiUdp.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\server_drv.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\spi_drv.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\src\utility\wifi_drv.cpp">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266httpUpdate\src\ESP8266httpUpdate.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266httpUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\AsyncTCP-master\src\AsyncTCP.cpp">
+      <Filter>src\_micro-api-readonly\libraries\AsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\AsyncPrinter.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\ESPAsyncTCP.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\ESPAsyncTCPbuffer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\SyncClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\src\tcp_axtls.c">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncEventSource.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\AsyncWebSocket.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\SPIFFSEditor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebAuthentication.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebHandlers.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebRequest.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebResponses.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\src\WebServer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\esp32-http-update-master\src\ESP32httpUpdate.cpp">
+      <Filter>src\_micro-api-readonly\libraries\esp32-http-update-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\DateStrings.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\Time.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\fuzzing\fuzzer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\alloc.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\createArray.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\createObject.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\no_memory.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\size.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\startString.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\IntegrationTests\gbathree.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\IntegrationTests\round_trip.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\add.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\basics.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\copyFrom.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\copyTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\invalid.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\iterator.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\prettyPrintTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\printTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\remove.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\set.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\size.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\subscript.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\nested.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\nestingLimit.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\parse.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\parseArray.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\parseObject.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\basics.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\containsKey.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\get.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\invalid.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\iterator.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\prettyPrintTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\printTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\remove.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\set.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\size.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\subscript.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\as.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\compare.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\copy.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\is.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\or.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\printTo.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\set_get.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\subscript.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\success.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\undefined.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonWriter\writeFloat.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonWriter\writeString.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\deprecated.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\empty.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\FloatParts.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\std_stream.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\std_string.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\StringBuilder.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\StringTraits.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\TypeTraits.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\unsigned_char.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\version.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\vla.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Polyfills\isFloat.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Polyfills\isInteger.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Polyfills\parseFloat.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Polyfills\parseInteger.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\alloc.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\createArray.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\createObject.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\parseArray.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\parseObject.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\size.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\startString.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\third-party\catch\catch.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\src\PubSubClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\connect_spec.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\keepalive_spec.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\publish_spec.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\receive_spec.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\subscribe_spec.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\BDDTest.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Buffer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\IPAddress.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\ShimClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Stream.cpp">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\src\Hash.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\src\ESP8266HTTPClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\OneWire.cpp">
+      <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.cpp">
+      <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266WiFi\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266WiFi</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifiHD\src\license.txt">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\WiFi\extras\wifi_dnld\src\license.txt">
+      <Filter>src\_micro-api-readonly\libraries\WiFi</Filter>
+    </Text>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266httpUpdate\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266httpUpdate</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\AsyncTCP-master\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\AsyncTCP-master</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncTCP-master\LICENSE.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncTCP-master</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ESPAsyncWebServer-master\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESPAsyncWebServer-master</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\Time-master\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Time-master</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\DynamicJsonBuffer\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\IntegrationTests\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonArray\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonBuffer\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonObject\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonVariant\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\JsonWriter\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Misc\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\Polyfills\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\test\StaticJsonBuffer\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\ArduinoJson\third-party\catch\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoJson</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\CHANGES.txt">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\LICENSE.txt">
+      <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
+    </Text>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
+    </Text>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
+    </Text>
+    <Text Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </Text>
   </ItemGroup>
 </Project>

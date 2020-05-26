@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.5.0.min.js"></script>
+    <script src="espduino.js"></script>
+</head>
+<body>
+    <h1>[<label id="LabelID">[]</label>] <label id="LabelName">[]</label> - <label id="LabelType">[]</label></h1>
+
+
+
+    <div class="grid-container">
+        <div class="grid-item name-item">Name</div>
+        <div class="grid-item value-item" id="sensorname">2</div>
+
+        <div class="grid-item name-item">Status</div>
+        <div class="grid-item value-item" id="sensorstatus">4</div>
+
+        <div class="grid-item name-item">Open/Close command</div>
+        <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('OPEN','')">OPEN</button>
+            <button class="button" onclick="sendCommand('CLOSE','')">CLOSE</button>
+        </div>
+
+        <div class="grid-item name-item">Position</div>
+        <div class="grid-item value-item slidecontainer">
+            <div id="positionvalue"></div>
+            <form action="/setsensor" id="inputForm">
+                <input type="range" min="0" max="100" value="50" class="slider" id="position" name="position">
+            </form>
+            
+        </div>
+    </div>
+
+
+</body>
+<script>
+    var sensorid;
+
+    $(document).ready(function () {
+
+        /*var */sensorid = getUrlVars()["sensorid"];
+        var type = getUrlVars()["type"];
+        console.log("sensorid=" + sensorid);
+        console.log("type=" + type);
+
+        loadSensorValue(sensorid);
+
+        $('#position').change('mousestop', function () {
+
+            /*var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    ;// 
+                }
+            };
+            xhttp.open("GET", "/position?position=" + this.value, true);
+            xhttp.send();*/
+            sendCommand("position", this.value);
+        });
+    });
+
+    function loadSensorValue(sensordid) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var sensor = JSON.parse(this.responseText);
+
+                $("#LabelID").text(sensor.sensorid);
+                $("#LabelName").text(sensor.name);
+                $("#LabelType").text(sensor.type);
+
+                $("#sensorname").text(sensor.name);
+                $("#sensorstatus").text(sensor.status);
+                
+                if (sensor.type == "keylocksensor") {
+                    $("#positionvalue").text(sensor.position);
+                    /*$("#steppin").val(sensor.steppin);
+                    $("#directionpin").val(sensor.directionpin);
+                    $("#enablepin").val(sensor.enablepin);
+                    $("#outputapin").val(sensor.outputapin);
+                    $("#outputbpin").val(sensor.outputbpin);*/
+                }
+
+            }
+        };
+        xhttp.open("GET", "/getsensor?sensorid=" + sensordid, true);
+        xhttp.send();
+    }
+
+    function sendCommand(/*id, */command, payload) {
+        var obj = {};
+        obj['sensorid'] = sensorid;
+        obj['command'] = command;
+        obj['payload'] = payload;
+        
+        console.log(JSON.stringify(obj));
+
+        xhr = new XMLHttpRequest();
+        var url = "/postsensorcommand";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+                //alert(xhr.responseText);
+                loadSensorValue(sensorid);
+            }
+        }
+        var data = JSON.stringify(obj);
+        xhr.send(data);
+    }
+
+    function addCustomSensorField(model, type) {
+        if (type == "keylocksensor") {
+        }
+    }
+
+    setInterval(function () {
+        loadSensorValue(sensorid);
+    }, 5000);
+
+</script>
+</html>

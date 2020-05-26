@@ -24,6 +24,7 @@ SensorFactory::~SensorFactory()
 {
 }
 
+
 Sensor * SensorFactory::createSensor(int id, String type, uint8_t pin, bool enabled, String address, String name)
 {
 	logger.print(tag, F("\n\t >>SensorFactory::createSensor type="));
@@ -50,17 +51,10 @@ Sensor * SensorFactory::createSensor(int id, String type, uint8_t pin, bool enab
 		logger.print(tag, "\n\t creating doorsensor sensor");
 		sensor = new DoorSensor(id, pin, enabled, address, name);
 	}
-	else*/ if (type.equals(F("keylocksensor"))) {
-		logger.print(tag, "\n\t creating keylocksensor sensor");
-		sensor = new KeyLockSensor(id, pin, enabled, address, name, 0/*stepPin*/, 2/*directionPin*/, 14/*enablePin*/);
-	}
+	*/
 	else if (type.equals(F("onewiresensor"))) {
 		logger.print(tag, F("\n\t creating onewiresensor sensor"));
 		sensor = new OnewireSensor(id, pin, enabled, address, name);
-	}
-	else if (type.equals(F("rotaryencodersensor"))) {
-		logger.print(tag, F("\n\t creating rotaryencodersensor sensor"));
-		sensor = new RotaryEncoderSensor(id, pin, enabled, address, name, 0/*stepPin*/, 2/*directionPin*/, 14/*enablePin*/);
 	}
 	/*else if (type.equals((F("hornsensor")))) {
 		logger.print(tag, F("\n\t creating hornsensor sensor"));
@@ -88,132 +82,24 @@ Sensor * SensorFactory::createSensor(int id, String type, uint8_t pin, bool enab
 	return sensor;
 }
 
-#ifdef dopo
-Sensor * SensorFactory::createSensor(JSONObject* json)
-{
-	logger.print(tag, F("\n"));
-	logger.println(tag, F("\n\t >>createSensor  json = "));
-	logger.println(tag, logger.formattedJson(json->toString()));
-	logger.printFreeMem(tag, F("start create sensor"));
-
-	int sensorid;
-	String type;
-	String address;
-	uint8_t pin = 0;
-	bool enabled = true;
-	String name = "";
-		
-	
-	if (!json->has(F("type")) || !json->has(F("subaddress")) || !json->has(F("id"))) {
-		logger.print(tag, F("\n\t invalid address and typ="));
-		return nullptr;
-	}
-	type = json->getString(F("type"));
-	address = json->getString(F("subaddress"));
-	sensorid = json->getInteger(F("id"));
-	
-	if (json->has(F("pin"))) {
-		String strPin = json->getString(F("pin"));
-		pin = Shield::pinFromStr(strPin);
-	}
-
-	if (json->has(F("pin"))) {
-		String strPin = json->getString(F("pin"));
-		pin = Shield::pinFromStr(strPin);
-	}
-	if (json->has(F("enabled"))) {
-		enabled = json->getBool(F("enabled"));
-	}
-	if (json->has(F("name"))) {
-		name = json->getString(F("name"));
-	}
-
-	logger.print(tag, "\n\t type=");
-	logger.print(tag, type);
-	logger.print(tag, F("\n\t addr=" ));
-	logger.print(tag, address);
-	logger.print(tag, F("\n\t sensorid=" ));
-	logger.print(tag, sensorid);
-	logger.print(tag, F("\n\t pin="));
-	logger.print(tag, String(pin));
-	logger.print(tag, F("\n\t enabled="));
-	logger.print(tag, String(enabled));
-	logger.print(tag, F("\n\t name="));
-	logger.print(tag, name);
 
 
-	Sensor* sensor = nullptr;
-
-	if (type.equals(F("temperaturesensor"))) {
-		logger.print(tag, F("\n\t creating temperature sensor"));
-		sensor = new TemperatureSensor(sensorid,pin, enabled, address, name);
-	}
-	else if (type.equals("heatersensor")) {
-		logger.print(tag, F("\n\t creating heatersensor sensor"));
-		sensor = new HeaterSensor(sensorid,pin, enabled, address, name);
-	}
-	else if (type.equals(F("doorsensor"))) {
-		logger.print(tag, F("\n\t creating doorsensor sensor"));
-		sensor = new DoorSensor(sensorid,pin, enabled, address, name);
-	}
-	else if (type.equals(F("onewiresensor"))) {
-		logger.print(tag, F("\n\t creating onewiresensor sensor"));
-		sensor = new OnewireSensor(sensorid,pin, enabled, address, name);
-	}
-	else if (type.equals(F("hornsensor"))) {
-		logger.print(tag, F("\n\t creating doorsensor sensor"));
-		sensor = new HornSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("rfidsensor"))) {
-		logger.print(tag, F("\n\t creating rfidsensor sensor"));
-		sensor = new RFIDSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("irsensor"))) {
-		logger.print(tag, F("\n\t creating irsensor sensor"));
-		sensor = new IRSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("irreceivesensor"))) {
-		logger.print(tag, F("\n\t creating irreceivesensor sensor"));
-		sensor = new IRReceiveSensor(sensorid, pin, enabled, address, name);
-	}
-	else {
-		return nullptr;
-	}
-
-	sensor->init();
-	if (json->has(F("childsensors"))) {
-		String children = json->getJSONArray(F("childsensors"));
-		logger.print(tag, F("\n\t children="));
-		logger.print(tag, children);
-		JSONArray jarray(children);
-		sensor->loadChildren(jarray);
-	}
-	
-	logger.printFreeMem(tag, F("end create sensor"));
-	logger.println(tag, F("<<SensorFactory::createSensor"));
-	return sensor;
-}
-#endif
-
-#ifdef dopo
 Sensor * SensorFactory::createSensor(JsonObject& json)
 {
-	logger.print(tag, F("\n"));
-	logger.println(tag, F("\n\t >>createSensor  json = "));
+	logger.print(tag, F("\n\t >>SensorFactory::createSensor  \njson = "));
 	json.printTo(Serial);
-	logger.printFreeMem(tag, F("start create sensor"));
 
 	uint8_t pin = 0;
-	bool enabled = true;
+	bool enabled = false;
 	String name = "";
-		if (!json.containsKey("type") || !json.containsKey("subaddress") || !json.containsKey("id")) {
+		if (!json.containsKey("type") /*|| !json.containsKey("subaddress")*/ || !json.containsKey("sensorid")) {
 		logger.print(tag, F("\n\t invalid address and typ="));
 		return nullptr;
 	}
 	String type = json["type"];
 	type.replace("\r\n", "");
-	String address = json[F("subaddress")];
-	int sensorid = json["id"];	
+	String address = "0";// json[F("subaddress")];
+	int sensorid = json["sensorid"];	
 	if (json.containsKey(F("pin"))) {
 		String strPin = json[F("pin")];
 		strPin.replace("\r\n", ""); // importante!!
@@ -229,7 +115,7 @@ Sensor * SensorFactory::createSensor(JsonObject& json)
 	logger.print(tag, "\n\t type=");
 	logger.print(tag, type);
 	logger.print(tag, F("\n\t addr="));
-	logger.print(tag, address);
+	//logger.print(tag, address);
 	logger.print(tag, F("\n\t sensorid="));
 	logger.print(tag, sensorid);
 	logger.print(tag, F("\n\t pin="));
@@ -244,23 +130,53 @@ Sensor * SensorFactory::createSensor(JsonObject& json)
 		logger.print(tag, F("\n\t creating temperature sensor"));
 		sensor = new TemperatureSensor(sensorid, pin, enabled, address, name);
 	}
-	else if (type.equals("heatersensor")) {
+	/*else if (type.equals("heatersensor")) {
 		logger.print(tag, F("\n\t creating heatersensor sensor"));
 		sensor = new HeaterSensor(sensorid, pin, enabled, address, name);
 	}
 	else if (type.equals(F("doorsensor"))) {
 		logger.print(tag, F("\n\t creating doorsensor sensor"));
 		sensor = new DoorSensor(sensorid, pin, enabled, address, name);
-	}
+	}*/
 	else if (type.equals(F("keylocksensor"))) {
 		logger.print(tag, F("\n\t creating keylocksensor sensor"));
-		sensor = new KeyLockSensor(sensorid, pin, enabled, address, name);
+		if (!json.containsKey("steppin"))
+			return nullptr;
+		String strPin = json["steppin"];
+		strPin.replace("\r\n", ""); // importante!!
+		uint8_t stepPin = Shield::pinFromStr(strPin);
+		
+		if (!json.containsKey("directionpin"))
+			return nullptr;
+		String strDirectionPin = json["directionpin"];
+		strDirectionPin.replace("\r\n", ""); // importante!!
+		uint8_t directionPin = Shield::pinFromStr(strDirectionPin);
+		
+		if (!json.containsKey("enablepin"))
+			return nullptr;
+		String strEnablePin = json["enablepin"];
+		strEnablePin.replace("\r\n", ""); // importante!!
+		uint8_t enablePin = Shield::pinFromStr(strEnablePin);
+
+		if (!json.containsKey("outputapin"))
+			return nullptr;
+		String strOutputAPin = json["outputapin"];
+		strOutputAPin.replace("\r\n", ""); // importante!!
+		uint8_t outputAPin = Shield::pinFromStr(strOutputAPin);
+		
+		if (!json.containsKey("outputbpin"))
+			return nullptr;
+		String strOutputBPin = json["outputbpin"];
+		strOutputBPin.replace("\r\n", ""); // importante!!
+		uint8_t outputBpin = Shield::pinFromStr(strOutputBPin);
+
+		sensor = new KeyLockSensor(sensorid, pin, enabled, address, name, stepPin, directionPin, enablePin, outputAPin, outputBpin);
 	}
 	else if (type.equals(F("onewiresensor"))) {
 		logger.print(tag, F("\n\t creating onewiresensor sensor"));
 		sensor = new OnewireSensor(sensorid, pin, enabled, address, name);
 	}
-	else if (type.equals(F("hornsensor"))) {
+	/*else if (type.equals(F("hornsensor"))) {
 		logger.print(tag, F("\n\t creating doorsensor sensor"));
 		sensor = new HornSensor(sensorid, pin, enabled, address, name);
 	}
@@ -275,13 +191,12 @@ Sensor * SensorFactory::createSensor(JsonObject& json)
 	else if (type.equals(F("irreceivesensor"))) {
 		logger.print(tag, F("\n\t creating irreceivesensor sensor"));
 		sensor = new IRReceiveSensor(sensorid, pin, enabled, address, name);
-	}
+	}*/
 	else {
 		return nullptr;
 	}
-
 	sensor->init();
-	if (json.containsKey("childsensors")) {
+	/*if (json.containsKey("childsensors")) {
 		
 		JsonArray& children = json["childsensors"];
 		logger.print(tag, F("\n\t children="));
@@ -289,10 +204,10 @@ Sensor * SensorFactory::createSensor(JsonObject& json)
 		children.printTo(Serial);
 		//JSONArray jarray(children);
 		sensor->loadChildren(children);
-	}
+	}*/
 
 	logger.printFreeMem(tag, F("end create sensor"));
-	logger.println(tag, F("<<SensorFactory::createSensor"));
+	logger.println(tag, F("\t<<SensorFactory::createSensor"));
 	return sensor;
 }
-#endif
+

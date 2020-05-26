@@ -57,10 +57,21 @@ AsyncEventSource events("/events"); // event source (Server-Sent events)
 bool shouldReboot = false;
 
 
+const int maxPostData = 200;
+uint8_t postData[500];
+int postDataCounter = 0;
+
 ///////////
 const int command_open = 1;
 const int command_close = 2;
+const int command_zerocalibration = 3;
+const int command_position = 4;
+
 volatile int keylockcommand;
+volatile int keylockcommand_sensorid;
+volatile int keylockcommand_payload;
+const int command_payloadsize = 100;
+volatile char command_payload[100];
 
 const char* PARAM_INPUT_1 = "input1";
 const char* PARAM_INPUT_2 = "input2";
@@ -187,7 +198,7 @@ void onUpload(AsyncWebServerRequest* request, String filename, size_t index, uin
 		logger.print(tag, "error to create file");
 		return;
 	}
-	file.write(data,len);
+	file.write(data, len);
 	file.close();
 
 	if (final) {
@@ -222,8 +233,8 @@ void setup() {
 	Serial.print("\n\n\ **************** RESTART *************************\n\n");
 	Serial.print("sw ver = ");
 	Serial.println(shield.getSWVersion());
-	
-	
+
+
 	// Initialize SPIFFS
 	//SPIFFS.format();
 	Serial.println(F("Inizializing FS..."));
@@ -240,7 +251,7 @@ void setup() {
 	shield.readRebootReason();
 	shield.readConfig();
 	shield.init();
-	
+
 
 	// Connect to WiFi network
 	Serial.print("\n\nConnecting to ");
@@ -312,7 +323,7 @@ void setup() {
 		if (request->hasParam("filename")) {
 			String filename = request->getParam("filename")->value();
 			deleteFile(filename);
-		}		
+		}
 		request->send(200, "text/plain", "File deleted!");
 		});
 
@@ -329,12 +340,12 @@ void setup() {
 		});*/
 
 
-	// Simple Firmware Update Form
+		// Simple Firmware Update Form
 	asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
 		checkForSWUpdate();
 		request->send(200, "text/html", "HTTP fw updated<br><a href=\"/\">Return to Home Page</a>");
 		});
-	
+
 
 
 	// respond to GET requests on URL /home
@@ -370,7 +381,7 @@ void setup() {
 	asyncServer.on("/sensor.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		//digitalWrite(ledPin, HIGH);
 		//keylockSensor->openLock();
-		keylockcommand = command_open;
+		//keylockcommand = command_open;
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
 
@@ -378,7 +389,7 @@ void setup() {
 	asyncServer.on("/temperature.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		//digitalWrite(ledPin, HIGH);
 		//keylockSensor->openLock();
-		keylockcommand = command_open;
+		//keylockcommand = command_open;
 		request->send(SPIFFS, "/temperature.html", String(), false, processor);
 		});
 
@@ -386,7 +397,7 @@ void setup() {
 	asyncServer.on("/onewire.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		//digitalWrite(ledPin, HIGH);
 		//keylockSensor->openLock();
-		keylockcommand = command_open;
+		//keylockcommand = command_open;
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
 
@@ -394,11 +405,15 @@ void setup() {
 	asyncServer.on("/keylock.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		//digitalWrite(ledPin, HIGH);
 		//keylockSensor->openLock();
-		keylockcommand = command_open;
+		//keylockcommand = command_open;
 		request->send(SPIFFS, "/keylock.html", String(), false, processor);
 		});
 
 	asyncServer.on("/sensors", HTTP_GET, [](AsyncWebServerRequest* request) {
+		/*AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/sensors.html", String());
+		response->addHeader("ESPModel", "ESP32x");
+		request->send(response);*/
+
 		request->send(SPIFFS, "/sensors.html", String(), false, processor);
 		});
 
@@ -407,7 +422,7 @@ void setup() {
 		//digitalWrite(ledPin, HIGH);
 		//keylockSensor->openLock();
 		keylockcommand = command_open;
-		request->send(SPIFFS, "/index.html", String(), false, processor);
+		//request->send(SPIFFS, "/index.html", String(), false, processor);
 		});
 
 	// Route to set GPIO to LOW
@@ -417,6 +432,33 @@ void setup() {
 		request->send(SPIFFS, "/index.html", String(), false, processor);
 		});
 
+	// Route to set GPIO to LOW
+	asyncServer.on("/zerocalibration", HTTP_GET, [](AsyncWebServerRequest* request) {
+		//digitalWrite(ledPin, LOW);
+		keylockcommand = command_zerocalibration;
+		request->send(SPIFFS, "/index.html", String(), false, processor);
+		});
+
+	// Route to set GPIO to LOW
+	asyncServer.on("/position", HTTP_GET, [](AsyncWebServerRequest* request) {
+		keylockcommand = command_position;
+		if (request->hasParam("position")) {
+			String str = request->getParam("position")->value();
+			keylockcommand_payload = str.toInt();
+			for (int i = 0; i < str.length(); i++) {
+				command_payload[i] = str.charAt(i);
+			}
+			command_payload[str.length()] = 0;
+		}
+		request->send(SPIFFS, "/index.html", String(), false, processor);
+		});
+
+	asyncServer.on("/getmodel", HTTP_GET, [](AsyncWebServerRequest* request) {
+		//digitalWrite(ledPin, LOW);
+		request->send(200, "text/html", shield.getModel());
+		});
+
+
 
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/get", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -424,6 +466,7 @@ void setup() {
 		//String inputParam;
 
 		Serial.print("\n /get request received\n");
+
 		if (request->hasParam(PARAM_NAME)) {
 			String str = request->getParam(PARAM_NAME)->value();
 			shield.setName(str);
@@ -502,6 +545,7 @@ void setup() {
 						Sensor* sensor = (Sensor*)shield.sensors.get(i);
 						if (sensor->sensorid == sensorID.toInt()) {
 							shield.sensors.remove(i);
+							shield.writeSensorToFile();
 							//request->send(SPIFFS, "/sensors.html", String(), false, processor);
 							//request->send(200, "text/html", "errore - sensor not found<br><a href=\"/\">Return to Home Page</a>");
 							request->send(200, "text/html", "Sensor deleted <br><a href=\"/sensors\">Ok</a>");
@@ -521,6 +565,16 @@ void setup() {
 
 						if (sensor->sensorid == sensorID.toInt()) {
 							request->send(SPIFFS, "/sensor.html", String(), false, processor);
+							return;
+						}
+					}
+				}
+				else if (action.equals("view")) {
+					Serial.print("\n view sensor\n");
+					for (int i = 0; i < shield.sensors.size(); i++) {
+						Sensor* sensor = (Sensor*)shield.sensors.get(i);
+						if (sensor->sensorid == sensorID.toInt()) {
+							request->send(SPIFFS, "/sensorview.html", String(), false, processor);
 							return;
 						}
 					}
@@ -575,35 +629,128 @@ void setup() {
 		});
 
 
-	asyncServer.on("/setsensor", HTTP_POST, [](AsyncWebServerRequest* request) {
+	asyncServer.on("/postsensorcommand", HTTP_POST, [](AsyncWebServerRequest* request) {
 		//nothing and dont remove it
 		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
 
-			Serial.print("\n\n setsensor request received\n");
+			Serial.print("\n\n>>>postsensorcommand request received\n");
+
+			logger.print(tag, "\nlen=" + String(len));
+			logger.print(tag, "\nindex=" + String(index));
+			logger.print(tag, "\ntotal=" + String(total));
+			logger.print(tag, "\n");
+
+
 			for (size_t i = 0; i < len; i++) {
 				Serial.write(data[i]);
 			}
-			Serial.print("\n");
+
+			/*keylockcommand = command_position;
+			if (request->hasParam("position")) {
+				String str = request->getParam("position")->value();
+				keylockcommand_payload = str.toInt();
+				for (int i = 0; i < str.length(); i++) {
+					command_payload[i] = str.charAt(i);
+				}
+				command_payload[str.length()] = 0;
+			}*/
+			//request->send(SPIFFS, "/index.html", String(), false, processor);
+			//request->send(200, "text/html", "comamand sent");
 
 			DynamicJsonBuffer jsonBuffer;
-			JsonObject& root = jsonBuffer.parseObject((const char*)data);
-			if (root.success()) {
-				if (root.containsKey("sensorid")) {
-					//Serial.println(root["sensorid"].asString());
-					//root.printTo(Serial);
-					shield.updateSensor(root);
+			JsonObject& json = jsonBuffer.parseObject((const char*)data);
+			if (json.success()) {
+				if (json.containsKey("sensorid")) {
+					keylockcommand_sensorid = json["sensorid"];
+					logger.print(tag, "\n keylockcommand_sensorid=" + String(keylockcommand_sensorid));
+					if (json.containsKey("command")) {
+						String command = json["command"];
+						logger.print(tag, "\n command=" + command);
+						if (command.equals("OPEN"))
+							keylockcommand = command_open;
+						if (command.equals("CLOSE"))
+							keylockcommand = command_close;
+						if (command.equals("zerocalibration"))
+							keylockcommand = command_open;
+						if (command.equals("position"))
+							keylockcommand = command_position;
+						logger.print(tag, "\n keylockcommand=" + String(keylockcommand));
+
+						if (json.containsKey("payload")) {
+							String str = json["payload"];
+							logger.print(tag, "\n payload=" + str);
+							for (int i = 0; i < str.length(); i++) {
+								command_payload[i] = str.charAt(i);
+							}
+							command_payload[str.length()] = 0;
+							Serial.print(" \nsend response\n");
+							request->send(200, "text/html", "command received");
+							return;
+						}
+					}
+				}				
+			}
+			Serial.print("\n\n BAD JSON\n");
+			request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
+		});
+
+	asyncServer.on("/setsensor", HTTP_POST, [](AsyncWebServerRequest* request) {
+		//nothing and dont remove it
+		//nothing and dont remove it
+		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
+
+			Serial.print("\n\n>>>setsensor request received\n");
+
+			logger.print(tag, "\nlen=" + String(len));
+			logger.print(tag, "\nindex=" + String(index));
+			logger.print(tag, "\ntotal=" + String(total));
+			logger.print(tag, "\n");
+
+			if (total >= maxPostData) {
+				logger.print(tag, "\n\t posData too big");
+			}
+
+			if (index == 0)
+				postDataCounter = 0;
+
+			for (size_t i = 0; i < len; i++) {
+				postData[postDataCounter++] = data[i];
+				Serial.write(postData[postDataCounter - 1]);
+			}
+
+			if (postDataCounter == total) {
+				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
+				postData[postDataCounter] = 0;
+				postDataCounter = 0;
+				DynamicJsonBuffer jsonBuffer;
+				JsonObject& root = jsonBuffer.parseObject((const char*)postData);
+				if (root.success()) {
+					if (root.containsKey("sensorid")) {
+						if (!shield.updateSensor(root)) {
+							request->send(200, "text/html", "Failed to save sensor <br><a href=\"/sensors\">Ok</a>");
+						}
+					}
+					Serial.print(" \nsend response\n");
+					request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
 				}
-				Serial.print(" \nsend response\n");
-				request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
+				else {
+					Serial.print("\n\n BAD JSON\n");
+					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
+					//request->send(404, "text/html", "");
+				}
 			}
 			else {
-				Serial.print("\n\n BAD JSON\n");
-				request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
-				//request->send(404, "text/html", "");
+				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
 			}
 		});
 
-	
+
+
+
+
+
+
+
 
 
 	// attach filesystem root at URL /fs
@@ -651,10 +798,10 @@ bool reconnect() {
 				logger.println(tag, String("\n\t subscribed"));
 				logger.print(tag, F("\n\t <<reconnect\n\n"));
 				return true;
-			} 
+			}
 			else {
 				logger.println(tag, String("\n\t failed to subscribe"));
-			}			
+			}
 		}
 		else {
 			logger.print(tag, F("\n\tfailed, rc="));
@@ -681,11 +828,7 @@ bool reconnect() {
 
 void loop() {
 
-
-
 	//Serial.println(encoderValue);
-
-
 
 	///////////////////////////////////////////////
 	shield.checkStatus();
@@ -695,6 +838,7 @@ void loop() {
 		Serial.println("\n\n OPEN\n");
 		//Serial.print("init= ");
 		//Serial.println(encoderValue);
+		//shield.sendSensorCommand("keylocksensor", 1, "set", "OPEN");
 		shield.sendSensorCommand("keylocksensor", 1, "set", "OPEN");
 		keylockcommand = 0;
 		//Serial.print("\nnd= ");
@@ -705,6 +849,31 @@ void loop() {
 		//Serial.print("init= ");
 		//Serial.println(encoderValue);
 		shield.sendSensorCommand("keylocksensor", 1, "set", "CLOSE");
+		keylockcommand = 0;
+		//Serial.print("\nend= ");
+		//Serial.println(encoderValue);
+	}
+	else if (keylockcommand == command_position) {
+		Serial.println("\n\n POSITION\n");
+		//Serial.print("init= ");
+		//Serial.println(encoderValue);
+		//shield.sendSensorCommand("keylocksensor", 1, "pos", "" + String(keylockcommand_payload));
+		String payload = "";
+		for (int i = 0; i < command_payloadsize; i++) {
+			payload += command_payload[i];
+			if (command_payload[i] == 0)
+				break;
+		}
+		shield.sendSensorCommand("keylocksensor", 1, "pos", payload);
+		keylockcommand = 0;
+		//Serial.print("\nend= ");
+		//Serial.println(encoderValue);
+	}
+	else if (keylockcommand == command_zerocalibration) {
+		Serial.println("\n\n ZEROCALIBRATION\n");
+		//Serial.print("init= ");
+		//Serial.println(encoderValue);
+		shield.sendSensorCommand("keylocksensor", 1, "zerocalibration", "");
 		keylockcommand = 0;
 		//Serial.print("\nend= ");
 		//Serial.println(encoderValue);
@@ -1108,16 +1277,16 @@ String getFiles() {
 	Serial.println("file opened");
 
 	while (file) {
-	
+
 		Serial.print("FILE: ");
 		Serial.println(file.name());
-	
+
 		//JsonObject& json = jsonBuffer.createObject();
 
 
 		//json["filename"] = file.name();
 		//json["size"] = file.size();
-		
+
 
 		//jarray.add(json);
 

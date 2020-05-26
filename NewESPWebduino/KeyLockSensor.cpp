@@ -1,28 +1,27 @@
 #include "KeyLockSensor.h"
+#include "Shield.h"
 
 Logger KeyLockSensor::logger;
 String KeyLockSensor::tag = "KeyLockSensor";
 
 #ifdef ESP8266
-int KeyLockSensor::PinA2 = D1;// 2;// D1;
-int KeyLockSensor::PinB2 = D2; // 4;// D2;
+int KeyLockSensor::outputAPin = D1;// 2;// D1;
+int KeyLockSensor::outputBPin = D2; // 4;// D2;
 #endif
 #ifdef ESP32
-int KeyLockSensor::PinA2 = 18;// D18;// 2;// D1;
-int KeyLockSensor::PinB2 = 19;// D19; // 4;// D2;
+int KeyLockSensor::outputAPin = 18;// D18;// 2;// D1;
+int KeyLockSensor::outputBPin = 19;// D19; // 4;// D2;
 #endif
 
 extern bool mqtt_publish(String topic, String message);
 
-
 volatile long lastPosition = 0;
 volatile long position = 0;// 360;
-//long lastencoderValue2 = 0;
 int lastMSB2 = 0;
 int lastLSB2 = 0;
-void ICACHE_RAM_ATTR updateEncoder2() {
-	int MSB = digitalRead(KeyLockSensor::PinA2); //MSB = most significant bit
-	int LSB = digitalRead(KeyLockSensor::PinB2); //LSB = least significant bit
+void ICACHE_RAM_ATTR updateEncoder() {
+	int MSB = digitalRead(KeyLockSensor::outputAPin); //MSB = most significant bit
+	int LSB = digitalRead(KeyLockSensor::outputBPin); //LSB = least significant bit
 
 	int encoded = (MSB << 1) | LSB;
 	//converting the 2 pin value to single number 
@@ -32,23 +31,32 @@ void ICACHE_RAM_ATTR updateEncoder2() {
 	if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) position--;
 	lastPosition = encoded; //store this value for next time 
 
-	Serial.print("CUR POS = ");
-	Serial.println(position);
+	//Serial.print("CUR POS = ");
+	//Serial.println(position);
 }
 
 void KeyLockSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
 	json["lockstatus"] = status;
+
+	json["steppin"] = Shield::getStrPin(stepPin);
+	json["directionpin"] = Shield::getStrPin(directionPin);
+	json["enablepin"] = Shield::getStrPin(enablePin);
+	json["outputapin"] = Shield::getStrPin(outputAPin);
+	json["outputbpin"] = Shield::getStrPin(outputBPin);
 }
 
-KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t stepPin, uint8_t directionPin, uint8_t enablePin) : Sensor(id, pin, enabled, address, name)
-{
-	//int PinA2 = D1;// 2;// D1;
-	//int PinB2 = D2; // 4;// D2;
-
+KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t _stepPin, uint8_t _directionPin, uint8_t _enablePin, uint8_t _outputAPin, uint8_t _outputBPin) : Sensor(id, pin, enabled, address, name)
+{	
 	type = "keylocksensor";
 	checkStatus_interval = 10;
 	lastCheckStatus = 0;
+
+	stepPin = _stepPin;
+	directionPin = _directionPin;
+	enablePin = _enablePin;
+	outputAPin = _outputAPin;
+	outputBPin = _outputBPin;
 }
 
 KeyLockSensor::~KeyLockSensor()
@@ -68,22 +76,21 @@ void KeyLockSensor::checkStatusChange()
 void KeyLockSensor::init()
 {
 	logger.print(tag, F("\n\t >>init KeyLockSensor"));
-	logger.print(tag, F("\n stepPin="));
+	logger.print(tag, F("\n\t stepPin="));
 	logger.print(tag, String(stepPin));
-	logger.print(tag, F("\n directionPin="));
+	logger.print(tag, F("\n\t directionPin="));
 	logger.print(tag, String(directionPin));
-	logger.print(tag, F("\n enablePin="));
+	logger.print(tag, F("\n\t enablePin="));
 	logger.print(tag, String(enablePin));
+	logger.print(tag, F("\n\t outputAPin="));
+	logger.print(tag, String(outputAPin));
+	logger.print(tag, F("\n\t outputBPin="));
+	logger.print(tag, String(outputBPin));
 
-
-	pinMode(PinA2, INPUT_PULLUP); // set pinA as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
-	pinMode(PinB2, INPUT_PULLUP); // set pinB as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
-	attachInterrupt(digitalPinToInterrupt(PinA2), updateEncoder2, CHANGE);
-	attachInterrupt(digitalPinToInterrupt(PinB2), updateEncoder2, CHANGE);
-
-	/*stepPin = 18; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
-	directionPin = 19; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
-	enablePin = 23; //GPI*/
+	pinMode(outputAPin, INPUT_PULLUP); // set pinA as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
+	pinMode(outputBPin, INPUT_PULLUP); // set pinB as an input, pulled HIGH to the logic voltage (5V or 3.3V for most cases)
+	attachInterrupt(digitalPinToInterrupt(outputAPin), updateEncoder, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(outputBPin), updateEncoder, CHANGE);
 
 #ifdef ESP8266
 	stepPin = D4; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
@@ -91,13 +98,11 @@ void KeyLockSensor::init()
 	enablePin = D5; //GPI
 #endif
 #ifdef ESP32
-	stepPin = 19; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
-	directionPin = 18; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
-	enablePin = 21; //GPI
+	//stepPin = 19; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
+	//directionPin = 18; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
+	//enablePin = 21; //GPI
 #endif
 
-
-	//stepPin = pin;
 	pinMode(stepPin, OUTPUT); //Steppin as output
 	pinMode(directionPin, OUTPUT); //Directionpin as output
 	pinMode(enablePin, OUTPUT); // Enablepin as output
@@ -105,20 +110,14 @@ void KeyLockSensor::init()
 	digitalWrite(directionPin, LOW);
 
 	enableMotor(false);
-	//digitalWrite(enablePin, HIGH); // Disable stepper motor
-
-
-	
 	
 	position = 700;
 	openThreshold = 700;
-	closedThreshold = 00;
+	closedThreshold = 0;
 	firstLockThreshold = 2 * (closedThreshold - openThreshold) / 3 + openThreshold;
 	secondLockThreshold = 1 * (closedThreshold - openThreshold) / 3 + openThreshold;
-	//setStatus(STATUS_OPEN);
 	oldPositionStatus = -1;
 
-	//sendStatusUpdate();
 	logger.print(tag, F("\n\t <<init KeyLockSensor"));
 }
 
@@ -167,7 +166,7 @@ bool KeyLockSensor::sendCommand(String command, String payload)
 	return false;
 }
 
-bool KeyLockSensor::openLock()
+bool KeyLockSensor::closeLock()
 {
 	logger.print(tag, F("\n\t >>KeyLockSensor::openLock"));
 
@@ -189,7 +188,7 @@ bool KeyLockSensor::openLock()
 }
 
 
-bool KeyLockSensor::closeLock()
+bool KeyLockSensor::openLock()
 {
 	logger.print(tag, F("\n\t >>KeyLockSensor::closeLock"));
 
@@ -315,16 +314,6 @@ void KeyLockSensor::rotateMotor() {
 	digitalWrite(stepPin, LOW);
 	delay(1);
 
-	/*if (oldPos == encoderValue2) {
-		count++;
-		logger.print(tag, F("\n\t BLOCCATO \n"));
-		if (count > 5)
-			break;
-	}
-	else {
-		count = 0;
-	}*/
-
 	if (position <= firstLockThreshold) {
 		//logger.print(tag, "\n\t STATUS open " + String(position));
 		setStatus(STATUS_OPEN);
@@ -339,7 +328,7 @@ void KeyLockSensor::rotateMotor() {
 	}
 }
 
-
+/*
 bool KeyLockSensor::rotateLock(bool close, int delta) {
 
 	logger.print(tag, F("\n\t >>KeyLockSensor::rotateLock"));
@@ -362,16 +351,6 @@ bool KeyLockSensor::rotateLock(bool close, int delta) {
 		digitalWrite(stepPin, LOW);
 		delay(1);
 
-		/*if (oldPos == encoderValue2) {
-			count++;
-			logger.print(tag, F("\n\t BLOCCATO \n"));
-			if (count > 5)
-				break;
-		}
-		else {
-			count = 0;
-		}*/
-
 		if (position <= firstLockThreshold) {
 			logger.print(tag, "\n\t STATUS OPEN " + String(position));
 
@@ -392,9 +371,7 @@ bool KeyLockSensor::rotateLock(bool close, int delta) {
 	digitalWrite(enablePin, HIGH); // Disable stepper motor
 
 	logger.print(tag, "\n\t CURRENT POSITION = " + String(position));
-
-	//setStatus("POS" + encoderValue2);
-
 	logger.print(tag, F("\n\t <<KeyLockSensor::rotateLock"));
 	return true;
 }
+*/

@@ -133,7 +133,7 @@ void Sensor::getJson(JsonObject& json) {
 
 	json["pin"] = Shield::getStrPin(pin);
 	json["name"] = sensorname;
-	json["enabled"] = String(enabled);
+	json["enabled"] = enabled;
 	json["type"] = type;
 
 
