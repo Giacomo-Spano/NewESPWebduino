@@ -103,7 +103,7 @@ String Sensor::toString()
 
 Sensor * Sensor::getSensorFromId(int id)
 {
-	logger.print(tag, F("\n\t >>Sensor::getSensorFromId "));
+	//logger.print(tag, F("\n\t >>Sensor::getSensorFromId "));
 
 	if (sensorid == id)
 		return (Sensor*)this;
@@ -117,7 +117,7 @@ Sensor * Sensor::getSensorFromId(int id)
 				return (Sensor*)this;
 		}
 	}*/
-	logger.println(tag, F("<<Sensor::getSensorFromId"));
+	//logger.println(tag, F("<<Sensor::getSensorFromId"));
 	return nullptr;
 }
 
@@ -125,7 +125,7 @@ String prova;
 
 void Sensor::getJson(JsonObject& json) {
 
-	logger.println(tag, F(">>Sensor::getJson\n"));
+	//logger.println(tag, F(">>Sensor::getJson\n"));
 	json["sensorid"] = sensorid;
 	json["status"] = status;
 	json["addr"] = address;
@@ -149,14 +149,14 @@ void Sensor::getJson(JsonObject& json) {
 			child->getJson(childjson);
 		}
 	}*/
-	logger.printJson(json);
+	//logger.printJson(json);
 
-	logger.println(tag, F("<<Sensor::getJson"));
+	//logger.println(tag, F("<<Sensor::getJson"));
 }
 
 String Sensor::getStrJson() {
 
-	logger.println(tag, F(">>Sensor::getStrJson\n"));
+	//logger.println(tag, F(">>Sensor::getStrJson\n"));
 
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& json = jsonBuffer.createObject();
@@ -184,11 +184,11 @@ String Sensor::getStrJson() {
 
 	String str;
 	json.printTo(str);
-	logger.print(tag, str);
+	//logger.print(tag, str);
 
-	logger.println(tag, F("str="));
-	logger.println(tag, str);
-	logger.println(tag, F("<<Sensor::getStrJson"));
+	//logger.println(tag, F("str="));
+	//logger.println(tag, str);
+	///logger.println(tag, F("<<Sensor::getStrJson"));
 	return str;
 }
 

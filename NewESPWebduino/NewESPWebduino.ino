@@ -635,28 +635,14 @@ void setup() {
 
 			Serial.print("\n\n>>>postsensorcommand request received\n");
 
-			logger.print(tag, "\nlen=" + String(len));
-			logger.print(tag, "\nindex=" + String(index));
-			logger.print(tag, "\ntotal=" + String(total));
-			logger.print(tag, "\n");
-
-
+			logger.print(tag, "\n\t len=" + String(len));
+			logger.print(tag, "\n\t index=" + String(index));
+			logger.print(tag, "\n\t total=" + String(total));
+			logger.print(tag, "\n\t");
 			for (size_t i = 0; i < len; i++) {
 				Serial.write(data[i]);
 			}
-
-			/*keylockcommand = command_position;
-			if (request->hasParam("position")) {
-				String str = request->getParam("position")->value();
-				keylockcommand_payload = str.toInt();
-				for (int i = 0; i < str.length(); i++) {
-					command_payload[i] = str.charAt(i);
-				}
-				command_payload[str.length()] = 0;
-			}*/
-			//request->send(SPIFFS, "/index.html", String(), false, processor);
-			//request->send(200, "text/html", "comamand sent");
-
+						
 			DynamicJsonBuffer jsonBuffer;
 			JsonObject& json = jsonBuffer.parseObject((const char*)data);
 			if (json.success()) {
@@ -683,7 +669,7 @@ void setup() {
 								command_payload[i] = str.charAt(i);
 							}
 							command_payload[str.length()] = 0;
-							Serial.print(" \nsend response\n");
+							Serial.print(" \nsend command response\n");
 							request->send(200, "text/html", "command received");
 							return;
 						}
@@ -835,26 +821,21 @@ void loop() {
 
 
 	if (keylockcommand == command_open) {
-		Serial.println("\n\n OPEN\n");
-		//Serial.print("init= ");
-		//Serial.println(encoderValue);
-		//shield.sendSensorCommand("keylocksensor", 1, "set", "OPEN");
-		shield.sendSensorCommand("keylocksensor", 1, "set", "OPEN");
+		Serial.println("\n\t process OPEN command request\n");
+		shield.sendSensorCommand(/*"keylocksensor", */keylockcommand_sensorid, "set", "OPEN");
 		keylockcommand = 0;
-		//Serial.print("\nnd= ");
-		//Serial.println(encoderValue);
 	}
 	else if (keylockcommand == command_close) {
-		Serial.println("\n\n CLOSE\n");
+		Serial.println("process CLOSE command request\n");
 		//Serial.print("init= ");
 		//Serial.println(encoderValue);
-		shield.sendSensorCommand("keylocksensor", 1, "set", "CLOSE");
+		shield.sendSensorCommand(/*"keylocksensor",*/ keylockcommand_sensorid, "set", "CLOSE");
 		keylockcommand = 0;
 		//Serial.print("\nend= ");
 		//Serial.println(encoderValue);
 	}
 	else if (keylockcommand == command_position) {
-		Serial.println("\n\n POSITION\n");
+		Serial.println("process POSITION command request\n");
 		//Serial.print("init= ");
 		//Serial.println(encoderValue);
 		//shield.sendSensorCommand("keylocksensor", 1, "pos", "" + String(keylockcommand_payload));
@@ -864,7 +845,7 @@ void loop() {
 			if (command_payload[i] == 0)
 				break;
 		}
-		shield.sendSensorCommand("keylocksensor", 1, "pos", payload);
+		shield.sendSensorCommand(/*"keylocksensor",*/ keylockcommand_sensorid, "pos", payload);
 		keylockcommand = 0;
 		//Serial.print("\nend= ");
 		//Serial.println(encoderValue);

@@ -713,9 +713,7 @@ void Shield::sendSensorCommand(String type, int id, String command, String paylo
 	logger.print(tag, String(F("\n\t\ payload=")) + payload);
 
 	for (int i = 0; i < sensors.size(); i++) {
-
 		Sensor* sensor = sensors.get(i);
-
 		logger.print(tag, String(F("\n\t\ type=")) + sensors.get(i)->type);
 		logger.print(tag, String(F("\n\t\ id=")) + String(sensors.get(i)->sensorid));
 		//logger.print(tag, String(F("\n\t\ command=")) + sensors.get(i)->command);
@@ -739,7 +737,7 @@ void Shield::sendSensorCommand(String type, int id, String command, String paylo
 
 void Shield::sendSensorCommand(int id, String command, String payload)
 {
-	logger.print(tag, F("\n\t >>Shield::sendSensorCommand2"));
+	logger.print(tag, F("\n\t >>Shield::sendSensorCommand"));
 
 	logger.print(tag, String(F("\n\t\ id=")) + id);
 	logger.print(tag, String(F("\n\t\ command=")) + command);

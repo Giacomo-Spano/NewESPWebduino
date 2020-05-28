@@ -29,6 +29,10 @@ private:
 	int closedThreshold = 0;
 	int maxrotation = 5000;
 
+	int countRotation = 0;
+	int targetpos = 0;
+	double delta = 0;
+
 	
 	int stepPin;// = 0; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
 	int directionPin;// = 2; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
@@ -39,12 +43,16 @@ private:
 	void enableMotor(bool enable);
 	void rotateMotor();
 	void SetMotorDirection(bool clockwise);
+	void updateStatus();
 	bool motorEnabled = false;
 
 public:
 	const String STATUS_OPEN = "open";
 	const String STATUS_FIRSTLOCK = "firstlock";
 	const String STATUS_CLOSED = "closed";
+	const String STATUS_OPENING = "opening";
+	const String STATUS_CLOSING = "closing";
+	const String STATUS_MOVING = "moving";
 
 	// questi devono essere pubblic perche sono uisati dalla funzione di interrupt
 	static int outputAPin;// 2;// D1;
