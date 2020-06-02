@@ -113,17 +113,16 @@ void KeyLockSensor::getJson(JsonObject& json) {
 
 void KeyLockSensor::checkStatusChange()
 {
-	//logger.print(tag, F("\n\t\t checkStatusChange"));
-	/*if (oldPositionStatus != position) {
-		sendStatusUpdate();
-		updateAttributes();
-	}*/
 	Sensor::checkStatusChange();
-
 
 	oldPositionStatus = position;
 
-	if (status.equals(STATUS_OPENING)) {
+	if (status.equals(STATUS_STOPPING)) {
+		updateStatus();
+		logger.print(tag, F("\n\t STOPPED"));
+		enableMotor(false);
+
+	} else if (status.equals(STATUS_OPENING)) {
 		if (position > closedThreshold) {
 			rotateMotor();
 			if (countRotation++ > maxrotation) {
@@ -135,7 +134,6 @@ void KeyLockSensor::checkStatusChange()
 		}
 		else
 		{
-			//setStatus(STATUS_OPEN);
 			updateStatus();
 			logger.print(tag, F("\n\t END OPENING"));
 			enableMotor(false);
@@ -175,7 +173,6 @@ void KeyLockSensor::checkStatusChange()
 			enableMotor(false);
 		}
 	}
-	//logger.print(tag, F("\n\t <<KeyLockSensor::closeLock"));
 }
 
 void KeyLockSensor::updateStatus() {
@@ -264,51 +261,33 @@ bool KeyLockSensor::sendCommand(String command, String payload)
 	logger.print(tag, String(F("\n\t\tpayload=")) + payload);
 	if (command.equals("set")) {
 		if (payload.equals("OPEN")) {
-			//Serial.println("\n\n OPEN\n");
-			bool ret = openLock();
-			return ret;
+			return openLock();
 		}
 		else if (payload.equals("CLOSE")) {
-			//Serial.println("\n\n CLOSE\n");
-			bool ret = closeLock();
-			return ret;
+			return closeLock();
+		}
+		else if (payload.equals("STOP")) {
+			return stopLock();
 		}
 	}
 	else if (command.equals("pos")) {
 		int position = payload.toInt();
-		//Serial.println("\n\n SET POSITION\n");
 		return setPosition(position);
 	}
 	else if (command.equals("zerocalibration")) {
-		//Serial.println("\n\n ZEROCALIBRATION\n");
 		return zeroCalibration();
 	}
 	logger.print(tag, F("\n\t <<KeyLockSensor::sendCommand"));
 	return false;
 }
 
-/*
-bool KeyLockSensor::openLock()
+bool KeyLockSensor::stopLock()
 {
-	logger.print(tag, F("\n\t >>KeyLockSensor::closeLock"));
-
-	SetMotorDirection(true);
-	enableMotor(true);
-	int count = 0;
-	while (position > closedThreshold) {
-		rotateMotor();
-		if (count++ > maxrotation) {
-			enableMotor(false);
-			logger.print(tag, F("\n\t FAILED\n<<KeyLockSensor::closeLock"));
-			return false;
-		}
-	}
-	enableMotor(false);
-
-	logger.print(tag, F("\n\t <<KeyLockSensor::closeLock"));
+	logger.print(tag, F("\n\t >>KeyLockSensor::stopLock"));
+	setStatus(STATUS_STOPPING);
+	logger.print(tag, F("\n\t <<KeyLockSensor::stopLock"));
 	return true;
 }
-*/
 
 bool KeyLockSensor::openLock()
 {
@@ -421,17 +400,4 @@ void KeyLockSensor::rotateMotor() {
 	delay(1);
 	digitalWrite(stepPin, LOW);
 	delay(1);
-
-	/*if (position <= firstLockThreshold) {
-		//logger.print(tag, "\n\t STATUS open " + String(position));
-		setStatus(STATUS_OPEN);
-	}
-	else if (position >= secondLockThreshold) {
-		//logger.print(tag, "\n\t STATUS closed " + String(position));
-		setStatus(STATUS_CLOSED);
-	}
-	else {
-		//logger.print(tag, "\n\t STATUS firstlock " + String(position));
-		setStatus(STATUS_FIRSTLOCK);
-	}*/
 }

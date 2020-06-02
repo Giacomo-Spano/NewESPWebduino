@@ -27,7 +27,7 @@
 #include <ESPAsyncTCP.h>
 #endif
 #include <ESPAsyncWebServer.h>
-//#include <SPIFFSEditor.h>
+
 #ifndef ESP8266
 #include <FS.h> //this needs to be first, or it all crashes and burns...
 #include "SPIFFS.h"
@@ -40,16 +40,13 @@
 #endif
 
 Shield shield;
-KeyLockSensor* keylockSensor;
 
 extern bool mqtt_publish(String topic, String message);
-//extern bool getNextSensorId();
 
 const char* ssid = "FASTWEB-C16E33";
 const char* password = "4GE4MEHHFG";
 const char* http_username = "admin";
 const char* http_password = "admin";
-
 
 AsyncWebServer asyncServer(80);
 AsyncWebSocket ws("/ws"); // access at ws://[esp ip]/ws
@@ -57,22 +54,16 @@ AsyncEventSource events("/events"); // event source (Server-Sent events)
 //flag to use from web update to reboot the ESP
 bool shouldReboot = false;
 
-
 const int maxPostData = 200;
-uint8_t postData[500];
+uint8_t postData[maxPostData];
 int postDataCounter = 0;
 
-///////////
-const int command_open = 1;
-const int command_close = 2;
-const int command_zerocalibration = 3;
-const int command_position = 4;
-
-volatile int keylockcommand;
-volatile int keylockcommand_sensorid;
-volatile int keylockcommand_payload;
-const int command_payloadsize = 100;
-volatile char command_payload[100];
+volatile int sensor_command_id;
+const int sensor_command_payload_size = 100;
+volatile char sensor_command_payload[sensor_command_payload_size];
+const int sensor_command_size = 50;
+volatile char sensor_command[sensor_command_size];
+volatile bool sensor_command_received = false;
 
 const char* PARAM_INPUT_1 = "input1";
 const char* PARAM_INPUT_2 = "input2";
@@ -94,8 +85,6 @@ const char* PARAM_SENSORID = "sensorid";
 const char* PARAM_TYPE = "type";
 const char* PARAM_PIN = "pin";
 const char* PARAM_ACTION = "action";
-
-
 
 // HTML web page to handle 3 input fields (input1, input2, input3)
 const char index_html[] PROGMEM = R"rawliteral(
@@ -123,21 +112,11 @@ const char index_html[] PROGMEM = R"rawliteral(
 </body></html>)rawliteral";
 
 
-
-
-
-
-
 Logger logger;
 String tag = "Webduino";
 MQTTClientClass mqttclient;
 
 WiFiClient client;
-
-//int Step = 0; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
-//int Dir = 2; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
-//int Enb = 14; //GPI14---D5 of Nodemcu--Enable driver
-
 WiFiServer server(80);
 // Variable to store the HTTP request
 String header;
@@ -155,13 +134,6 @@ void mqtt_messageReceived(char* topic, byte* payload, unsigned int length) {
 	logger.print(tag, F("\n\t topic="));
 	logger.print(tag, String(topic));
 	logger.print(tag, F("\n\t payload="));
-	//logger.print(tag, payload);
-
-	//keylockSensor->openLock();
-
-#ifdef ESP8266
-	ESP.wdtFeed();
-#endif // ESP8266
 
 	String message = "";
 	for (int i = 0; i < length; i++) {
@@ -193,7 +165,6 @@ void onUpload(AsyncWebServerRequest* request, String filename, size_t index, uin
 		Serial.write(data[i]);
 	}
 
-
 	File file = SPIFFS.open("/" + filename, "w");
 	if (!file) {
 		logger.print(tag, "error to create file");
@@ -212,11 +183,9 @@ void onEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType 
 	logger.println(tag, "\n\n\t>>>>>>>>>>>>>>>>>>>>>>onEvent\n\n");
 }
 
-
 void notFound(AsyncWebServerRequest* request) {
 	request->send(404, "text/plain", "Not found");
 }
-
 
 bool initMQTTServer() {
 	logger.println(tag, F("\n\n >>initMQTTServer"));
@@ -235,7 +204,6 @@ void setup() {
 	Serial.print("sw ver = ");
 	Serial.println(shield.getSWVersion());
 
-
 	// Initialize SPIFFS
 	//SPIFFS.format();
 	Serial.println(F("Inizializing FS..."));
@@ -252,7 +220,6 @@ void setup() {
 	shield.readRebootReason();
 	shield.readConfig();
 	shield.init();
-
 
 	// Connect to WiFi network
 	Serial.print("\n\nConnecting to ");
@@ -271,19 +238,13 @@ void setup() {
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
 
-
 	checkForSWUpdate();
-
-
 
 	// attach AsyncWebSocket
 	ws.onEvent(onEvent);
 	//asyncServer.addHandler(&ws);
-
 	// attach AsyncEventSource
 	//asyncServer.addHandler(&events);
-
-
 	//ws.onEvent(onWsEvent);
 	asyncServer.addHandler(&ws);
 
@@ -292,30 +253,17 @@ void setup() {
 		});
 	asyncServer.addHandler(&events);
 
-
 	asyncServer.on("/heap", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(200, "text/plain", String(ESP.getFreeHeap()));
 		});
 
 	asyncServer.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
-
-	// respond to GET requests on URL /heap
-	asyncServer.on("/heap", HTTP_GET, [](AsyncWebServerRequest* request) {
-		request->send(200, "text/plain", String(ESP.getFreeHeap()));
-		});
-
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/getfiles", HTTP_GET, [](AsyncWebServerRequest* request) {
-
 		Serial.print(" /getfiles request received\n");
-		String sensorID;
-		// GET input1 value on <ESP_IP>/get?input1=<inputMessage>
 		request->send(200, "application/json", getFiles());
 		return;
-
-		//Serial.println("errore");
-		//request->send(200, "text/html", "errore <br><a href=\"/\">Return to Home Page</a>");
 		});
 
 	asyncServer.serveStatic("/upload.html", SPIFFS, "/upload.html");
@@ -336,18 +284,10 @@ void setup() {
 		});
 
 	// Simple Firmware Update Form
-	/*asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
-		request->send(200, "text/html", "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>");
-		});*/
-
-
-		// Simple Firmware Update Form
 	asyncServer.on("/update", HTTP_GET, [](AsyncWebServerRequest* request) {
 		checkForSWUpdate();
 		request->send(200, "text/html", "HTTP fw updated<br><a href=\"/\">Return to Home Page</a>");
 		});
-
-
 
 	// respond to GET requests on URL /home
 	asyncServer.on("/home", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -380,35 +320,23 @@ void setup() {
 
 	// Route to set GPIO to HIGH
 	asyncServer.on("/sensor.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, HIGH);
-		//keylockSensor->openLock();
-		//keylockcommand = command_open;
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
 
 	// Route to set GPIO to HIGH
-	asyncServer.on("/temperature.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, HIGH);
-		//keylockSensor->openLock();
-		//keylockcommand = command_open;
+	/*asyncServer.on("/temperature.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(SPIFFS, "/temperature.html", String(), false, processor);
 		});
 
 	// Route to set GPIO to HIGH
 	asyncServer.on("/onewire.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, HIGH);
-		//keylockSensor->openLock();
-		//keylockcommand = command_open;
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
 
 	// Route to set GPIO to HIGH
 	asyncServer.on("/keylock.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, HIGH);
-		//keylockSensor->openLock();
-		//keylockcommand = command_open;
 		request->send(SPIFFS, "/keylock.html", String(), false, processor);
-		});
+		});*/
 
 	asyncServer.on("/sensors", HTTP_GET, [](AsyncWebServerRequest* request) {
 		/*AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/sensors.html", String());
@@ -418,54 +346,12 @@ void setup() {
 		request->send(SPIFFS, "/sensors.html", String(), false, processor);
 		});
 
-
-	asyncServer.on("/open", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, HIGH);
-		//keylockSensor->openLock();
-		keylockcommand = command_open;
-		//request->send(SPIFFS, "/index.html", String(), false, processor);
-		});
-
-	// Route to set GPIO to LOW
-	asyncServer.on("/close", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, LOW);
-		keylockcommand = command_close;
-		request->send(SPIFFS, "/index.html", String(), false, processor);
-		});
-
-	// Route to set GPIO to LOW
-	asyncServer.on("/zerocalibration", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, LOW);
-		keylockcommand = command_zerocalibration;
-		request->send(SPIFFS, "/index.html", String(), false, processor);
-		});
-
-	// Route to set GPIO to LOW
-	asyncServer.on("/position", HTTP_GET, [](AsyncWebServerRequest* request) {
-		keylockcommand = command_position;
-		if (request->hasParam("position")) {
-			String str = request->getParam("position")->value();
-			keylockcommand_payload = str.toInt();
-			for (int i = 0; i < str.length(); i++) {
-				command_payload[i] = str.charAt(i);
-			}
-			command_payload[str.length()] = 0;
-		}
-		request->send(SPIFFS, "/index.html", String(), false, processor);
-		});
-
 	asyncServer.on("/getmodel", HTTP_GET, [](AsyncWebServerRequest* request) {
 		//digitalWrite(ledPin, LOW);
 		request->send(200, "text/html", shield.getModel());
 		});
 
-
-
-	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/get", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//String inputMessage;
-		//String inputParam;
-
 		Serial.print("\n /get request received\n");
 
 		if (request->hasParam(PARAM_NAME)) {
@@ -523,8 +409,6 @@ void setup() {
 		//"<br><a href=\"/\">Return to Home Page</a>");
 		});
 
-
-
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/sensor", HTTP_GET, [](AsyncWebServerRequest* request) {
 
@@ -547,8 +431,6 @@ void setup() {
 						if (sensor->sensorid == sensorID.toInt()) {
 							shield.sensors.remove(i);
 							shield.writeSensorsToFile();
-							//request->send(SPIFFS, "/sensors.html", String(), false, processor);
-							//request->send(200, "text/html", "errore - sensor not found<br><a href=\"/\">Return to Home Page</a>");
 							request->send(200, "text/html", "Sensor deleted <br><a href=\"/sensors\">Ok</a>");
 							return;
 						}
@@ -594,24 +476,16 @@ void setup() {
 		}
 		});
 
-
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/getsensors", HTTP_GET, [](AsyncWebServerRequest* request) {
-
 		Serial.print(" /getsensors request received\n");
 		String sensorID;
-		// GET input1 value on <ESP_IP>/get?input1=<inputMessage>
 		request->send(200, "application/json", shield.getSensors());
 		return;
-
-		//Serial.println("errore");
-		//request->send(200, "text/html", "errore <br><a href=\"/\">Return to Home Page</a>");
 		});
-
 
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/getsensor", HTTP_GET, [](AsyncWebServerRequest* request) {
-
 		Serial.print(" getsensor request received\n");
 		String sensorID;
 		// GET input1 value on <ESP_IP>/get?input1=<inputMessage>
@@ -648,46 +522,42 @@ void setup() {
 			for (size_t i = 0; i < len; i++) {
 				Serial.write(data[i]);
 			}
-						
+
 			DynamicJsonBuffer jsonBuffer;
 			JsonObject& json = jsonBuffer.parseObject((const char*)data);
 			if (json.success()) {
 				if (json.containsKey("sensorid")) {
-					keylockcommand_sensorid = json["sensorid"];
-					logger.print(tag, "\n keylockcommand_sensorid=" + String(keylockcommand_sensorid));
+					sensor_command_id = json["sensorid"];
+					logger.print(tag, "\n keylockcommand_sensorid=" + String(sensor_command_id));
 					if (json.containsKey("command")) {
 						String command = json["command"];
 						logger.print(tag, "\n command=" + command);
-						if (command.equals("OPEN"))
-							keylockcommand = command_open;
-						if (command.equals("CLOSE"))
-							keylockcommand = command_close;
-						if (command.equals("zerocalibration"))
-							keylockcommand = command_open;
-						if (command.equals("position"))
-							keylockcommand = command_position;
-						logger.print(tag, "\n keylockcommand=" + String(keylockcommand));
-
-						if (json.containsKey("payload")) {
-							String str = json["payload"];
-							logger.print(tag, "\n payload=" + str);
-							for (int i = 0; i < str.length(); i++) {
-								command_payload[i] = str.charAt(i);
-							}
-							command_payload[str.length()] = 0;
-							Serial.print(" \nsend command response\n");
-							request->send(200, "text/html", "command received");
-							return;
+						for (int i = 0; i < command.length(); i++) {
+							sensor_command[i] = command.charAt(i);
 						}
+						sensor_command[command.length()] = 0;
+						logger.print(tag, "\n command=" + command);
+
+						String payload = "";
+						if (json.containsKey("payload")) {
+							payload = json["payload"].asString();
+							logger.print(tag, "\n payload=" + payload);
+							for (int i = 0; i < payload.length(); i++) {
+								sensor_command_payload[i] = payload.charAt(i);
+							}
+							sensor_command_payload[payload.length()] = 0;
+						}
+						logger.print(tag, "\n payload=" + payload);
+						sensor_command_received = true;
+						request->send(200, "text/html", "command received");
 					}
-				}				
+				}
 			}
 			Serial.print("\n\n BAD JSON\n");
 			request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
 		});
 
 	asyncServer.on("/setsensor", HTTP_POST, [](AsyncWebServerRequest* request) {
-		//nothing and dont remove it
 		//nothing and dont remove it
 		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
 
@@ -701,15 +571,12 @@ void setup() {
 			if (total >= maxPostData) {
 				logger.print(tag, "\n\t posData too big");
 			}
-
 			if (index == 0)
 				postDataCounter = 0;
-
 			for (size_t i = 0; i < len; i++) {
 				postData[postDataCounter++] = data[i];
 				Serial.write(postData[postDataCounter - 1]);
 			}
-
 			if (postDataCounter == total) {
 				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
 				postData[postDataCounter] = 0;
@@ -736,15 +603,6 @@ void setup() {
 			}
 		});
 
-
-
-
-
-
-
-
-
-
 	// attach filesystem root at URL /fs
 	asyncServer.serveStatic("/fs", SPIFFS, "/");
 
@@ -758,17 +616,9 @@ void setup() {
 	//asyncServer.onNotFound(notFound);
 	asyncServer.begin();
 
-
-
-
 	// Initialize MQTT
 	initMQTTServer();
 }
-
-/*bool getNextSensorId() {
-
-	return shield.getNextSensorId();
-}*/
 
 bool reconnect() {
 	logger.print(tag, F("\n\n\t >>reconnect"));
@@ -778,9 +628,6 @@ bool reconnect() {
 	String clientId = "ESP8266Client" + WiFi.macAddress(); /*shield.getMACAddress();*/
 	int i = 0;
 	while (!mqttclient.connected() && i < 3) {
-#ifdef ESP8266
-		ESP.wdtFeed();
-#endif // ESP8266
 		logger.print(tag, F("\n\t Attempting MQTT connection..."));
 		logger.print(tag, F("\n\t temptative "));
 		logger.print(tag, String(i));
@@ -810,65 +657,32 @@ bool reconnect() {
 		}
 	}
 
-
-
-
-
-
-
-
-
-	//shield.setStatus(F("OFFLINE"));
 	logger.print(tag, F("\n\t<<reconnect FAILED\n\n"));
 	return false;
 }
 
 void loop() {
 
-	//Serial.println(encoderValue);
-
-	///////////////////////////////////////////////
 	shield.checkStatus();
 
-
-	if (keylockcommand == command_open) {
-		Serial.println("\n\t process OPEN command request\n");
-		shield.sendSensorCommand(/*"keylocksensor", */keylockcommand_sensorid, "set", "OPEN");
-		keylockcommand = 0;
-	}
-	else if (keylockcommand == command_close) {
-		Serial.println("process CLOSE command request\n");
-		//Serial.print("init= ");
-		//Serial.println(encoderValue);
-		shield.sendSensorCommand(/*"keylocksensor",*/ keylockcommand_sensorid, "set", "CLOSE");
-		keylockcommand = 0;
-		//Serial.print("\nend= ");
-		//Serial.println(encoderValue);
-	}
-	else if (keylockcommand == command_position) {
-		Serial.println("process POSITION command request\n");
-		//Serial.print("init= ");
-		//Serial.println(encoderValue);
-		//shield.sendSensorCommand("keylocksensor", 1, "pos", "" + String(keylockcommand_payload));
-		String payload = "";
-		for (int i = 0; i < command_payloadsize; i++) {
-			payload += command_payload[i];
-			if (command_payload[i] == 0)
+	if (sensor_command_received) {
+		Serial.println("\n\t processing http COMMAND request.\n");
+		String strCommand = "";
+		for (int i = 0; i < sensor_command_size; i++) {
+			strCommand += sensor_command[i];
+			if (sensor_command[i] == 0)
 				break;
 		}
-		shield.sendSensorCommand(/*"keylocksensor",*/ keylockcommand_sensorid, "pos", payload);
-		keylockcommand = 0;
-		//Serial.print("\nend= ");
-		//Serial.println(encoderValue);
-	}
-	else if (keylockcommand == command_zerocalibration) {
-		Serial.println("\n\n ZEROCALIBRATION\n");
-		//Serial.print("init= ");
-		//Serial.println(encoderValue);
-		shield.sendSensorCommand("keylocksensor", 1, "zerocalibration", "");
-		keylockcommand = 0;
-		//Serial.print("\nend= ");
-		//Serial.println(encoderValue);
+		Serial.println("\n\t strCommand=" + strCommand);
+		String payload = "";
+		for (int i = 0; i < sensor_command_payload_size; i++) {
+			payload += sensor_command_payload[i];
+			if (sensor_command_payload[i] == 0)
+				break;
+		}
+		Serial.println("\n\t payload=" + payload + "\n");
+		shield.sendSensorCommand(sensor_command_id, strCommand, payload);
+		sensor_command_received = false;
 	}
 
 	if (client.connected()) {
@@ -882,8 +696,6 @@ void loop() {
 		delay(5000);
 	}
 
-
-
 	if (shouldReboot) {
 		Serial.println("Rebooting...");
 		delay(100);
@@ -892,183 +704,6 @@ void loop() {
 	static char temp[128];
 	sprintf(temp, "Seconds since boot: %u", millis() / 1000);
 	events.send(temp, "time"); //send event "time"
-
-
-	//return;
-	//////////////
-	/*WiFiClient client = server.available();   // Listen for incoming clients
-
-	if (client) {                             // If a new client connects,
-		Serial.println("\n\nNew Client.");          // print a message out in the serial port
-		String currentLine = "";                // make a String to hold incoming data from the client
-		currentTime = millis();
-		previousTime = currentTime;
-		while (client.connected() && currentTime - previousTime <= timeoutTime) { // loop while the client's connected
-			currentTime = millis();
-			if (client.available()) {             // if there's bytes to read from the client,
-				char c = client.read();             // read a byte, then
-				Serial.write(c);                    // print it out the serial monitor
-				header += c;
-				if (c == '\n') {                    // if the byte is a newline character
-				  // if the current line is blank, you got two newline characters in a row.
-				  // that's the end of the client HTTP request, so send a response:
-					if (currentLine.length() == 0) {
-						// HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
-						// and a content-type so the client knows what's coming, then a blank line:
-						client.println("HTTP/1.1 200 OK");
-						client.println("Content-type:text/html");
-						client.println("Connection: close");
-						client.println();
-
-						// turns the GPIOs on and off
-						if (header.indexOf("GET /5/on") >= 0) {
-							Serial.println("GPIO 5 on");
-							//output5State = "on";
-							//digitalWrite(output5, HIGH);
-						}
-						else if (header.indexOf("GET /5/off") >= 0) {
-							Serial.println("GPIO 5 off");
-							//output5State = "off";
-							//digitalWrite(output5, LOW);
-						}
-						else if (header.indexOf("GET /4/on") >= 0) {
-							Serial.println("GPIO 4 on");
-							//output4State = "on";
-							//digitalWrite(output4, HIGH);
-						}
-						else if (header.indexOf("GET /4/off") >= 0) {
-							Serial.println("GPIO 4 off");
-							//output4State = "off";
-							//digitalWrite(output4, LOW);
-						}
-
-						// Display the HTML web page
-						client.println("<!DOCTYPE html><html>");
-						client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-						client.println("<link rel=\"icon\" href=\"data:,\">");
-						// CSS to style the on/off buttons
-						// Feel free to change the background-color and font-size attributes to fit your preferences
-						client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
-						client.println(".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;");
-						client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-						client.println(".button2 {background-color: #77878A;}</style></head>");
-
-						// Web Page Heading
-						client.println("<body><h1>ESP8266 Web Server</h1>");
-
-						// Display current state, and ON/OFF buttons for GPIO 5
-						//client.println("<p>GPIO 5 - State " + output5State + "</p>");
-						// If the output5State is off, it displays the ON button
-							client.println("<p><a href=\"/5/off\"><button class=\"button button2\">OFF</button></a></p>");
-						//}
-
-						// Display current state, and ON/OFF buttons for GPIO 4
-						client.println("<p>GPIO 4 - State </p>");
-						// If the output4State is off, it displays the ON button
-							client.println("<p><a href=\"/4/off\"><button class=\"button button2\">OFF</button></a></p>");
-						//}
-						client.println("</body></html>");
-
-						// The HTTP response ends with another blank line
-						client.println();
-						// Break out of the while loop
-						break;
-					}
-					else { // if you got a newline, then clear currentLine
-						currentLine = "";
-					}
-				}
-				else if (c != '\r') {  // if you got anything else but a carriage return character,
-					currentLine += c;      // add it to the end of the currentLine
-				}
-			}
-		}
-		// Clear the header variable
-		header = "";
-		// Close the connection
-		client.stop();
-		Serial.println("Client disconnected.");
-		Serial.println("");*/
-		//}
-
-		/////////////////////////
-		// Check if a client has connected
-		/*client = server.available();
-		if (!client) {
-			return;
-		}
-
-		// Wait until the client sends some data
-		Serial.println("new client");
-		while (!client.available()) {
-			delay(1);
-		}
-
-		// Read the first line of the request
-		String request = client.readStringUntil('\r');
-		Serial.println(request);
-		client.flush();
-
-		// Match the request
-		int i = 0;
-		int value = LOW;
-
-		if (request.indexOf("/Command=forward") != -1) { //Move 50 steps forward
-
-			digitalWrite(Enb, LOW); // Enable stepper motor
-
-			digitalWrite(Dir, LOW); //Rotate stepper motor in clock wise direction
-			for (i = 1; i <= 200; i++) {
-				digitalWrite(Step, HIGH);
-				delay(3);
-				digitalWrite(Step, LOW);
-				delay(3);
-			}
-			value = HIGH;
-
-			digitalWrite(Enb, HIGH); // Disable stepper motor
-		}
-
-		if (request.indexOf("/Command=backward") != -1) { //Move 50 steps backwards
-
-			digitalWrite(Enb, LOW); // Enable stepper motor
-
-			digitalWrite(Dir, HIGH ); //Rotate stepper motor in anti clock wise direction
-			for (i = 1; i <= 200; i++) {
-				digitalWrite(Step, HIGH);
-				delay(3);
-				digitalWrite(Step, LOW);
-				delay(3);
-			}
-			value = LOW;
-
-			digitalWrite(Enb, HIGH); // Disable stepper motor
-		}
-
-		// Return the response
-		client.println("HTTP/1.1 200 OK");
-		client.println("Content-Type: text/html");
-		client.println(""); //  do not forget this one
-		client.println("<!DOCTYPE HTML>");
-		client.println("<html>");
-		client.println("<h1 align=center>Stepper motor controlled over WiFi</h1><br><br>");
-		client.print("Stepper motor moving= ");
-
-		if (value == HIGH) {
-			client.print("Forward");
-		}
-		else {
-			client.print("Backward");
-		}
-		client.println("<br><br>");
-		client.println("<a href=\"/Command=forward\"\"><button>Forward </button></a>");
-		client.println("<a href=\"/Command=backward\"\"><button>Backward </button></a><br />");
-		client.println("</html>");
-		delay(1);
-		Serial.println("Client disonnected");
-		Serial.println("");
-		*/
-
 
 }
 

@@ -2,7 +2,6 @@
 #include "TemperatureSensor.h"
 #include "KeylockSensor.h"
 #include "OnewireSensor.h"
-#include "RotaryEncoderSensor.h"
 #include "Shield.h"
 
 //extern bool getNextSensorId();

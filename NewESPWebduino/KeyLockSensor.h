@@ -53,11 +53,13 @@ public:
 	const String STATUS_OPENING = "opening";
 	const String STATUS_CLOSING = "closing";
 	const String STATUS_MOVING = "moving";
+	const String STATUS_STOPPING = "stopping";
 
 	// questi devono essere pubblic perche sono uisati dalla funzione di interrupt
 	static int outputAPin;// 2;// D1;
 	static int outputBPin; // 4;// D2;
 
+	bool stopLock();
 	bool openLock();
 	bool closeLock();
 	//bool rotateLock(bool close, int delta);
