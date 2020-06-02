@@ -15,20 +15,24 @@
 //#include <LinkedList.h>
 #include <SimpleList.h>
 
-class Sensor/* : public ObjectClass*/
+class Sensor
 {
 private:
 	static String tag;
 	static Logger logger;
 
+protected:
+	DynamicJsonBuffer* jsonBuffer[];
+
 public:
-	Sensor();
-	Sensor(int id, uint8_t pin, bool enabled, String address, String name);
+	//Sensor();
+	//Sensor(int id, uint8_t pin, bool enabled, String address, String name);
+	//Sensor(int id, uint8_t pin, bool enabled, String address, String name, JsonArray& children);
+	Sensor(JsonObject& json);
 	~Sensor();
 
 	const String STATUS_IDLE = "idle";
-	//const String STATUS_OFFLINE = "offline";
-
+	
 	SimpleList<Sensor*> childsensors = SimpleList<Sensor*>();
 	int sensorid;
 	String sensorname;
@@ -38,10 +42,7 @@ public:
 	String address;
 	String status = STATUS_IDLE;
 	String oldStatus = STATUS_IDLE;
-
-	//bool testMode = false;
-	//bool lastUpdateStatusFailed = false;
-	
+		
 	unsigned long lastCheckStatus;// = 0;//-flash_interval;
 	int checkStatus_interval = 1000;	// il valore corretto per ogni tipo di sensore
 									// è impostato nel costruttore
@@ -51,8 +52,6 @@ public:
 	int updateAvailabilityStatus_interval = 10000; // intervallo minimo di aggiornamentto 
 									// default 1 minuto
 	
-	//unsigned long lastUpdateStatus;// = 0;//-flash_interval;
-
 	void updateAvailabilityStatus();
 	void updateAttributes();
 	virtual void checkStatusChange();
@@ -62,9 +61,7 @@ public:
 	void setStatus(String status);
 	Sensor* getSensorFromId(int id);
 	virtual void getJson(JsonObject& json);
-	String getStrJson();
 	virtual void loadChildren(JsonArray& jsonarray);
-	virtual void show();
 	virtual String toString();	
 	virtual void init();
 	virtual String getStatusText();

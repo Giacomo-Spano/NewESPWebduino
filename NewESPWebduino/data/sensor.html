@@ -7,37 +7,40 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="jquery-3.5.0.min.js"></script>
     <script src="espduino.js"></script>
+    <script src="jquery.serializejson.min.js"></script>
 </head>
 <body>
     <h1>[<label id="LabelID">[]</label>] <label id="LabelName">[]</label> - <label id="LabelType">[]</label></h1>
 
-
     <form action="/setsensor" id="inputForm">
 
-        <input type="text" name="sensorid" id="sensorid" hidden><br> <!--- serve a passare campo sensorid = 0-->
-        <input type="text" name="type" id="type" hidden> <!--- serve a passare campo type = 0-->
-
         <div id="inputlist">
-            <div class="form-field form-required">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" />
-            </div>
+            <input type="text" name="sensorid" id="sensorid" hidden><br> <!--- serve a passare campo sensorid = 0-->
+            <input type="text" name="type" id="type" hidden> <!--- serve a passare campo type = 0-->
+
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" />
+
             <div class="form-field form-required">
                 <input type="checkbox" id="enabled" name="enabled" value="true" checked>
                 <label for="name">Enabled</label>
             </div>
+
             <div class="form-field form-required" id="pindiv">
                 <label for="type">Pin</label>
                 <select name="pin" id="pin">
                 </select><br>
             </div>
-        </div>
-        <input type="submit" value="Save">
-    </form><br>
 
+            <div id="children">
+
+            </div>
+        </div>
+        <input type="submit" class="button" value="Save">
+    </form>
+    <button class="button" onclick="addTemperatureSensor(0,'sensore temperatura')">add</button>
 </body>
 <script>
-    //var model;
 
     $(document).ready(function () {
 
@@ -68,7 +71,14 @@
             for (var a = 0; a < ary.length; a++) {
                 obj[ary[a].name] = ary[a].value;
             }
+            //console.log(JSON.stringify(obj));
+
+            var result = $('#inputForm').serializeJSON({ useIntKeysAsArrayIndex: true });
             console.log(JSON.stringify(obj));
+            //var result = $('input').serializeObject();
+            //$("#result").html(JSON.stringify(result));
+
+
 
             xhr = new XMLHttpRequest();
             var url = "/setsensor";
@@ -82,7 +92,7 @@
                     window.location.href = '/sensors';
                 }
             }
-            var data = JSON.stringify(obj);//JSON.stringify({ "prova": "provola" });
+            var data = JSON.stringify(result);
             xhr.send(data);
         });
     });
@@ -111,6 +121,16 @@
                     $("#enablepin").val(sensor.enablepin);
                     $("#outputapin").val(sensor.outputapin);
                     $("#outputbpin").val(sensor.outputbpin);
+                } else if (sensor.type == "onewiresensor") {
+
+                    sensor.children.forEach(element => {
+                        addTemperatureSensor(element.sensorid, element.name);
+                    });
+                    /*$("#steppin").val(sensor.steppin);
+                    $("#directionpin").val(sensor.directionpin);
+                    $("#enablepin").val(sensor.enablepin);
+                    $("#outputapin").val(sensor.outputapin);
+                    $("#outputbpin").val(sensor.outputbpin);*/
                 }
 
             }
@@ -133,6 +153,7 @@
                     loadValue(model, sensorid);
                 } else { // add
                     addCustomSensorField(model, type);
+                    addTemperatureSensor(0,"sensore temparatura");
                 }
             }
         };
@@ -197,9 +218,39 @@
                 $("#outputapin").val("D1");
                 $("#outputbpin").val("D2");
             }
+        } else if (type == "onewiresensor") {
+            //addTemperatureSensor(sensore temparatura);
+            //addTemperatureSensor(1);
+            //addTemperatureSensor(2);
         }
     }
 
+    var temperatureSensorNum = 0; 
+    function addTemperatureSensor(sensorid, name) {
+        $("#children").append(
+            "<div id='temperaturesensor" + temperatureSensorNum + "'>" +
+            "<input type='text' name='children[" + temperatureSensorNum + "][type'] value='temperaturesensor' hidden>" +
+            "<input type='text' name='children[" + temperatureSensorNum + "][sensorid]' value='" + sensorid + "' />" +
+            "<label for='type'>name</label>" +
+            "<input type='text' name='children[" + temperatureSensorNum + "][name]' value='" + name + "' />" +
+            "<button type='button' class='button' id='removetemperature" + temperatureSensorNum +"' >remove</button >" +
+            "</div>" +
+            "<br />");
+        $("#removetemperature" + temperatureSensorNum).click(function () {
+            $(this).parent().remove(); 
+            //removeTemperaturesensor(temperatureSensorNum);
+            
+        });
+        temperatureSensorNum++;
+        
+       
+    }
+
+
+    function removeTemperaturesensor(n) {
+        $("temperaturesensor" + n).remove();
+    }
+   
     function pinList(model) {
         var list = "";
         if (model == "ESP8266") {
@@ -227,6 +278,53 @@
         console.log("list = " + list);
         return list
     }
+
+
+    (function (jQuery) {
+        jQuery.fn.serializeObject = function () {
+            var raw = this.serializeArray().map(function (input) {
+                return [input.name, input.value]
+            })
+            var obj = {}
+
+            raw.forEach(function (pair) {
+                var key = pair[0],
+                    value = pair[1]
+                if (hasPeriod(key)) {
+                    var keys = key.split('.')
+                    nest(keys, value, obj)
+                } else {
+                    obj[key] = value
+                }
+            })
+
+            return obj
+        }
+
+        function hasPeriod(str) {
+            return /\./.test(str);
+        }
+
+        function nest(keys, value, obj) {
+            if (keys.length > 0) {
+
+                var key = keys.shift()
+
+                if (obj[key] === undefined) {
+                    if (keys.length === 0) {
+                        obj[key] = value
+                    } else {
+                        obj[key] = {}
+                    }
+                }
+                var nestingBookmark = obj[key]
+            }
+
+            if (keys.length !== 0) {
+                nest(keys, value, nestingBookmark)
+            }
+        }
+    }($))
 
 </script>
 </html>

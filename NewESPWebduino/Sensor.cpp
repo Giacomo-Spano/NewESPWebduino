@@ -2,13 +2,14 @@
 #include "Shield.h"
 #include "Logger.h"
 #include "MQTTMessage.h"
+#include "SensorFactory.h"
 
 Logger Sensor::logger;
 String Sensor::tag = "Sensor";
 
 extern bool mqtt_publish(String topic, String message);
 
-Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name)
+/*Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name)
 {
 	this->sensorid = id;
 	this->pin = pin;
@@ -18,15 +19,70 @@ Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name)
 
 	checkStatus_interval = 10000;//60000; // 60 seconds
 	lastCheckStatus = 0;// = 0;//-flash_interval;
+}*/
+
+/*Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name, JsonArray& children)
+{
+	this->sensorid = id;
+	this->pin = pin;
+	this->enabled = enabled;
+	this->address = address;
+	this->sensorname = name;
+
+	checkStatus_interval = 10000;//60000; // 60 seconds
+	lastCheckStatus = 0;// = 0;//-flash_interval;
+}*/
+
+Sensor::Sensor(JsonObject& json)
+{
+	logger.print(tag, F("\n\t >>Sensor::Sensor"));
+	String type = json["type"];
+	type.replace("\r\n", "");
+
+	this->sensorid = json["sensorid"];
+	logger.print(tag, "\n\t sensorid=" + String(sensorid));
+	if (json.containsKey(F("pin"))) {
+		String strPin = json[F("pin")];
+		strPin.replace("\r\n", ""); // importante!!
+		this->pin = Shield::pinFromStr(strPin);
+	}
+	logger.print(tag, "\n\t pin=" + String(pin));
+	if (json.containsKey("enabled"))
+		this->enabled = json["enabled"];
+	/*if (json.containsKey("address"))
+		this->address = json["address"];*/
+	if (json.containsKey("name"))
+		this->sensorname = json["name"].asString();
+
+	if (json.containsKey("children")) {
+		String str = json["children"];
+		DynamicJsonBuffer jsonBuffer;
+		JsonArray& jsonarray = jsonBuffer.parseArray(str.c_str());
+		if (jsonarray.success()) {
+			logger.print(tag, F("\n\t parsed children json"));
+			jsonarray.printTo(Serial);
+			loadChildren(jsonarray);
+		}
+		else {
+			logger.print(tag, F("\n\t failed to parsed children json"));
+		}		
+	}
+
+	checkStatus_interval = 10000;//60000; // 60 seconds
+	lastCheckStatus = 0;// = 0;//-flash_interval;
+	logger.print(tag, F("\n\t <<Sensor::Sensor"));
 }
 
-Sensor::Sensor()
+/*Sensor::Sensor()
 {
-}
+}*/
 
 Sensor::~Sensor()
 {
-	//childsensors.clear();
+	for (int i = 0; i < childsensors.size(); i++) {
+		delete jsonBuffer[i];
+	}
+	childsensors.clear();
 }
 
 void Sensor::setStatus(String _status) {
@@ -53,8 +109,6 @@ void Sensor::sendStatusUpdate()
 		oldStatus = status;
 }
 
-
-
 void Sensor::updateAvailabilityStatus() {
 
 	unsigned long currMillis = millis();
@@ -73,127 +127,91 @@ void Sensor::updateAttributes() {
 	
 	logger.print(tag, "\n\n\t >>>> send atttributes");
 	String topic = "ESPWebduino/myboard1/" + type + "/" + sensorid + "/attributes";
-	String strJson = getStrJson();
-	mqtt_publish(topic, strJson);
-}
-
-
-
-void Sensor::show() {
-
-	/*logger.print(tag, "\n\t sensorid=");
-	logger.print(tag, String(sensorid));
-	logger.print(tag, "\n\t name=");
-	logger.print(tag, sensorname);
-	logger.print(tag, "\n\t addr= ");
-	logger.print(tag, address);
-	logger.print(tag, "\n\t enabled= ");
-	logger.print(tag, String(enabled));
-	logger.print(tag, "\n\t pin= ");
-	logger.print(tag, String(pin));*/
+	//String strJson = getStrJson();
+	DynamicJsonBuffer jsonBuffer;
+	JsonObject& json = jsonBuffer.createObject();
+	getJson(json);
+	String str = "";
+	json.printTo(str);
+	mqtt_publish(topic, str/*strJson*/);
 }
 
 String Sensor::toString()
 {
 	String str = "sensor: " + sensorname + ";type: " + type + ";sensorid: " + sensorid;
-	/*if (childsensors.size() > 0)
-		str += ";chidren:" + String(childsensors.size());*/
 	return str;
 }
 
 Sensor * Sensor::getSensorFromId(int id)
 {
-	//logger.print(tag, F("\n\t >>Sensor::getSensorFromId "));
+	logger.print(tag, F("\n\t >>Sensor::getSensorFromId "));
 
 	if (sensorid == id)
 		return (Sensor*)this;
 	
-	/*if (childsensors.size() > 0) {
+	if (childsensors.size() > 0) {
 		for (int i = 0; i < childsensors.size(); i++) {
-			//logger.print(tag, "\n\t i= " + String(i));
+			logger.print(tag, "\n\t i= " + String(i));
 			Sensor* child = (Sensor*)childsensors.get(i);
 			Sensor* sensor = child->getSensorFromId(id);
 			if (sensor->sensorid == id)
 				return (Sensor*)this;
 		}
-	}*/
-	//logger.println(tag, F("<<Sensor::getSensorFromId"));
+	}
+	logger.println(tag, F("<<Sensor::getSensorFromId"));
 	return nullptr;
 }
 
-String prova;
-
 void Sensor::getJson(JsonObject& json) {
 
-	//logger.println(tag, F(">>Sensor::getJson\n"));
+	logger.print(tag, "\n\t>>Sensor::getJson id=" + String(sensorid) + " name=" + sensorname + " type=" + type);
 	json["sensorid"] = sensorid;
 	json["status"] = status;
 	json["addr"] = address;
 	json["statustext"] = getStatusText();
-
 	json["pin"] = Shield::getStrPin(pin);
 	json["name"] = sensorname;
 	json["enabled"] = enabled;
 	json["type"] = type;
 
-
-		
-	/*if (childsensors.size() > 0) {
-
-		
-		for (int i = 0; i < childsensors.size(); i++) {
-			Sensor* child = (Sensor*)childsensors.get(i);
-			JsonArray& children = json["children"];
-			JsonObject& childjson = children[i];
-
-			child->getJson(childjson);
-		}
-	}*/
-	//logger.printJson(json);
-
-	//logger.println(tag, F("<<Sensor::getJson"));
-}
-
-String Sensor::getStrJson() {
-
-	//logger.println(tag, F(">>Sensor::getStrJson\n"));
-
-	DynamicJsonBuffer jsonBuffer;
-	JsonObject& json = jsonBuffer.createObject();
-	getJson(json);
-	
-	/*if (childsensors.size() > 0) {
-		
+	logger.print(tag, "\n\tchildsensors.size()=" + String(childsensors.size()));
+	if (childsensors.size() > 0) {
 		JsonArray& children = json.createNestedArray("children");
 		for (int i = 0; i < childsensors.size(); i++) {
-			logger.println(tag, F("\nchild "));
-			logger.println(tag, i);
-
+			logger.print(tag, "\n\n\t child sensor n=" + String(i));
 			Sensor* child = (Sensor*)childsensors.get(i);
-			
-			StaticJsonBuffer<300> jsonBuffer;
-			JsonObject& childjson = jsonBuffer.createObject();
+			JsonObject& childjson = jsonBuffer[i]->createObject();
 			child->getJson(childjson);
 			children.add(childjson);
 		}
 		boolean res = json.set("children", children);
-		logger.print(tag, F("res="));
-		logger.print(tag, Logger::boolToString(res));
-	}*/
-	//logger.printJson(json);
+		logger.print(tag, "\n\n\t children added\n");
+	}
 
-	String str;
-	json.printTo(str);
-	//logger.print(tag, str);
-
-	//logger.println(tag, F("str="));
-	//logger.println(tag, str);
-	///logger.println(tag, F("<<Sensor::getStrJson"));
-	return str;
+	logger.print(tag, "\n\t printjson");
+	json.printTo(Serial);
+	logger.print(tag, "\n\n\t<<Sensor::getJson sensorid=" + String(sensorid)  +" \n\n");
 }
 
-void Sensor::loadChildren(JsonArray& json)
+void Sensor::loadChildren(JsonArray& jsonarray)
 {
+	logger.print(tag, "\n\n\t>>Sensor::loadChildren jsonarray.size()=" + String(jsonarray.size()));
+
+	for (int i = 0; i < jsonarray.size(); i++) {
+
+		DynamicJsonBuffer* pDynamicJsonBuffer = new DynamicJsonBuffer();
+		jsonBuffer[i] = pDynamicJsonBuffer;
+
+		String name = jsonarray[i]["name"];
+		//String subaddress = "sub-" + String(i);
+		Sensor* child = SensorFactory::createSensor(jsonarray[i]);
+		if (child != nullptr) {
+			//child->id = id++;
+			childsensors.add(child);
+		}
+	}
+
+	logger.print(tag, "\n\t>>Sensor::loadChildren jsonarray.size()=" + String(childsensors.size()));
 }
 
 void Sensor::init()
@@ -225,8 +243,6 @@ bool Sensor::sendCommand(String command, String payload)
 	logger.print(tag, F("\n\t <<Sensor::receiveCommand"));
 	return false;
 }
-
-
 
 bool Sensor::receiveCommand(String command, int id, String uuid, String jsoncmd)
 {

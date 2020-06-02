@@ -35,18 +35,56 @@ void ICACHE_RAM_ATTR updateEncoder() {
 	Serial.println(position);*/
 }
 
-void KeyLockSensor::getJson(JsonObject& json) {
-	Sensor::getJson(json);
-	json["lockstatus"] = status;
+KeyLockSensor::KeyLockSensor(JsonObject& json) : Sensor(json)
+{
+	logger.print(tag, F("\n\t>>KeyLockSensor::KeyLockSensor"));
 
-	json["steppin"] = Shield::getStrPin(stepPin);
-	json["directionpin"] = Shield::getStrPin(directionPin);
-	json["enablepin"] = Shield::getStrPin(enablePin);
-	json["outputapin"] = Shield::getStrPin(outputAPin);
-	json["outputbpin"] = Shield::getStrPin(outputBPin);
+	type = "keylocksensor";
+	checkStatus_interval = 10;
+	lastCheckStatus = 0;
+
+	/*stepPin = _stepPin;
+	directionPin = _directionPin;
+	enablePin = _enablePin;
+	outputAPin = _outputAPin;
+	outputBPin = _outputBPin;*/
+
+	if (!json.containsKey("steppin"))
+		return;
+	String strStepPin = json["steppin"];
+	strStepPin.replace("\r\n", ""); // importante!!
+	stepPin = Shield::pinFromStr(strStepPin);
+
+	if (!json.containsKey("directionpin"))
+		return;
+	String strDirectionPin = json["directionpin"];
+	strDirectionPin.replace("\r\n", ""); // importante!!
+	directionPin = Shield::pinFromStr(strDirectionPin);
+
+	if (!json.containsKey("enablepin"))
+		return;
+	String strEnablePin = json["enablepin"];
+	strEnablePin.replace("\r\n", ""); // importante!!
+	enablePin = Shield::pinFromStr(strEnablePin);
+
+	if (!json.containsKey("outputapin"))
+		return;
+	String strOutputAPin = json["outputapin"];
+	strOutputAPin.replace("\r\n", ""); // importante!!
+	outputAPin = Shield::pinFromStr(strOutputAPin);
+
+	if (!json.containsKey("outputbpin"))
+		return;
+	String strOutputBPin = json["outputbpin"];
+	strOutputBPin.replace("\r\n", ""); // importante!!
+	outputBPin = Shield::pinFromStr(strOutputBPin);	
+
+	logger.print(tag, F("\n\t<<KeyLockSensor::KeyLockSensor\n"));
 }
 
-KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t _stepPin, uint8_t _directionPin, uint8_t _enablePin, uint8_t _outputAPin, uint8_t _outputBPin) : Sensor(id, pin, enabled, address, name)
+
+
+/*KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t _stepPin, uint8_t _directionPin, uint8_t _enablePin, uint8_t _outputAPin, uint8_t _outputBPin) : Sensor(id, pin, enabled, address, name)
 {
 	type = "keylocksensor";
 	checkStatus_interval = 10;
@@ -57,10 +95,20 @@ KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, 
 	enablePin = _enablePin;
 	outputAPin = _outputAPin;
 	outputBPin = _outputBPin;
-}
+}*/
 
 KeyLockSensor::~KeyLockSensor()
 {
+}
+
+void KeyLockSensor::getJson(JsonObject& json) {
+	Sensor::getJson(json);
+	json["lockstatus"] = status;
+	json["steppin"] = Shield::getStrPin(stepPin);
+	json["directionpin"] = Shield::getStrPin(directionPin);
+	json["enablepin"] = Shield::getStrPin(enablePin);
+	json["outputapin"] = Shield::getStrPin(outputAPin);
+	json["outputbpin"] = Shield::getStrPin(outputBPin);
 }
 
 void KeyLockSensor::checkStatusChange()

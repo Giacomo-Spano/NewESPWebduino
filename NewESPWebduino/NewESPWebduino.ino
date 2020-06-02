@@ -43,6 +43,7 @@ Shield shield;
 KeyLockSensor* keylockSensor;
 
 extern bool mqtt_publish(String topic, String message);
+//extern bool getNextSensorId();
 
 const char* ssid = "FASTWEB-C16E33";
 const char* password = "4GE4MEHHFG";
@@ -545,7 +546,7 @@ void setup() {
 						Sensor* sensor = (Sensor*)shield.sensors.get(i);
 						if (sensor->sensorid == sensorID.toInt()) {
 							shield.sensors.remove(i);
-							shield.writeSensorToFile();
+							shield.writeSensorsToFile();
 							//request->send(SPIFFS, "/sensors.html", String(), false, processor);
 							//request->send(200, "text/html", "errore - sensor not found<br><a href=\"/\">Return to Home Page</a>");
 							request->send(200, "text/html", "Sensor deleted <br><a href=\"/sensors\">Ok</a>");
@@ -619,7 +620,12 @@ void setup() {
 			for (int i = 0; i < shield.sensors.size(); i++) {
 				Sensor* sensor = (Sensor*)shield.sensors.get(i);
 				if (sensor->sensorid == sensorID.toInt()) {
-					request->send(200, "application/json", sensor->getStrJson());
+					DynamicJsonBuffer jsonBuffer;
+					JsonObject& json = jsonBuffer.createObject();
+					sensor->getJson(json);
+					String str = "";
+					json.printTo(str);
+					request->send(200, "application/json", str);
 					return;
 				}
 			}
@@ -758,6 +764,11 @@ void setup() {
 	// Initialize MQTT
 	initMQTTServer();
 }
+
+/*bool getNextSensorId() {
+
+	return shield.getNextSensorId();
+}*/
 
 bool reconnect() {
 	logger.print(tag, F("\n\n\t >>reconnect"));

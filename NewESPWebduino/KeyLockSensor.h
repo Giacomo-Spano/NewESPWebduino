@@ -62,7 +62,8 @@ public:
 	bool closeLock();
 	//bool rotateLock(bool close, int delta);
 
-	KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t stepPin, uint8_t directionPin, uint8_t enablePin, uint8_t outputAPin, uint8_t outputbPin);
+	//KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t stepPin, uint8_t directionPin, uint8_t enablePin, uint8_t outputAPin, uint8_t outputbPin);
+	KeyLockSensor(JsonObject& json);
 	~KeyLockSensor();
 
 	virtual void init();

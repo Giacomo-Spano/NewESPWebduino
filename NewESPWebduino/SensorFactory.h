@@ -17,6 +17,8 @@ class SensorFactory
 private:
 	static String tag;
 	static Logger logger;
+	static int nextSensorID;
+	static int getNextSensorId();
 public:
 	SensorFactory();
 	~SensorFactory();

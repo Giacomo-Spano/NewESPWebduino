@@ -19,7 +19,9 @@
 
         <div class="grid-item name-item">Status</div>
         <div class="grid-item value-item" id="sensorstatus">4</div>
+    </div>
 
+    <div class="grid-container" id="keylocksensor" hidden>
         <div class="grid-item name-item">Open/Close command</div>
         <div class="grid-item value-item">
             <button class="button" onclick="sendCommand('OPEN','')">OPEN</button>
@@ -32,8 +34,11 @@
             <form action="/setsensor" id="inputForm">
                 <input type="range" min="0" max="100" value="50" class="slider" id="position" name="position">
             </form>
-            
+
         </div>
+    </div>
+
+    <div class="grid-container" id="onewiresensor" hidden>
     </div>
 
 
@@ -51,15 +56,6 @@
         loadSensorValue(sensorid);
 
         $('#position').change('mousestop', function () {
-
-            /*var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    ;// 
-                }
-            };
-            xhttp.open("GET", "/position?position=" + this.value, true);
-            xhttp.send();*/
             sendCommand("position", this.value);
         });
     });
@@ -76,7 +72,11 @@
 
                 $("#sensorname").text(sensor.name);
                 $("#sensorstatus").text(sensor.status);
-                
+
+
+                $("#keylocksensor").hide();
+                $("#onewiresensor").hide();
+
                 if (sensor.type == "keylocksensor") {
                     $("#positionvalue").text(sensor.position);
                     /*$("#steppin").val(sensor.steppin);
@@ -84,6 +84,17 @@
                     $("#enablepin").val(sensor.enablepin);
                     $("#outputapin").val(sensor.outputapin);
                     $("#outputbpin").val(sensor.outputbpin);*/
+
+                    $("#keylocksensor").show();
+                } else if (sensor.type == "onewiresensor") {
+                    $("#onewiresensor").show();
+                    $("#onewiresensor").empty();
+                    sensor.children.forEach(element => {
+                        $("#onewiresensor").append(
+                            "<div class='grid-item name-item'>" + element.name + "</div>" +
+                            "<div class='grid-item value-item' id='sensorname' >" + element.statustext + "</div >" +
+                            "<br />");
+                    });
                 }
 
             }
@@ -92,12 +103,12 @@
         xhttp.send();
     }
 
-    function sendCommand(/*id, */command, payload) {
+    function sendCommand(command, payload) {
         var obj = {};
         obj['sensorid'] = sensorid;
         obj['command'] = command;
         obj['payload'] = payload;
-        
+
         console.log(JSON.stringify(obj));
 
         xhr = new XMLHttpRequest();
@@ -107,7 +118,6 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log(xhr.responseText);
-                //alert(xhr.responseText);
                 loadSensorValue(sensorid);
             }
         }
@@ -115,10 +125,9 @@
         xhr.send(data);
     }
 
-    function addCustomSensorField(model, type) {
-        if (type == "keylocksensor") {
-        }
-    }
+    /*function addCustomSensorField(model, type) {
+
+    }*/
 
     setInterval(function () {
         loadSensorValue(sensorid);

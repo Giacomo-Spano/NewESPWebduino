@@ -181,6 +181,7 @@
     <None Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\library.properties">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </None>
+    <None Include="data\sensorview.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.NewESPWebduino.vsarduino.h">
@@ -199,9 +200,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OnewireSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RotaryEncoderSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sensor.h">
@@ -1215,9 +1213,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OnewireSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotaryEncoderSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sensor.cpp">

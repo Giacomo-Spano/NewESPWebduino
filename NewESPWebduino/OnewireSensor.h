@@ -27,17 +27,10 @@ private:
 	DallasTemperature* pDallasSensors;
 
 public:
-	//virtual bool getJSON(JSONObject *jObject);
-	//virtual void loadChildren(JSONObject json);
 	static const int avTempsize = 10;
 
-	//const int checkTemperature_interval = 10000;//60000; // 60 seconds
-	//unsigned long lastCheckTemperature = 0;//-flash_interval;
-
-	//OnewireSensor();
-	OnewireSensor(int id, uint8_t pin, bool enabled, String address, String name);
-	//virtual void loadChildren(JSONArray& jarray);
-	//virtual void loadChildren(JsonArray& jsonarray);
+	OnewireSensor(JsonObject& json);
+	bool createSensor();
 	~OnewireSensor();
 	virtual void checkStatusChange();
 
@@ -45,19 +38,13 @@ public:
 	virtual void getJson(JsonObject& json);
 
 	static const int maxTempSensors = 10; // max num sensori onewire sullo stesso pin
-	//TemperatureSensorOld temperatureSensors[maxTempSensors];
-	int tempSensorNum = 0;
-	
 
 	int avTempCounter = 0;
 	float avTemp[avTempsize];
 
 	bool readTemperatures();
-	//virtual String getJSONFields();
 	virtual void init();
-	//float getTemperature(int index);
-	//float getAvTemperature(int index);
-	//void addTemperatureSensorsFromJson(JSON sensorJson);
+	virtual void loadChildren(JsonArray& jsonarray);
 };
 
 #endif

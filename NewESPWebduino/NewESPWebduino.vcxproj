@@ -125,6 +125,7 @@
     <None Include="data\onewire.html" />
     <None Include="data\sensor.html" />
     <None Include="data\sensors.html" />
+    <None Include="data\sensorview.html" />
     <None Include="data\style.css" />
     <None Include="data\tempsensor.html" />
     <None Include="data\upload.html" />
@@ -492,7 +493,6 @@
     <ClInclude Include="MQTTClientClass.h" />
     <ClInclude Include="MQTTMessage.h" />
     <ClInclude Include="OnewireSensor.h" />
-    <ClInclude Include="RotaryEncoderSensor.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="SensorFactory.h" />
     <ClInclude Include="Shield.h" />
@@ -752,7 +752,6 @@
     <ClCompile Include="MQTTClientClass.cpp" />
     <ClCompile Include="MQTTMessage.cpp" />
     <ClCompile Include="OnewireSensor.cpp" />
-    <ClCompile Include="RotaryEncoderSensor.cpp" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="SensorFactory.cpp" />
     <ClCompile Include="Shield.cpp" />

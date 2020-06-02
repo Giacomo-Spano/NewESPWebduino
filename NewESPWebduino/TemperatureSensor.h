@@ -22,10 +22,12 @@ private:
 	virtual void getJson(JsonObject& json);
 
 public:
-	TemperatureSensor(int id, uint8_t pin, bool enabled, String address, String name);
+	const String STATUS_UNAVAILABLE = "unavailable";
+
+	//TemperatureSensor(int id, uint8_t pin, bool enabled, String address, String name);
+	TemperatureSensor(JsonObject& json);
 	~TemperatureSensor();
 	virtual void init();
-	//virtual void checkStatusChange();
 	virtual String getStatusText();
 
 	String name = "Sensor name";
@@ -34,6 +36,7 @@ public:
 	float avTemperature;
 
 	uint8_t sensorAddr[8]; // indirizzi fisico sensore
+	bool unavailable;
 
 	String getPhisicalAddress() {
 

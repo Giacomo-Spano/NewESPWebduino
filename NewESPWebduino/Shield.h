@@ -4,27 +4,11 @@
 #include <Arduino.h>
 #include <string.h>
 #include "Sensor.h"
-//#include <OneWire.h>
-//#include <DallasTemperature.h>
-//#include "ESPDisplay.h"
-/*#ifdef ESP8266
-#include <ESP8266WiFi.h>
-#include "TFTDisplay.h"
-#endif*/
-//#include "DoorSensor.h"
-//#include "OnewireSensor.h"
-//#include "HornSensor.h"
 #include <SimpleList.h>
-//#include <LinkedList.h>
-
-//#include "LoRaGateway.h"
-
 
 class Shield
-{	
+{
 protected:
-	//static String networkSSID;
-	//static String networkPassword;
 	int localPort;
 
 	String name;
@@ -37,8 +21,7 @@ protected:
 	String user2;
 	String password2;
 	//
-	
-	
+
 	String shieldName;
 	bool nexiondisplay;
 	bool oleddisplay;
@@ -53,23 +36,23 @@ protected:
 	String rebootreason;
 	String loraMessage;
 
-	//LoRaGateway* loraGateway = nullptr;
+	
 
 public:
 	int freeMemory = 0;
 	int checkHealth_timeout = 86400000 / 2;  //12 ore
 	unsigned long lastCheckHealth;
 	String swVersion;
-	
+
 	bool settingFromServerReceived = false;
-	
+
 	unsigned long settingsRequest_interval = 1 * 60 * 1000;
 	const int settingsRequest_timeout = 1 * 60 * 1000;
 	unsigned long lastSettingRequest = 0;
 	bool settingsNeedToBeUpdated = true;
 	bool settingsRequestInprogress = false;
-	
-	const int timeSync_interval = 5*60*1000;// *12;// 60 secondi * 15 minuti
+
+	const int timeSync_interval = 5 * 60 * 1000;// *12;// 60 secondi * 15 minuti
 	const int timeRequest_timeout = 1 * 60 * 1000;
 	unsigned long lastTimeRequest = 0;
 	bool timeNeedToBeUpdated = true;
@@ -81,7 +64,7 @@ public:
 	//static const int maxSensorNum = 10;
 	bool loadSensors(JsonArray& json);
 	void readSensorFromFile();
-	bool writeSensorToFile();
+	bool writeSensorsToFile();
 	String getSensors();
 	bool updateSensor(JsonObject& json);
 	bool addSensor(JsonObject& json);
@@ -96,6 +79,9 @@ public:
 	void drawSWVersion();
 	void clearScreen();
 	void invalidateDisplay();
+	//bool getNextSensorId();
+	//int getNextId();
+	//void writeNextId(int nextid);
 
 	void checkTimeUpdateStatus();
 	void checkSettingResquestStatus();
@@ -105,8 +91,8 @@ public:
 	void readRebootReason();
 	void writeRebootReason();
 
-	void setLoRaGateway(bool enable, String address, bool serverenabled);
-	bool sendLoRaMessage(String payload);
+	//void setLoRaGateway(bool enable, String address, bool serverenabled);
+	//bool sendLoRaMessage(String payload);
 
 	void setFreeMem(int mem);
 
@@ -117,16 +103,16 @@ private:
 	String status;
 	String shieldEvent;
 	//ESPDisplay espDisplay;
-	
+
 	String oldDate;
 
 protected:
 
 	bool onShieldSettingsCommand(JsonObject& json);
 	bool onPowerCommand(JsonObject& json);
-	void checkSensorsStatus();	
+	void checkSensorsStatus();
 
-	
+
 	//ESPDisplay display;
 #ifdef ESP8266
 	//TFTDisplay tftDisplay;
@@ -138,12 +124,12 @@ public:
 
 	void sendSensorCommand(String type, int id, String command, String payload);
 	void sendSensorCommand(int id, String command, String payload);
-	
+
 	Shield();
 	~Shield();
 	void init();
 	virtual void getJson(JsonObject& json);
-	void checkStatus();	
+	void checkStatus();
 	void setStatus(String txt);
 	void setEvent(String txt);
 	bool receiveCommand(String jsonStr);
@@ -151,14 +137,13 @@ public:
 	bool requestSettingsFromServer();
 	String localIP;
 	void clearAllSensors();
-	Sensor* getSensorFromAddress(String addr);
 	Sensor* getSensorFromId(int id);
 
 	int getShieldId() {
-		return id; 
-	} 
+		return id;
+	}
 
-	void setShieldId(int shieldid) { 
+	void setShieldId(int shieldid) {
 		id = shieldid;
 	}
 	String getLastRestartDate() { return lastRestartDate; }
@@ -194,14 +179,14 @@ public:
 	{
 		return swVersion;
 	}
-		
+
 	int getServerPort()
 	{
 		return serverPort;
 	}
 
 	void setServerPort(int port)
-	{		
+	{
 		logger.print(tag, "\n\t >>setServerPort");
 		serverPort = port;
 		logger.print(tag, "\n\t <<serverPort=" + String(serverPort));
@@ -231,7 +216,8 @@ public:
 		logger.print(tag, "\n\t <<setOledDisplay=" + Logger::boolToString(oleddisplay));
 	}
 
-		
+
+	
 
 	static String getStrPin(uint8_t pin)
 	{
@@ -274,7 +260,7 @@ public:
 		if (pin == 23)
 			return "D23";
 #endif // ESP32
-			return "";
+		return "";
 	}
 
 	static uint8_t pinFromStr(String str)
@@ -312,7 +298,7 @@ public:
 			return D10;
 #endif
 #endif
-	
+
 #ifdef ESP32
 		if (str.equals("D5"))
 			return 5;
@@ -326,13 +312,13 @@ public:
 			return 22;
 		if (str.equals("D23"))
 			return 23;
-	
+
 #endif
-			logger.print(tag, "\n\t PIN NOT FOUND");
-			return 0;
+		logger.print(tag, "\n\t PIN NOT FOUND");
+		return 0;
 	}
 
-	
+
 	int getLocalPort()
 	{
 		return localPort;
@@ -342,7 +328,7 @@ public:
 	{
 		logger.print(tag, "\n\t >>setLocalPort");
 		localPort = port;
-		logger.print(tag, "\n\t >> localPort="+ String(localPort));
+		logger.print(tag, "\n\t >> localPort=" + String(localPort));
 	}
 
 	String getName()
@@ -424,7 +410,7 @@ public:
 	}
 
 
-	
+
 	/*String getShieldName()
 	{
 		return String(shieldName);
