@@ -5,6 +5,7 @@
 #include <string.h>
 #include "Sensor.h"
 #include <SimpleList.h>
+#include "ESPDisplay.h"
 
 class Shield
 {
@@ -71,7 +72,6 @@ public:
 	void parseMessageReceived(String topic, String message);
 	void drawString(int x, int y, String txt, int size, int color);
 	void drawDateTime();
-	void drawLora();
 	void drawStatus();
 	void drawMemory();
 	void drawEvent();
@@ -84,8 +84,7 @@ public:
 	//void writeNextId(int nextid);
 
 	void checkTimeUpdateStatus();
-	void checkSettingResquestStatus();
-
+	
 	void readConfig();
 	void writeConfig();
 	void readRebootReason();
@@ -102,7 +101,7 @@ private:
 
 	String status;
 	String shieldEvent;
-	//ESPDisplay espDisplay;
+	ESPDisplay espDisplay;
 
 	String oldDate;
 
@@ -113,7 +112,7 @@ protected:
 	void checkSensorsStatus();
 
 
-	//ESPDisplay display;
+	ESPDisplay display;
 #ifdef ESP8266
 	//TFTDisplay tftDisplay;
 #endif
@@ -122,7 +121,6 @@ public:
 
 	SimpleList<Sensor*> sensors = SimpleList<Sensor*>();
 
-	void sendSensorCommand(String type, int id, String command, String payload);
 	void sendSensorCommand(int id, String command, String payload);
 
 	Shield();
@@ -134,7 +132,6 @@ public:
 	void setEvent(String txt);
 	bool receiveCommand(String jsonStr);
 	bool requestTime();
-	bool requestSettingsFromServer();
 	String localIP;
 	void clearAllSensors();
 	Sensor* getSensorFromId(int id);

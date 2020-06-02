@@ -3,6 +3,7 @@
 #include "SensorFactory.h"
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 #include "MQTTMessage.h"
+#include "ESPDisplay.h"
 
 #ifndef ESP8266
 #include <FS.h> //this needs to be first, or it all crashes and burns...
@@ -183,10 +184,6 @@ void Shield::readConfig() {
 						setPassword2(json["password2"]);
 					}
 
-
-
-
-
 					if (json.containsKey("shieldid")) {
 						logger.print(tag, F("\n\t shieldid: "));
 						String str = json["shieldid"];
@@ -224,6 +221,8 @@ void Shield::readConfig() {
 
 void Shield::init() {
 
+	setOledDisplay(false);
+
 	readSensorFromFile();
 	Sensor* sensor;
 
@@ -233,7 +232,11 @@ void Shield::init() {
 	shieldEvent = "";
 
 #ifdef ESP8266
-	//espDisplay.init(D3, D4);
+	if (getOledDisplay()) {
+		espDisplay.init(D3, D4);
+	}
+	
+	
 	//espDisplay.init(SDA, SCL); //sda scl
 	//espDisplay.init(D4, D3); //sda scl
 #endif
@@ -276,58 +279,63 @@ Sensor* Shield::getSensorFromId(int id) { /// sidsogna aggiungere anche richerca
 
 
 void Shield::drawStatus() {
-	//espDisplay.drawString(0, 0, status);
+	if (getOledDisplay()) {
+		espDisplay.drawString(0, 0, status);
+	}
 }
 
 void Shield::drawMemory() {
-	//espDisplay.drawString(50, 0, "(" + String(freeMemory) + ")");
+	if (getOledDisplay()) {
+		espDisplay.drawString(50, 0, "(" + String(freeMemory) + ")");
+	}
 }
 
 void Shield::drawEvent() {
-
-	//espDisplay.drawString(0, 10, shieldEvent);
+	if (getOledDisplay()) {
+		espDisplay.drawString(0, 10, shieldEvent);
+	}
 }
 
 void Shield::drawSWVersion() {
-
-	String txt = logger.getStrDate();
-	//espDisplay.drawString(100, 0, "v" + swVersion);
+	if (getOledDisplay()) {
+		String txt = logger.getStrDate();
+		espDisplay.drawString(100, 0, "v" + swVersion);
+	}
 }
 
 void Shield::drawDateTime() {
 
-	String txt = logger.getStrDate();
-	//espDisplay.drawString(0, 20, txt);
-}
-
-void Shield::drawLora() {
-
-	//String txt = logger.getStrDate();
-	//espDisplay.drawString(0, 40, "++" + loraMessage);
+	if (getOledDisplay()) {
+		String txt = logger.getStrDate();
+		espDisplay.drawString(0, 20, txt);
+	}
 }
 
 void Shield::drawSensorsStatus() {
 
-	/*int lines = 3;
-	for (int i = 0; i < sensors.size(); i++)
-	{
-		Sensor* sensor = (Sensor*)sensors.get(i);
-		if (!sensor->enabled)
-			continue;
-		String txt = sensor->sensorname.substring(0, 5);
-		espDisplay.drawString(0, lines++ * 10, txt + ": " + String(sensor->getStatusText()));
-		for (int k = 0; k < sensor->childsensors.size(); k++) {
-			Sensor* child = (Sensor*)sensor->childsensors.get(k);
-			txt = child->sensorname.substring(0, 5);
-			espDisplay.drawString(0, lines++ * 10, txt + ": " + String(child->getStatusText()));
+	if (getOledDisplay()) {
+		int lines = 3;
+		for (int i = 0; i < sensors.size(); i++)
+		{
+			Sensor* sensor = (Sensor*)sensors.get(i);
+			if (!sensor->enabled)
+				continue;
+			String txt = sensor->sensorname.substring(0, 5);
+			espDisplay.drawString(0, lines++ * 10, txt + ": " + String(sensor->getStatusText()));
+			for (int k = 0; k < sensor->childsensors.size(); k++) {
+				Sensor* child = (Sensor*)sensor->childsensors.get(k);
+				txt = child->sensorname.substring(0, 5);
+				espDisplay.drawString(0, lines++ * 10, txt + ": " + String(child->getStatusText()));
+			}
 		}
-	}*/
+	}
 }
 
 void Shield::drawString(int x, int y, String txt, int size, int color) {
-
-	//tftDisplay.drawString(x, y, txt, 1, ST7735_WHITE);
-	//tftDisplay.drawString(int row, int col, String txt, int size, int color);
+	if (getOledDisplay()) {
+		//tftDisplay.drawString(x, y, txt, 1, ST7735_WHITE);
+		//tftDisplay.drawString(int row, int col, String txt, int size, int color);
+	}
 }
 
 /*Just as a heads up, to use the "drawXBitmap" function, I also had
@@ -354,9 +362,11 @@ static const uint8_t /*PROGMEM*/ temperature_bits[] = {
 	0x00, 0xf0, 0x0f, 0x00, 0x00, 0xc0, 0x03, 0x00 };
 
 void Shield::clearScreen() {
-	//tftDisplay.clear();
+	if (getOledDisplay()) {
+		//tftDisplay.clear();
 
-	//tftDisplay.drawXBitmap(90, 50, temperature_bits, temperature_width, temperature_height, 0xF800/*ST3577_RED*/);
+		//tftDisplay.drawXBitmap(90, 50, temperature_bits, temperature_width, temperature_height, 0xF800/*ST3577_RED*/);
+	}
 }
 
 void Shield::parseMessageReceived(String topic, String message) {
@@ -580,23 +590,27 @@ void Shield::setStatus(String txt) {
 }
 
 void Shield::setEvent(String txt) {
-	if (shieldEvent.equals(txt))
-		return;
-	shieldEvent = txt;
-	invalidateDisplay();
+
+	if (getOledDisplay()) {
+		if (shieldEvent.equals(txt))
+			return;
+		shieldEvent = txt;
+		invalidateDisplay();
+	}
 }
 
 void Shield::invalidateDisplay() {
-	/*espDisplay.clear();
+	if (getOledDisplay()) {
+		espDisplay.clear();
 
-	drawStatus();
-	drawMemory();
-	drawSWVersion();
-	drawEvent();
-	drawDateTime();
-	drawSensorsStatus();
-	drawLora();
-	espDisplay.update();*/
+		drawStatus();
+		drawMemory();
+		drawSWVersion();
+		drawEvent();
+		drawDateTime();
+		drawSensorsStatus();
+		espDisplay.update();
+	}
 }
 
 void Shield::setFreeMem(int mem)
@@ -606,7 +620,6 @@ void Shield::setFreeMem(int mem)
 
 void Shield::checkStatus()
 {
-	//logger.print(tag, "Shield::checkStatus");
 	checkSensorsStatus();
 
 	unsigned long currMillis = millis();
@@ -615,40 +628,8 @@ void Shield::checkStatus()
 	if (timeDiff > 1000) {
 		//logger.print(tag, "Shield::checkStatus");
 		lastTimeUpdate = currMillis;
-		invalidateDisplay();
+		//invalidateDisplay();
 	}
-}
-
-void Shield::sendSensorCommand(String type, int id, String command, String payload)
-{
-	logger.print(tag, F("\n\t >>Shield::sendSensorCommand"));
-
-	logger.print(tag, String(F("\n\t\ type=")) + type);
-	logger.print(tag, String(F("\n\t\ id=")) + id);
-	logger.print(tag, String(F("\n\t\ command=")) + command);
-	logger.print(tag, String(F("\n\t\ payload=")) + payload);
-
-	for (int i = 0; i < sensors.size(); i++) {
-		Sensor* sensor = sensors.get(i);
-		logger.print(tag, String(F("\n\t\ type=")) + sensors.get(i)->type);
-		logger.print(tag, String(F("\n\t\ id=")) + String(sensors.get(i)->sensorid));
-		//logger.print(tag, String(F("\n\t\ command=")) + sensors.get(i)->command);
-		//logger.print(tag, String(F("\n\t\ payload=")) + sensors.get(i)->payload);
-
-		if (type.equals(type)) {
-			if (type.equals("keylocksensor")) {
-				sensor->sendCommand(command, payload);
-				break;
-			}
-			else {
-				if (sensor->sensorid == id) {
-					sensor->sendCommand(command, payload);
-					break;
-				}
-			}
-		}
-	}
-	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
 }
 
 void Shield::sendSensorCommand(int id, String command, String payload)
@@ -671,12 +652,8 @@ void Shield::sendSensorCommand(int id, String command, String payload)
 	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
 }
 
-
-
 void Shield::checkSensorsStatus()
 {
-	//logger.print(tag, F("\n\t >>checkSensorsStatus"));
-
 	for (int i = 0; i < sensors.size(); i++)
 	{
 		Sensor* sensor = (Sensor*)sensors.get(i);
@@ -686,7 +663,6 @@ void Shield::checkSensorsStatus()
 		sensor->updateAvailabilityStatus();
 		sensor->checkStatusChange();
 	}
-	//logger.print(tag, F("\n\t <<checkSensorsStatus"));
 }
 
 bool Shield::requestTime() {
@@ -727,50 +703,6 @@ void Shield::checkTimeUpdateStatus() {
 			lastTimeRequest = millis() - timeSync_interval + 1 * 60 * 1000;
 		}
 	}
-}
-
-void Shield::checkSettingResquestStatus() {
-
-	unsigned long timediff = millis() - lastSettingRequest;
-	if (timediff > settingsRequest_interval) {
-		settingsNeedToBeUpdated = true;
-	}
-
-	if (settingsRequestInprogress && timediff > settingsRequest_timeout) {
-		logger.println(tag, F("\n\n\n\-----------SERVER SETTINGS REQUEST TIMEOUT--------\n\n"));
-		readSensorFromFile();
-		settingsRequestInprogress = false;
-		settingsNeedToBeUpdated = true;
-	}
-
-	if (!settingFromServerReceived && settingsNeedToBeUpdated && !settingsRequestInprogress) {
-		logger.println(tag, F("\n\n\n\-----------SERVER SETTINGS TIMEOUT--------\n\n"));
-		setEvent(F("Request setting"));
-		bool res = requestSettingsFromServer();
-		if (!res) { // se fallisce carica i dati da file
-					// e riprova al prossimo timeout
-			logger.println(tag, F("\n request setting failed"));
-			lastSettingRequest = millis() - settingsRequest_interval + 1 * 60 * 1000;
-			readSensorFromFile();
-		}
-	}
-}
-
-bool Shield::requestSettingsFromServer() {
-	return true;
-	/*logger.print(tag, F("\n\t >>requestSettingsFromServer"));
-	setEvent(F("request server setting.."));
-	settingsNeedToBeUpdated = false;
-	lastSettingRequest = millis();
-	Command command;
-	bool res = command.requestShieldSettings(getMACAddress(), rebootreason);
-	if (res)
-		settingsRequestInprogress = true;
-	else
-		settingsRequestInprogress = false;
-	logger.print(tag, F("\n\t <<requestSettingsFromServer res="));
-	logger.print(tag, Logger::boolToString(res));
-	return res;*/
 }
 
 void Shield::readSensorFromFile() {
@@ -930,20 +862,6 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 		sensors.add(sensor);
 		sensor->init();
 
-		/*if (json.containsKey("sensorid") && json.containsKey("name") && json.containsKey("type") && json.containsKey("pin")) {
-			Sensor* sensor = SensorFactory::createSensor(json["sensorid"].as<int>(), json["type"], Shield::pinFromStr(json["pin"]), true, "0", json["name"]);
-			if (sensor != nullptr) {
-				logger.print(tag, F("\n\n\t sensor="));
-				logger.print(tag, sensor->toString());
-				sensors.add(sensor);
-				logger.print(tag, F("\n\n\t sensor num="));
-				logger.print(tag, sensors.size());
-				sensor->init();
-			}
-			else {
-				logger.print(tag, "\n\t error: invalid sensor");
-			}
-		}*/
 	}
 
 	logger.print(tag, F("\n\t<<loadSensors\n"));

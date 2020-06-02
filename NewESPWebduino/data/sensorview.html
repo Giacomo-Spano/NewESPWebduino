@@ -31,12 +31,14 @@
 
         <div class="grid-item name-item">Position</div>
         <div class="grid-item value-item slidecontainer">
-            <div id="positionvalue"></div>
             <form action="/setsensor" id="inputForm">
                 <input type="range" min="0" max="100" value="50" class="slider" id="position" name="position">
             </form>
         </div>
 
+        <div class="grid-item name-item">Position</div>
+        <div class="grid-item value-item" id="positionvalue">2</div>
+                
         <div class="grid-item name-item">Calibration command</div>
         <div class="grid-item value-item">
             <button class="button" onclick="sendCommand('zerocalibration','')">ZEROCALIBRATION</button>

@@ -94,13 +94,11 @@
     <None Include="data\config.html" />
     <None Include="data\index.html" />
     <None Include="data\jquery-3.5.0.min.js" />
-    <None Include="data\keylock.html" />
     <None Include="data\new.html" />
     <None Include="data\onewire.html" />
     <None Include="data\sensor.html" />
     <None Include="data\sensors.html" />
     <None Include="data\style.css" />
-    <None Include="data\tempsensor.html" />
     <None Include="data\upload.html" />
     <None Include="data\espduino.js" />
     <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cont.S">
@@ -1198,6 +1196,9 @@
     <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.h">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </ClInclude>
+    <ClInclude Include="ESPDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyLockSensor.cpp">
@@ -1967,6 +1968,9 @@
     </ClCompile>
     <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.cpp">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
+    </ClCompile>
+    <ClCompile Include="ESPDisplay.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

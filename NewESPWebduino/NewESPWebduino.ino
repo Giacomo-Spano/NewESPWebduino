@@ -606,6 +606,7 @@ void setup() {
 	// attach filesystem root at URL /fs
 	asyncServer.serveStatic("/fs", SPIFFS, "/");
 
+
 	// Catch-All Handlers
 	// Any request that can not find a Handler that canHandle it
 	// ends in the callbacks below.
@@ -618,6 +619,7 @@ void setup() {
 
 	// Initialize MQTT
 	initMQTTServer();
+
 }
 
 bool reconnect() {
@@ -662,9 +664,9 @@ bool reconnect() {
 }
 
 void loop() {
-
+//#ifdef dopo
 	shield.checkStatus();
-
+//#endif
 	if (sensor_command_received) {
 		Serial.println("\n\t processing http COMMAND request.\n");
 		String strCommand = "";

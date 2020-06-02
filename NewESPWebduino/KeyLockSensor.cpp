@@ -103,6 +103,12 @@ KeyLockSensor::~KeyLockSensor()
 
 void KeyLockSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
+	json["position"] = position;
+	json["openthreshold"] = openThreshold;
+	json["firstlockthreshold"] = firstLockThreshold;
+	json["secondlockthreshold"] = secondLockThreshold;
+	json["closedthreshold"] = closedThreshold;
+
 	json["lockstatus"] = status;
 	json["steppin"] = Shield::getStrPin(stepPin);
 	json["directionpin"] = Shield::getStrPin(directionPin);
@@ -337,7 +343,7 @@ bool KeyLockSensor::setPosition(int _targetpos) {
 bool KeyLockSensor::zeroCalibration() {
 	logger.print(tag, F("\n\t >>KeyLockSensor::zeroCalibration"));
 
-	SetMotorDirection(false);
+	SetMotorDirection(true);
 	enableMotor(true);
 	int count = 0;
 	int lockedCounter = 0;
