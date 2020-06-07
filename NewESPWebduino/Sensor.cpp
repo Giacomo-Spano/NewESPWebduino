@@ -64,6 +64,7 @@ Sensor::Sensor(JsonObject& json)
 			loadChildren(jsonarray);
 		}
 		else {
+			childsensors.clear();
 			logger.print(tag, F("\n\t failed to parsed children json"));
 		}		
 	}
@@ -91,22 +92,27 @@ void Sensor::setStatus(String _status) {
 	status = _status;
 }
 
-void Sensor::checkStatusChange()
+bool Sensor::checkStatusChange()
 {
 	//logger.print(tag, F("\n\t\t checkStatusChange"));
 	if (!status.equals(oldStatus)) {
+		//oldStatus = status;
 		//logger.print(tag, F("\n\t\t SEND STATUS\n\n"));
-		sendStatusUpdate();
-		updateAttributes();
+		//sendStatusUpdate();
+		return true;
+		//updateAttributes();
 	} 	
+	return false;
 }
 
 void Sensor::sendStatusUpdate()
 {
-	logger.print(tag, F("\n\t\t sendStatusUpdate"));
+	logger.print(tag, F("\n\t>>Sensor::::sendStatusUpdate"));
 	String topic = "ESPWebduino/myboard1/" + type + "/status";
 	if (mqtt_publish(topic, status))
 		oldStatus = status;
+	updateAttributes();
+	logger.print(tag, F("\n\t<<Sensor::::sendStatusUpdate"));
 }
 
 void Sensor::updateAvailabilityStatus() {
@@ -174,22 +180,21 @@ void Sensor::getJson(JsonObject& json) {
 	json["enabled"] = enabled;
 	json["type"] = type;
 
-	logger.print(tag, "\n\tchildsensors.size()=" + String(childsensors.size()));
+	//logger.print(tag, "\n\tchildsensors.size()=" + String(childsensors.size()));
 	if (childsensors.size() > 0) {
 		JsonArray& children = json.createNestedArray("children");
 		for (int i = 0; i < childsensors.size(); i++) {
-			logger.print(tag, "\n\n\t child sensor n=" + String(i));
+			//logger.print(tag, "\n\n\t child sensor n=" + String(i));
 			Sensor* child = (Sensor*)childsensors.get(i);
 			JsonObject& childjson = jsonBuffer[i]->createObject();
 			child->getJson(childjson);
 			children.add(childjson);
 		}
 		boolean res = json.set("children", children);
-		logger.print(tag, "\n\n\t children added\n");
+		//logger.print(tag, "\n\n\t children added\n");
 	}
-
-	logger.print(tag, "\n\t printjson");
-	json.printTo(Serial);
+	//logger.print(tag, "\n\t printjson");
+	//json.printTo(Serial);
 	logger.print(tag, "\n\n\t<<Sensor::getJson sensorid=" + String(sensorid)  +" \n\n");
 }
 

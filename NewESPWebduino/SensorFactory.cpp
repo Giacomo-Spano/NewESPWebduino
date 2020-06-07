@@ -2,6 +2,8 @@
 #include "TemperatureSensor.h"
 #include "KeylockSensor.h"
 #include "OnewireSensor.h"
+#include "DoorSensor.h"
+#include "HornSensor.h"
 #include "Shield.h"
 
 //extern bool getNextSensorId();
@@ -78,64 +80,25 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	Sensor* sensor = nullptr;
 	if (type.equals(F("temperaturesensor"))) {
 		logger.print(tag, F("\n\t creating temperature sensor"));
-		//sensor = new TemperatureSensor(sensorid, pin, enabled, address, name);
 		sensor = new TemperatureSensor(json);
 	}
 	/*else if (type.equals("heatersensor")) {
 		logger.print(tag, F("\n\t creating heatersensor sensor"));
 		sensor = new HeaterSensor(sensorid, pin, enabled, address, name);
-	}
+	}*/
 	else if (type.equals(F("doorsensor"))) {
 		logger.print(tag, F("\n\t creating doorsensor sensor"));
-		sensor = new DoorSensor(sensorid, pin, enabled, address, name);
-	}*/
+		sensor = new DoorSensor(json);
+	}
+	else if (type.equals(F("hornsensor"))) {
+		logger.print(tag, F("\n\t creating hornsensor sensor"));
+		sensor = new HornSensor(json);
+	}
 	else if (type.equals(F("keylocksensor"))) {
 		logger.print(tag, F("\n\t creating keylocksensor sensor"));
-		/*if (!json.containsKey("steppin"))
-			return nullptr;
-		String strPin = json["steppin"];
-		strPin.replace("\r\n", ""); // importante!!
-		uint8_t stepPin = Shield::pinFromStr(strPin);
-
-		if (!json.containsKey("directionpin"))
-			return nullptr;
-		String strDirectionPin = json["directionpin"];
-		strDirectionPin.replace("\r\n", ""); // importante!!
-		uint8_t directionPin = Shield::pinFromStr(strDirectionPin);
-
-		if (!json.containsKey("enablepin"))
-			return nullptr;
-		String strEnablePin = json["enablepin"];
-		strEnablePin.replace("\r\n", ""); // importante!!
-		uint8_t enablePin = Shield::pinFromStr(strEnablePin);
-
-		if (!json.containsKey("outputapin"))
-			return nullptr;
-		String strOutputAPin = json["outputapin"];
-		strOutputAPin.replace("\r\n", ""); // importante!!
-		uint8_t outputAPin = Shield::pinFromStr(strOutputAPin);
-
-		if (!json.containsKey("outputbpin"))
-			return nullptr;
-		String strOutputBPin = json["outputbpin"];
-		strOutputBPin.replace("\r\n", ""); // importante!!
-		uint8_t outputBpin = Shield::pinFromStr(strOutputBPin);*/
-
-		//sensor = new KeyLockSensor(sensorid, pin, enabled, address, name, stepPin, directionPin, enablePin, outputAPin, outputBpin);
 		sensor = new KeyLockSensor(json);
 	}
 	else if (type.equals(F("onewiresensor"))) {
-		/*String str = json["children"];
-		DynamicJsonBuffer jsonBuffer;
-		JsonArray& jsonarray = jsonBuffer.parseArray(str.c_str());
-		if (jsonarray.success()) {
-			logger.print(tag, F("\n\t parsed children json"));
-			jsonarray.printTo(Serial);
-		}
-		else {
-			logger.print(tag, F("\n\t failed to parsed children json"));
-		}
-		sensor = new OnewireSensor(sensorid, pin, enabled, address, name, jsonarray);*/
 		sensor = new OnewireSensor(json); 
 	}
 	/*else if (type.equals(F("hornsensor"))) {

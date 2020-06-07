@@ -32,7 +32,7 @@ public:
 	OnewireSensor(JsonObject& json);
 	bool createSensor();
 	~OnewireSensor();
-	virtual void checkStatusChange();
+	virtual bool checkStatusChange();
 
 	void beginTemperatureSensors();
 	virtual void getJson(JsonObject& json);

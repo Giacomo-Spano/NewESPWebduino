@@ -46,12 +46,11 @@
 
         var sensorid = getUrlVars()["sensorid"];
         var type = getUrlVars()["type"];
-        //model = getUrlVars()["model"];
         console.log("sensorid=" + sensorid);
         console.log("type=" + type);
 
         var pin = "D1";
-        var name = "new sensor";
+        var name = "new" + type;
         $("#sensorid").val(sensorid);
         $("#name").val(name);
         $("#pin").val(pin);
@@ -66,19 +65,9 @@
         $("#inputForm").submit(function (event) {
 
             event.preventDefault(); // inibisce invio submit
-            var ary = $(this).serializeArray();
-            var obj = {};
-            for (var a = 0; a < ary.length; a++) {
-                obj[ary[a].name] = ary[a].value;
-            }
-            //console.log(JSON.stringify(obj));
-
+            
             var result = $('#inputForm').serializeJSON({ useIntKeysAsArrayIndex: true });
-            console.log(JSON.stringify(obj));
-            //var result = $('input').serializeObject();
-            //$("#result").html(JSON.stringify(result));
-
-
+            //console.log(JSON.stringify(obj));
 
             xhr = new XMLHttpRequest();
             var url = "/setsensor";
@@ -122,15 +111,10 @@
                     $("#outputapin").val(sensor.outputapin);
                     $("#outputbpin").val(sensor.outputbpin);
                 } else if (sensor.type == "onewiresensor") {
-
                     sensor.children.forEach(element => {
                         addTemperatureSensor(element.sensorid, element.name);
                     });
-                    /*$("#steppin").val(sensor.steppin);
-                    $("#directionpin").val(sensor.directionpin);
-                    $("#enablepin").val(sensor.enablepin);
-                    $("#outputapin").val(sensor.outputapin);
-                    $("#outputbpin").val(sensor.outputbpin);*/
+                } else if (sensor.type == "doorsensor") {
                 }
 
             }
@@ -146,14 +130,11 @@
                 model = this.responseText;
                 console.log("model=" + model);
                 $("#pin").append(pinList(model));
-
-
-
                 if (sensorid != 0) { // edit
                     loadValue(model, sensorid);
                 } else { // add
                     addCustomSensorField(model, type);
-                    addTemperatureSensor(0,"sensore temparatura");
+                    //addTemperatureSensor(0,"new " + type);
                 }
             }
         };
@@ -219,10 +200,11 @@
                 $("#outputbpin").val("D2");
             }
         } else if (type == "onewiresensor") {
-            //addTemperatureSensor(sensore temparatura);
-            //addTemperatureSensor(1);
-            //addTemperatureSensor(2);
+            //addTemperatureSensor(0, "new " + type);
+            //
+        } else if (type == "doorsensor") {
         }
+
     }
 
     var temperatureSensorNum = 0; 
@@ -242,10 +224,7 @@
             
         });
         temperatureSensorNum++;
-        
-       
     }
-
 
     function removeTemperaturesensor(n) {
         $("temperaturesensor" + n).remove();
@@ -274,7 +253,6 @@
                 "<option value='D22'>D22</option>" +
                 "<option value='D23'>D23</option>";
         }
-
         console.log("list = " + list);
         return list
     }

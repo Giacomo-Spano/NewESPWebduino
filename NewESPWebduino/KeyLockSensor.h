@@ -23,10 +23,13 @@ private:
 	virtual void getJson(JsonObject& json);
 	int oldPositionStatus;
 
-	int openThreshold = 0;
+
+	int zeroThreshold = 0;
+	int maxThreshold = 700;
+	int openThreshold = 50;
 	int firstLockThreshold = 0;
 	int secondLockThreshold = 0;
-	int closedThreshold = 0;
+	int closedThreshold = 650;
 	int maxrotation = 5000;
 
 	int countRotation = 0;
@@ -62,18 +65,20 @@ public:
 	bool stopLock();
 	bool openLock();
 	bool closeLock();
-	//bool rotateLock(bool close, int delta);
-
-	//KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t stepPin, uint8_t directionPin, uint8_t enablePin, uint8_t outputAPin, uint8_t outputbPin);
+	bool setPosition(int pos);
+	bool zeroCalibration();
+	bool setOpenThreshold();
+	bool setFirstLockThreshold();
+	bool setClosedThreshold();
+	
 	KeyLockSensor(JsonObject& json);
 	~KeyLockSensor();
 
 	virtual void init();
-	virtual void checkStatusChange();
+	virtual bool checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
-	virtual void sendStatusUpdate();
-	bool setPosition(int pos);
-	bool zeroCalibration();
+	//virtual void sendStatusUpdate();
+
 };
 #endif
 

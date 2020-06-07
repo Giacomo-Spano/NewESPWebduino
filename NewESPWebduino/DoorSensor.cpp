@@ -1,0 +1,94 @@
+#include "DoorSensor.h"
+#include "Shield.h"
+
+Logger DoorSensor::logger;
+String DoorSensor::tag = "DoorSensor";
+
+DoorSensor::DoorSensor(JsonObject& json) : Sensor(json)
+{
+	logger.print(tag, F("\n\t>>DoorSensor::DoorSensor"));
+
+	type = "doorsensor";
+	checkStatus_interval = 1000;
+	lastCheckStatus = 0;
+
+	logger.print(tag, F("\n\t<<DoorSensor::DoorSensor\n"));
+}
+
+DoorSensor::~DoorSensor()
+{
+}
+
+void DoorSensor::init()
+{
+	logger.print(tag, F("\n\t >>init DoorSensor"));
+	pinMode(pin, INPUT);
+	mode = MODE_NORMAL;
+	logger.print(tag, F("\n\t <<init DoorSensor"));
+}
+
+void DoorSensor::getJson(JsonObject& json) {
+	Sensor::getJson(json);
+	json["mode"] = mode;
+	//json.printTo(Serial);
+}
+
+bool DoorSensor::checkStatusChange() {
+
+	unsigned long currMillis = millis();
+	unsigned long timeDiff = currMillis - lastCheckStatus;
+	if (timeDiff > checkStatus_interval) {
+		//logger.print(tag, "\n\t >>>> checkStatusChange - timeDiff > checkStatus_interval");
+		lastCheckStatus = currMillis;
+		
+		
+		if (mode.equals(MODE_NORMAL)) {
+			if (digitalRead(pin) == LOW) {
+				setStatus(STATUS_DOOROPEN);
+			}
+			else {
+				setStatus(STATUS_DOORCLOSED);
+			}
+		}
+		else if (mode.equals(MODE_TEST)) {
+		}
+
+		/*String oldStatus = status;
+		if (!status.equals(oldStatus)) {
+			if (status.equals(STATUS_DOOROPEN))
+				logger.print(tag, "\n\t >>>> DOOR OPEN");
+			else if (status.equals(STATUS_DOORCLOSED))
+				logger.print(tag, "\n\t >>>> DOOR CLOSED");
+			return true;
+		}*/
+	}
+	return false;
+}
+
+bool DoorSensor::sendCommand(String command, String payload)
+{
+	logger.print(tag, F("\n\t >>DoorSensor::sendCommand"));
+
+	logger.print(tag, String(F("\n\t\tcommand=")) + command);
+	logger.print(tag, String(F("\n\t\tpayload=")) + payload);
+	if (command.equals("testmode")) {
+		if (payload.equals("on")) {
+			mode = MODE_TEST;
+		}
+		else if (payload.equals("off")) {
+			mode = MODE_NORMAL;
+		}
+	}
+	else if (command.equals("settestdoorstatus")) {
+		if (mode.equals(MODE_TEST)) {
+			if (payload.equals("open")) {
+				setStatus(STATUS_DOOROPEN);
+			}
+			else if (payload.equals("closed")) {
+				setStatus(STATUS_DOORCLOSED);
+			}
+		}
+	}
+	logger.print(tag, F("\n\t <<DoorSensor::sendCommand"));
+	return false;
+}

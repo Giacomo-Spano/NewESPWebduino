@@ -108,6 +108,9 @@ bool OnewireSensor::readTemperatures() {
 
 	logger.print(tag, F("\n\n\t >>readTemperatures"));
 	// questa funzione ritorna true se è cambiata almeno uan tempertura
+	if (childsensors.size() == 0)
+		return false;
+
 	int res = false; // 
 
 	pDallasSensors->requestTemperatures(); // Send the command to get temperatures
@@ -188,7 +191,7 @@ void OnewireSensor::getJson(JsonObject& json) {
 	logger.print(tag, F("\n\t<<OnewireSensor::getJson"));
 }
 
-void OnewireSensor::checkStatusChange() {
+bool OnewireSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
@@ -205,6 +208,8 @@ void OnewireSensor::checkStatusChange() {
 		logger.print(tag, F("\n\n"));
 		logger.println(tag, F("<<checkStatusChange()::checkTemperatures"));
 
-		sendStatusUpdate();
+		//sendStatusUpdate();
+		return temperatureChanged;
 	}
+	return false;
 }

@@ -14,76 +14,85 @@
       <Extensions>xml;json;txt;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{ab7da263-a742-460e-997b-70557d0f5646}</UniqueIdentifier>
+      <UniqueIdentifier>{c54f0c9a-4e67-4c64-988d-d5259ff56203}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly">
-      <UniqueIdentifier>{69fa518c-fe56-4111-b97b-c46b8bbc17ca}</UniqueIdentifier>
+      <UniqueIdentifier>{b5733222-8541-46ed-ad44-533902542ba7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core">
-      <UniqueIdentifier>{ba4ec920-348c-4285-91f6-3c1d05f908a4}</UniqueIdentifier>
+      <UniqueIdentifier>{7f387640-f78b-4676-ac98-3c59b516fb46}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\avr">
-      <UniqueIdentifier>{3b92aa4b-39f2-426e-98dc-e7262992de86}</UniqueIdentifier>
+      <UniqueIdentifier>{24112479-0b11-4b3b-91d0-3603133bcc3c}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\libb64">
-      <UniqueIdentifier>{b589c6a8-d041-49b5-a83d-c83d28ec1c59}</UniqueIdentifier>
+      <UniqueIdentifier>{91384f81-05a4-4eb8-90e3-07ba3fabd509}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\spiffs">
-      <UniqueIdentifier>{f1162993-8e6d-49a4-9616-72cc40c39332}</UniqueIdentifier>
+      <UniqueIdentifier>{027e1b97-e1ca-45e2-ae68-4947b5c7a717}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\umm_malloc">
-      <UniqueIdentifier>{1986c8bb-7a91-4842-aefa-7ac432c463b6}</UniqueIdentifier>
+      <UniqueIdentifier>{1475d884-03a8-4b7e-812a-9ba0d833c53d}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\umm_malloc\dbglog">
-      <UniqueIdentifier>{e93d63ca-d002-4b86-b7e4-57c8f7943bb4}</UniqueIdentifier>
+      <UniqueIdentifier>{bce2046b-9185-4856-80d0-4a7b4f801130}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries">
-      <UniqueIdentifier>{6aecb541-84ed-4541-b6e9-8daa2cac1e3b}</UniqueIdentifier>
+      <UniqueIdentifier>{9e7ea8aa-0f5b-4d85-b297-ed641b4a2e5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266WiFi">
-      <UniqueIdentifier>{501ae1a4-ec58-45fb-8660-474e132bce32}</UniqueIdentifier>
+      <UniqueIdentifier>{4e4db97e-3dc6-4f22-8db5-7e61fb601d7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\WiFi">
-      <UniqueIdentifier>{17b41dd2-3bdd-4d47-86e0-f578bc5fbd85}</UniqueIdentifier>
+      <UniqueIdentifier>{335eb412-14cc-4fec-99bf-4e2ff8294e87}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266httpUpdate">
-      <UniqueIdentifier>{fa6c82dd-4548-446d-9baf-e28b3951b00c}</UniqueIdentifier>
+      <UniqueIdentifier>{5d15ba95-8df4-404a-b6f3-6bef052ff4e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\AsyncTCP-master">
-      <UniqueIdentifier>{06e7a545-6367-42f7-bb3b-2e1ed53650c8}</UniqueIdentifier>
+      <UniqueIdentifier>{d5e493d8-de52-4514-b23f-a16f600831a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncTCP-master">
-      <UniqueIdentifier>{fbb98e6f-30d2-4126-b012-48115f03d4c1}</UniqueIdentifier>
+      <UniqueIdentifier>{862e30fc-3f21-4b2a-98b6-060a81663099}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncWebServer-master">
-      <UniqueIdentifier>{44b72035-08dc-4a6e-839c-1d3faa48cc8c}</UniqueIdentifier>
+      <UniqueIdentifier>{2ba52fc5-6263-4777-a4d3-3699517d92e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\esp32-http-update-master">
-      <UniqueIdentifier>{855db4fc-8833-435e-9c87-1d986b8dd012}</UniqueIdentifier>
+      <UniqueIdentifier>{34edac5a-3bce-496f-96df-dc99ecf19238}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\Time-master">
-      <UniqueIdentifier>{913449be-e9b0-4339-a2ae-9f949a7989cf}</UniqueIdentifier>
+      <UniqueIdentifier>{e1aef963-4b99-4de9-aa5b-d47f61808420}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ArduinoJson">
-      <UniqueIdentifier>{3fc109f1-6cf9-4275-ba00-50e0fd21f59f}</UniqueIdentifier>
+      <UniqueIdentifier>{1dfeebb2-7fe5-40f8-9995-d391f7100f30}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\PubSubClient">
-      <UniqueIdentifier>{77732718-c9e7-4ae0-8cc6-d0f388a7a3de}</UniqueIdentifier>
+      <UniqueIdentifier>{e03f913d-e3c4-45c5-8d83-23cc784f4a4b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\SimpleList-master">
-      <UniqueIdentifier>{33fa6be1-a295-45b3-88d2-c3b449db4f2c}</UniqueIdentifier>
+      <UniqueIdentifier>{fad2d73f-35ac-4505-867c-d73200e20d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Wire">
+      <UniqueIdentifier>{3b001dd9-1f8b-458a-b3c2-d9c33d37d041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display">
+      <UniqueIdentifier>{e28f6b76-7d56-43dc-abb1-9e7a0cc1c4e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\Hash">
-      <UniqueIdentifier>{306d51c3-46d4-446f-b942-89a42d7fbc17}</UniqueIdentifier>
+      <UniqueIdentifier>{1fec0746-369d-4531-99fe-a8d991354e23}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266HTTPClient">
-      <UniqueIdentifier>{482eb609-b2ff-485d-863f-3441bdfff062}</UniqueIdentifier>
+      <UniqueIdentifier>{19f1334d-7b6f-47ef-a2b3-ae4174818eb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\SPI">
+      <UniqueIdentifier>{faeaf019-172e-495f-a12e-6191ea57bbd5}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\OneWire">
-      <UniqueIdentifier>{d376476c-770b-44a9-84ac-27a56518edf1}</UniqueIdentifier>
+      <UniqueIdentifier>{594ff297-9495-4506-bcfe-0631768a0fb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\DallasTemperature">
-      <UniqueIdentifier>{f55badeb-376a-4dcf-809f-11f4e3719b8d}</UniqueIdentifier>
+      <UniqueIdentifier>{fbb2caf3-b322-4ce4-9ac8-f0c05fd03c65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +110,7 @@
     <None Include="data\style.css" />
     <None Include="data\upload.html" />
     <None Include="data\espduino.js" />
+    <None Include="data\sensorview.html" />
     <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\cont.S">
       <Filter>src\_micro-api-readonly\core</Filter>
     </None>
@@ -161,11 +171,26 @@
     <None Include="E:\OneDrive\Documenti\Arduino\libraries\SimpleList-master\library.properties">
       <Filter>src\_micro-api-readonly\libraries\SimpleList-master</Filter>
     </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Wire\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\library.json">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </None>
+    <None Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\resources\glyphEditor.html">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </None>
     <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\library.properties">
       <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
     </None>
     <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\library.properties">
       <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </None>
+    <None Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\SPI\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
     </None>
     <None Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\library.json">
       <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
@@ -179,7 +204,6 @@
     <None Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\library.properties">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </None>
-    <None Include="data\sensorview.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.NewESPWebduino.vsarduino.h">
@@ -210,6 +234,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TemperatureSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ESPDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\AddrList.h">
@@ -1184,11 +1214,50 @@
     <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\SimpleList-master\src\SimpleList.h">
       <Filter>src\_micro-api-readonly\libraries\SimpleList-master</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Wire\Wire.h">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\OLEDDisplay.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\OLEDDisplayFonts.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\OLEDDisplayUi.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SH1106.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SH1106Brzo.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SH1106Spi.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SH1106Wire.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SSD1306.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SSD1306Brzo.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SSD1306Spi.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\SSD1306Wire.h">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\src\Hash.h">
       <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\src\ESP8266HTTPClient.h">
       <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\SPI\SPI.h">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
     </ClInclude>
     <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\OneWire.h">
       <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
@@ -1196,7 +1265,7 @@
     <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.h">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </ClInclude>
-    <ClInclude Include="ESPDisplay.h">
+    <ClInclude Include="HornSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1226,6 +1295,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TemperatureSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ESPDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\abi.cpp">
@@ -1957,11 +2032,23 @@
     <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Stream.cpp">
       <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Wire\Wire.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\OLEDDisplay.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src\OLEDDisplayUi.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\src\Hash.cpp">
       <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\src\ESP8266HTTPClient.cpp">
       <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\SPI\SPI.cpp">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
     </ClCompile>
     <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\OneWire.cpp">
       <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>
@@ -1969,7 +2056,7 @@
     <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.cpp">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </ClCompile>
-    <ClCompile Include="ESPDisplay.cpp">
+    <ClCompile Include="HornSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2055,11 +2142,17 @@
     <Text Include="E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\LICENSE.txt">
       <Filter>src\_micro-api-readonly\libraries\PubSubClient</Filter>
     </Text>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Wire\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </Text>
     <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\Hash\keywords.txt">
       <Filter>src\_micro-api-readonly\libraries\Hash</Filter>
     </Text>
     <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\ESP8266HTTPClient\keywords.txt">
       <Filter>src\_micro-api-readonly\libraries\ESP8266HTTPClient</Filter>
+    </Text>
+    <Text Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\libraries\SPI\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
     </Text>
     <Text Include="E:\OneDrive\Documenti\Arduino\libraries\OneWire\keywords.txt">
       <Filter>src\_micro-api-readonly\libraries\OneWire</Filter>

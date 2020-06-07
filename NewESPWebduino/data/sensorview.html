@@ -21,6 +21,7 @@
         <div class="grid-item value-item" id="sensorstatus">4</div>
     </div>
 
+    <!--keylocksensor-->
     <div class="grid-container" id="keylocksensor" hidden>
         <div class="grid-item name-item">Open/Close command</div>
         <div class="grid-item value-item">
@@ -38,16 +39,56 @@
 
         <div class="grid-item name-item">Position</div>
         <div class="grid-item value-item" id="positionvalue">2</div>
-                
+
         <div class="grid-item name-item">Calibration command</div>
         <div class="grid-item value-item">
             <button class="button" onclick="sendCommand('zerocalibration','')">ZEROCALIBRATION</button>
+            <button class="button" onclick="sendCommand('openthreshold','')">set open threshold</button>
+            <button class="button" onclick="sendCommand('firstlockthreshold','')">set  firstlock threshold</button>
+            <button class="button" onclick="sendCommand('closedthreshold','')">set closed threshold</button>
         </div>
     </div>
 
+    <!--onewiresensor-->
     <div class="grid-container" id="onewiresensor" hidden>
     </div>
 
+    <!--doorsensor-->
+    <div class="grid-container" id="doorsensor" hidden>
+
+        <div class="grid-item name-item">Test mode</div>
+        <div class="grid-item value-item" id="testmode">--</div>
+
+        <div class="grid-item name-item">Commands</div>
+        <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('testmode','on')">Test mode on</button>
+            <button class="button" onclick="sendCommand('testmode','off')">Test mode off</button>
+            <button class="button" onclick="sendCommand('settestdoorstatus','open')">OPEN</button>
+            <button class="button" onclick="sendCommand('settestdoorstatus','closed')">CLOSE</button>
+        </div>
+
+    </div>
+
+    <!--hornsensor-->
+    <div class="grid-container" id="hornsensor" hidden>
+
+        <div class="grid-item name-item">Timeout</div>
+        <div class="grid-item value-item" id="horntimeout">--</div>
+
+        <div class="grid-item name-item">Puse Timeout</div>
+        <div class="grid-item value-item" id="hornpausetimeout">--</div>
+
+        <div class="grid-item name-item">Max tally</div>
+        <div class="grid-item value-item" id="hornmaxtally">--</div>
+
+        <div class="grid-item name-item">Commands</div>
+        <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('set','on')">ON</button>
+            <button class="button" onclick="sendCommand('set','off')">OFF</button>
+            <button class="button" onclick="sendCommand('set','pause')">PAUSE</button>
+        </div>
+
+    </div>
 
 </body>
 <script>
@@ -55,7 +96,7 @@
 
     $(document).ready(function () {
 
-        /*var */sensorid = getUrlVars()["sensorid"];
+        sensorid = getUrlVars()["sensorid"];
         var type = getUrlVars()["type"];
         console.log("sensorid=" + sensorid);
         console.log("type=" + type);
@@ -83,6 +124,9 @@
 
                 $("#keylocksensor").hide();
                 $("#onewiresensor").hide();
+                $("#temperaturesensor").hide();
+                $("#doorsensor").hide();
+                $("#hornsensor").hide();
 
                 if (sensor.type == "keylocksensor") {
                     $("#positionvalue").text(sensor.position);
@@ -91,10 +135,8 @@
                     $("#enablepin").val(sensor.enablepin);
                     $("#outputapin").val(sensor.outputapin);
                     $("#outputbpin").val(sensor.outputbpin);*/
-
                     $("#keylocksensor").show();
-                } else if (sensor.type == "onewiresensor") {
-                    $("#onewiresensor").show();
+                } else if (sensor.type == "onewiresensor") {                    
                     $("#onewiresensor").empty();
                     sensor.children.forEach(element => {
                         $("#onewiresensor").append(
@@ -102,8 +144,16 @@
                             "<div class='grid-item value-item' id='sensorname' >" + element.statustext + "</div >" +
                             "<br />");
                     });
+                    $("#onewiresensor").show();
+                } else if (sensor.type == "doorsensor") {
+                    $("#testmode").text(sensor.mode);
+                    $("#doorsensor").show();
+                } else if (sensor.type == "hornsensor") {
+                    $("#horntimeout").text(sensor.horntimeout);
+                    $("#hornpausetimeout").text(sensor.hornpausetimeout);
+                    $("#hornmaxtally").text(sensor.hornmaxtally);
+                    $("#hornsensor").show();
                 }
-
             }
         };
         xhttp.open("GET", "/getsensor?sensorid=" + sensordid, true);
@@ -138,7 +188,7 @@
 
     setInterval(function () {
         loadSensorValue(sensorid);
-    }, 5000);
+    }, 500);
 
 </script>
 </html>

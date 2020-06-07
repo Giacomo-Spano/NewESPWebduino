@@ -37,6 +37,7 @@
 #include <ESP8266httpUpdate.h>
 #else
 #include <ESP32httpUpdate.h>
+#include "E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Arduino.h"
 #endif
 
 Shield shield;
@@ -234,7 +235,7 @@ void setup() {
 		Serial.print(".");
 	}
 	Serial.println("\nWiFi connected");
-	Serial.print("IP Address: x");
+	Serial.print("IP Address: ");
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
 
@@ -322,32 +323,12 @@ void setup() {
 	asyncServer.on("/sensor.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
-
-	// Route to set GPIO to HIGH
-	/*asyncServer.on("/temperature.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		request->send(SPIFFS, "/temperature.html", String(), false, processor);
-		});
-
-	// Route to set GPIO to HIGH
-	asyncServer.on("/onewire.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		request->send(SPIFFS, "/sensor.html", String(), false, processor);
-		});
-
-	// Route to set GPIO to HIGH
-	asyncServer.on("/keylock.html", HTTP_GET, [](AsyncWebServerRequest* request) {
-		request->send(SPIFFS, "/keylock.html", String(), false, processor);
-		});*/
-
+		
 	asyncServer.on("/sensors", HTTP_GET, [](AsyncWebServerRequest* request) {
-		/*AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/sensors.html", String());
-		response->addHeader("ESPModel", "ESP32x");
-		request->send(response);*/
-
 		request->send(SPIFFS, "/sensors.html", String(), false, processor);
 		});
 
 	asyncServer.on("/getmodel", HTTP_GET, [](AsyncWebServerRequest* request) {
-		//digitalWrite(ledPin, LOW);
 		request->send(200, "text/html", shield.getModel());
 		});
 
@@ -405,8 +386,6 @@ void setup() {
 
 		shield.writeConfig();
 		request->send(200, "text/html", "HTTP GET request sent to your ESP on input field <br><a href=\"/\">Return to Home Page</a>");
-		//+ inputParam + ") with value: " + inputMessage*/ +
-		//"<br><a href=\"/\">Return to Home Page</a>");
 		});
 
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
@@ -513,48 +492,19 @@ void setup() {
 		//nothing and dont remove it
 		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
 
-			Serial.print("\n\n>>>postsensorcommand request received\n");
+			logger.print(tag, "\n\t>>>postsensorcommand request received\n");
 
-			logger.print(tag, "\n\t len=" + String(len));
-			logger.print(tag, "\n\t index=" + String(index));
-			logger.print(tag, "\n\t total=" + String(total));
-			logger.print(tag, "\n\t");
-			for (size_t i = 0; i < len; i++) {
-				Serial.write(data[i]);
+			bool ret = postSensorCommand(len, index, total, data);
+
+			if (ret) {
+				logger.print(tag, "\n\t<<postsensorcommand request sent\n");
+				request->send(200, "text/html", "command received");
+			}
+			else {
+				logger.print(tag, "\n\t<<postsensorcommand failed\n");
+				request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
 			}
 
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& json = jsonBuffer.parseObject((const char*)data);
-			if (json.success()) {
-				if (json.containsKey("sensorid")) {
-					sensor_command_id = json["sensorid"];
-					logger.print(tag, "\n keylockcommand_sensorid=" + String(sensor_command_id));
-					if (json.containsKey("command")) {
-						String command = json["command"];
-						logger.print(tag, "\n command=" + command);
-						for (int i = 0; i < command.length(); i++) {
-							sensor_command[i] = command.charAt(i);
-						}
-						sensor_command[command.length()] = 0;
-						logger.print(tag, "\n command=" + command);
-
-						String payload = "";
-						if (json.containsKey("payload")) {
-							payload = json["payload"].asString();
-							logger.print(tag, "\n payload=" + payload);
-							for (int i = 0; i < payload.length(); i++) {
-								sensor_command_payload[i] = payload.charAt(i);
-							}
-							sensor_command_payload[payload.length()] = 0;
-						}
-						logger.print(tag, "\n payload=" + payload);
-						sensor_command_received = true;
-						request->send(200, "text/html", "command received");
-					}
-				}
-			}
-			Serial.print("\n\n BAD JSON\n");
-			request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
 		});
 
 	asyncServer.on("/setsensor", HTTP_POST, [](AsyncWebServerRequest* request) {
@@ -606,7 +556,6 @@ void setup() {
 	// attach filesystem root at URL /fs
 	asyncServer.serveStatic("/fs", SPIFFS, "/");
 
-
 	// Catch-All Handlers
 	// Any request that can not find a Handler that canHandle it
 	// ends in the callbacks below.
@@ -620,6 +569,51 @@ void setup() {
 	// Initialize MQTT
 	initMQTTServer();
 
+}
+
+bool postSensorCommand(const size_t& len, const size_t& index, const size_t& total, uint8_t* data)
+{
+	logger.print(tag, "\n\t>>postSensorCommand");
+	logger.print(tag, "\n\t len=" + String(len));
+	logger.print(tag, "\n\t index=" + String(index));
+	logger.print(tag, "\n\t total=" + String(total));
+	logger.print(tag, "\n\t");
+	for (size_t i = 0; i < len; i++) {
+		Serial.write(data[i]);
+	}
+	DynamicJsonBuffer jsonBuffer;
+			JsonObject& json = jsonBuffer.parseObject((const char*)data);
+			if (json.success()) {
+				logger.print(tag, "\n\t command data parsed");
+				if (json.containsKey("sensorid")) {
+					sensor_command_id = json["sensorid"];
+					logger.print(tag, "\n\t keylockcommand_sensorid=" + String(sensor_command_id));
+					if (json.containsKey("command")) {
+						String command = json["command"];
+						for (int i = 0; i < command.length(); i++) {
+							sensor_command[i] = command.charAt(i);
+						}
+						sensor_command[command.length()] = 0;
+						logger.print(tag, "\n command=" + command);
+
+						String payload = json["payload"];
+						if (json.containsKey("payload")) {
+							//logger.print(tag, "\n payload=" + payload);
+							for (int i = 0; i < payload.length(); i++) {
+								sensor_command_payload[i] = payload.charAt(i);
+							}
+							sensor_command_payload[payload.length()] = 0;
+						}
+						logger.print(tag, "\n payload=" + payload);
+						sensor_command_received = true;
+						logger.print(tag, "\n\t<<postSensorCommand");
+						return true;
+					}
+				}
+			}
+			logger.print(tag, "\n\tBAD data command received");
+			logger.print(tag, "\n\t<<postSensorCommand");
+			return false;
 }
 
 bool reconnect() {
@@ -668,7 +662,7 @@ void loop() {
 	shield.checkStatus();
 //#endif
 	if (sensor_command_received) {
-		Serial.println("\n\t processing http COMMAND request.\n");
+		Serial.println("\n\t>> processing http COMMAND request.");
 		String strCommand = "";
 		for (int i = 0; i < sensor_command_size; i++) {
 			strCommand += sensor_command[i];
@@ -682,7 +676,7 @@ void loop() {
 			if (sensor_command_payload[i] == 0)
 				break;
 		}
-		Serial.println("\n\t payload=" + payload + "\n");
+		Serial.println("\n\t payload=" + payload);
 		shield.sendSensorCommand(sensor_command_id, strCommand, payload);
 		sensor_command_received = false;
 	}

@@ -110,6 +110,7 @@ protected:
 	bool onShieldSettingsCommand(JsonObject& json);
 	bool onPowerCommand(JsonObject& json);
 	void checkSensorsStatus();
+	void checkSensorStatus(Sensor* sensor);
 
 
 	ESPDisplay display;
@@ -130,11 +131,11 @@ public:
 	void checkStatus();
 	void setStatus(String txt);
 	void setEvent(String txt);
-	bool receiveCommand(String jsonStr);
+	//bool receiveCommand(String jsonStr);
 	bool requestTime();
 	String localIP;
 	void clearAllSensors();
-	Sensor* getSensorFromId(int id);
+	Sensor* getSensorFromId(int id, SimpleList<Sensor*>& sensors);
 
 	int getShieldId() {
 		return id;

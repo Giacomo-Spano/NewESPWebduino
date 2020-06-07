@@ -251,32 +251,28 @@ void Shield::init() {
 void Shield::clearAllSensors() {
 }
 
-Sensor* Shield::getSensorFromId(int id) { /// sidsogna aggiungere anche richerca nei child
-	logger.print(tag, F("\n\t >>Shield::getSensorFromId"));
-
-	/*//logger.print(tag, String(F("\n\t sensors.size=")) + String(sensors.size()));
-	for (int i = 0; i < sensors.size(); i++)
+Sensor* Shield::getSensorFromId(int id, SimpleList<Sensor*>& list) { 
+	logger.print(tag, "\n\t >>Shield::getSensorFromId id=" + String(id));
+	
+	logger.print(tag, String(F("\n\t list.size=")) + String(list.size()));
+	for (int i = 0; i < list.size(); i++)
 	{
-		Sensor* sensor = (Sensor*)sensors.get(i);
-		//logger.print(tag, String(F("\n\t sensorid=")) + String(sensor->sensorid));
+		logger.print(tag, "\n\t i=" + String(i));
+		Sensor* sensor = (Sensor*)list.get(i);
 		if (sensor->sensorid == id) {
-			logger.print(tag, String(F("\n\t <<>Shield::getSensorFromId - found")));
+			logger.print(tag, String(F("\n\t found")));
 			return sensor;
 		}
-		//logger.print(tag, String(F("\n\t childsensors.size=")) + String(sensor->childsensors.size()));
-		for (int k = 0; k < sensor->childsensors.size(); k++) {
-			Sensor* child = (Sensor*)sensor->childsensors.get(k);
-			logger.print(tag, String(F("\n\t childsensorid=")) + String(child->sensorid));
-			if (child->sensorid == id) {
-				logger.print(tag, String(F("\n\t <<>Shield::getSensorFromId - found")));
-				return (Sensor*)child;
-			}
+		logger.print(tag, String("\n\t childsensors.size=") + String(sensor->childsensors.size()));
+		if (sensor->childsensors.size() > 0) {
+			Sensor* sensor = getSensorFromId(id, sensor->childsensors);
+			if (sensor != nullptr)
+				return sensor;
 		}
 	}
-	logger.print(tag, String(F("\n\t <<>Shield::getSensorFromId - NOT found!")));*/
+	logger.print(tag, String(F("\n\t <<>Shield::getSensorFromId - NOT found!")));
 	return nullptr;
 }
-
 
 void Shield::drawStatus() {
 	if (getOledDisplay()) {
@@ -438,6 +434,7 @@ void Shield::parseMessageReceived(String topic, String message) {
 	logger.print(tag, F("\n\t <<parseMessageReceived\n"));
 }
 
+#ifdef dopo
 bool Shield::receiveCommand(String jsonStr) {
 
 	logger.print(tag, F("\n\t >>Shield::receiveCommand"));
@@ -518,6 +515,7 @@ bool Shield::receiveCommand(String jsonStr) {
 	logger.print(tag, F("\n\t <<Shield::receiveCommand"));
 	return false;
 }
+#endif
 
 bool Shield::onShieldSettingsCommand(JsonObject& json)
 {
@@ -640,19 +638,22 @@ void Shield::sendSensorCommand(int id, String command, String payload)
 	logger.print(tag, String(F("\n\t\ command=")) + command);
 	logger.print(tag, String(F("\n\t\ payload=")) + payload);
 
-	for (int i = 0; i < sensors.size(); i++) {
+	Sensor* sensor = getSensorFromId(id,sensors);
+	if (sensor != nullptr)
+		sensor->sendCommand(command, payload);
 
+	/*for (int i = 0; i < sensors.size(); i++) {
+		
 		Sensor* sensor = sensors.get(i);
-		logger.print(tag, String(F("\n\t\ id=")) + String(sensors.get(i)->sensorid));
 		if (sensor->sensorid == id) {
 			sensor->sendCommand(command, payload);
 			break;
 		}
-	}
+	}*/
 	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
 }
 
-void Shield::checkSensorsStatus()
+/*void Shield::checkSensorsStatus()
 {
 	for (int i = 0; i < sensors.size(); i++)
 	{
@@ -661,8 +662,42 @@ void Shield::checkSensorsStatus()
 			continue;
 		}
 		sensor->updateAvailabilityStatus();
-		sensor->checkStatusChange();
+		if (sensor->checkStatusChange())
+			sensor->sendStatusUpdate();
 	}
+}*/
+
+void Shield::checkSensorsStatus()
+{
+	for (int i = 0; i < sensors.size(); i++)
+	{
+		Sensor* sensor = (Sensor*)sensors.get(i);
+		checkSensorStatus(sensor);
+		/*if (!sensor->enabled) {
+			continue;
+		}
+		sensor->updateAvailabilityStatus();
+		if (sensor->checkStatusChange())
+			sensor->sendStatusUpdate();*/
+	}
+}
+
+void Shield::checkSensorStatus(Sensor* sensor)
+{	
+		//Sensor* sensor = (Sensor*)sensors.get(i);
+		if (!sensor->enabled) {
+			return;
+		}
+		sensor->updateAvailabilityStatus();
+		if (sensor->checkStatusChange())
+			sensor->sendStatusUpdate();
+		if (sensor->childsensors.size() > 0) {
+			for (int i = 0; i < sensor->childsensors.size(); i++)
+			{
+				Sensor* child = (Sensor*)sensor->childsensors.get(i);
+				checkSensorStatus(child);
+			}
+		}
 }
 
 bool Shield::requestTime() {

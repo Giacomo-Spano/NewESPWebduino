@@ -82,21 +82,6 @@ KeyLockSensor::KeyLockSensor(JsonObject& json) : Sensor(json)
 	logger.print(tag, F("\n\t<<KeyLockSensor::KeyLockSensor\n"));
 }
 
-
-
-/*KeyLockSensor::KeyLockSensor(int id, uint8_t pin, bool enabled, String address, String name, uint8_t _stepPin, uint8_t _directionPin, uint8_t _enablePin, uint8_t _outputAPin, uint8_t _outputBPin) : Sensor(id, pin, enabled, address, name)
-{
-	type = "keylocksensor";
-	checkStatus_interval = 10;
-	lastCheckStatus = 0;
-
-	stepPin = _stepPin;
-	directionPin = _directionPin;
-	enablePin = _enablePin;
-	outputAPin = _outputAPin;
-	outputBPin = _outputBPin;
-}*/
-
 KeyLockSensor::~KeyLockSensor()
 {
 }
@@ -115,27 +100,28 @@ void KeyLockSensor::getJson(JsonObject& json) {
 	json["enablepin"] = Shield::getStrPin(enablePin);
 	json["outputapin"] = Shield::getStrPin(outputAPin);
 	json["outputbpin"] = Shield::getStrPin(outputBPin);
+	//json.printTo(Serial);
 }
 
-void KeyLockSensor::checkStatusChange()
+bool KeyLockSensor::checkStatusChange()
 {
-	Sensor::checkStatusChange();
+	//Sensor::checkStatusChange();
 
 	oldPositionStatus = position;
-
+		
 	if (status.equals(STATUS_STOPPING)) {
 		updateStatus();
 		logger.print(tag, F("\n\t STOPPED"));
 		enableMotor(false);
 
 	} else if (status.equals(STATUS_OPENING)) {
-		if (position > closedThreshold) {
+		if (position > openThreshold) {
 			rotateMotor();
-			if (countRotation++ > maxrotation) {
+			if (countRotation++ > maxrotation || position < zeroThreshold) {
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO OPEN"));
 				updateStatus();
-				return;
+				return Sensor::checkStatusChange();
 			}
 		}
 		else
@@ -146,13 +132,13 @@ void KeyLockSensor::checkStatusChange()
 		}
 	}
 	else if (status.equals(STATUS_CLOSING)) {
-		if (position < openThreshold) {
+		if (position < closedThreshold) {
 			rotateMotor();
-			if (countRotation++ > maxrotation) {
+			if (countRotation++ > maxrotation || position > maxThreshold) {
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO CLOSE"));
 				updateStatus();
-				return;
+				return Sensor::checkStatusChange();;
 			}
 		}
 		else
@@ -170,7 +156,7 @@ void KeyLockSensor::checkStatusChange()
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO SET POSITION"));
 				updateStatus();
-				return;
+				return Sensor::checkStatusChange();;
 			}
 		}
 		else {
@@ -179,9 +165,17 @@ void KeyLockSensor::checkStatusChange()
 			enableMotor(false);
 		}
 	}
+
+	return Sensor::checkStatusChange();
+	/*if (!status.equals(oldStatus)) {
+		//logger.print(tag, F("\n\t\t SEND STATUS\n\n"));
+		sendStatusUpdate();
+		//updateAttributes();
+	}*/
 }
 
 void KeyLockSensor::updateStatus() {
+	
 	if (position <= firstLockThreshold) {
 		logger.print(tag, "\n\t STATUS open " + String(position));
 		setStatus(STATUS_OPEN);
@@ -194,8 +188,8 @@ void KeyLockSensor::updateStatus() {
 		logger.print(tag, "\n\t STATUS firstlock " + String(position));
 		setStatus(STATUS_FIRSTLOCK);
 	}
-}
 
+}
 
 void KeyLockSensor::init()
 {
@@ -235,21 +229,21 @@ void KeyLockSensor::init()
 
 	enableMotor(false);
 
-	position = 700;
-	openThreshold = 700;
-	closedThreshold = 0;
-	firstLockThreshold = 2 * (closedThreshold - openThreshold) / 3 + openThreshold;
-	secondLockThreshold = 1 * (closedThreshold - openThreshold) / 3 + openThreshold;
+	position = 0;
+	//openThreshold = 0;
+	//closedThreshold = 700;
+	firstLockThreshold = 1 * (closedThreshold - openThreshold) / 4;
+	secondLockThreshold = 3 * (closedThreshold - openThreshold) / 4;
 	oldPositionStatus = -1;
 
 	logger.print(tag, F("\n\t <<init KeyLockSensor"));
 }
 
-void KeyLockSensor::sendStatusUpdate()
+/*void KeyLockSensor::sendStatusUpdate()
 {
 	logger.print(tag, F("\n\t\t sendStatusUpdate"));
 	String topic = "ESPWebduino/myboard1/" + type + "/" + String(sensorid) + "/pos";
-	int pos = position;
+	//int pos = position;
 	if (position < 0)
 		position = 0;
 	if (position > 700)
@@ -257,7 +251,7 @@ void KeyLockSensor::sendStatusUpdate()
 
 	if (mqtt_publish(topic, String(position)))
 		oldStatus = status;
-}
+}*/
 
 bool KeyLockSensor::sendCommand(String command, String payload)
 {
@@ -283,8 +277,42 @@ bool KeyLockSensor::sendCommand(String command, String payload)
 	else if (command.equals("zerocalibration")) {
 		return zeroCalibration();
 	}
+	else if (command.equals("openthreshold")) {
+		return setOpenThreshold();
+	}
+	else if (command.equals("firstlockthreshold")) {
+		return setFirstLockThreshold();
+	}
+	else if (command.equals("closedthreshold")) {
+		return setClosedThreshold();
+	}
+
 	logger.print(tag, F("\n\t <<KeyLockSensor::sendCommand"));
 	return false;
+}
+
+bool KeyLockSensor::setOpenThreshold()
+{
+	logger.print(tag, F("\n\t >>KeyLockSensor::setOpenThresold"));
+	openThreshold = position;
+	logger.print(tag, F("\n\t <<KeyLockSensor::setOpenThresold"));
+	return true;
+}
+
+bool KeyLockSensor::setFirstLockThreshold()
+{
+	logger.print(tag, F("\n\t >>KeyLockSensor::setFirstLockThresold"));
+	firstLockThreshold = position;
+	logger.print(tag, F("\n\t <<KeyLockSensor::setFirstLockThresold"));
+	return true;
+}
+
+bool KeyLockSensor::setClosedThreshold()
+{
+	logger.print(tag, F("\n\t >>KeyLockSensor::setClosedThresold"));
+	closedThreshold = position;
+	logger.print(tag, F("\n\t <<KeyLockSensor::setClosedThresold"));
+	return true;
 }
 
 bool KeyLockSensor::stopLock()
@@ -323,11 +351,13 @@ bool KeyLockSensor::closeLock()
 
 bool KeyLockSensor::setPosition(int _targetpos) {
 
-	logger.print(tag, "\n\t >>KeyLockSensor::setPosition " + String(targetpos));
+	logger.print(tag, "\n\t >>KeyLockSensor::setPosition " + String(_targetpos) + "%");
 
 	setStatus(STATUS_MOVING);
-	targetpos = (int)(_targetpos / 100.0 * openThreshold);
+	targetpos = (int)(_targetpos / 100.0 * closedThreshold);
+	logger.print(tag, "\n\t targetpos=" + String(targetpos));
 	delta = targetpos - position;
+	logger.print(tag, "\n\t delta=" + String(delta));
 
 	countRotation = 0;
 	if (delta < 0)
@@ -363,7 +393,7 @@ bool KeyLockSensor::zeroCalibration() {
 		if (lockedCounter > 10) {
 
 			enableMotor(false);
-			position = openThreshold;
+			position = zeroThreshold;
 			oldPos = -1;
 			setStatus(STATUS_OPEN);
 			logger.print(tag, "\n\t CALIBRATION SUCCESFUL");

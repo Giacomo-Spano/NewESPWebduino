@@ -21,6 +21,9 @@ private:
 	static String tag;
 	static Logger logger;
 
+	String status = STATUS_IDLE;
+	String oldStatus = STATUS_IDLE;
+
 protected:
 	DynamicJsonBuffer* jsonBuffer[];
 
@@ -40,8 +43,7 @@ public:
 	bool enabled;
 	uint8_t pin;
 	String address;
-	String status = STATUS_IDLE;
-	String oldStatus = STATUS_IDLE;
+	
 		
 	unsigned long lastCheckStatus;// = 0;//-flash_interval;
 	int checkStatus_interval = 1000;	// il valore corretto per ogni tipo di sensore
@@ -49,12 +51,12 @@ public:
 									// default 1 secondo
 
 	unsigned lastUpdateAvailabilityStatus = 0;
-	int updateAvailabilityStatus_interval = 10000; // intervallo minimo di aggiornamentto 
+	int updateAvailabilityStatus_interval = 30000; // intervallo minimo di aggiornamentto 
 									// default 1 minuto
 	
 	void updateAvailabilityStatus();
 	void updateAttributes();
-	virtual void checkStatusChange();
+	virtual bool checkStatusChange();
 	virtual void sendStatusUpdate();
 
 	
