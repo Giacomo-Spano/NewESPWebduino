@@ -92,6 +92,11 @@ void Sensor::setStatus(String _status) {
 	status = _status;
 }
 
+String Sensor::getStatus() {
+
+	return status;
+}
+
 bool Sensor::checkStatusChange()
 {
 	//logger.print(tag, F("\n\t\t checkStatusChange"));
@@ -105,17 +110,17 @@ bool Sensor::checkStatusChange()
 	return false;
 }
 
-void Sensor::sendStatusUpdate()
+void Sensor::sendStatusUpdate(String boardname)
 {
 	logger.print(tag, F("\n\t>>Sensor::::sendStatusUpdate"));
-	String topic = "ESPWebduino/myboard1/" + type + "/status";
+	String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/status";
 	if (mqtt_publish(topic, status))
 		oldStatus = status;
-	updateAttributes();
+	updateAttributes(boardname);
 	logger.print(tag, F("\n\t<<Sensor::::sendStatusUpdate"));
 }
 
-void Sensor::updateAvailabilityStatus() {
+void Sensor::updateAvailabilityStatus(String boardname) {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastUpdateAvailabilityStatus;
@@ -123,16 +128,18 @@ void Sensor::updateAvailabilityStatus() {
 	if (timeDiff > updateAvailabilityStatus_interval) {
 		logger.print(tag, "\n\n\t >>>> send availability status update");
 		lastUpdateAvailabilityStatus = currMillis;
-		String topic = "ESPWebduino/myboard1/" + type + "/"+ sensorid + "/availability";
+		String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/availability";
+		//String topic = "ESPWebduino/myboard1/" + type + "/"+ sensorid + "/availability";
 		mqtt_publish(topic, "online");
 		logger.print(tag, "\n");
 	}
 }
 
-void Sensor::updateAttributes() {
+void Sensor::updateAttributes(String boardname) {
 	
 	logger.print(tag, "\n\n\t >>>> send atttributes");
-	String topic = "ESPWebduino/myboard1/" + type + "/" + sensorid + "/attributes";
+	String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/attributes";
+	//String topic = "ESPWebduino/myboard1/" + type + "/" + sensorid + "/attributes";
 	//String strJson = getStrJson();
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& json = jsonBuffer.createObject();

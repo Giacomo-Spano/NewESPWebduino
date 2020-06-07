@@ -37,32 +37,26 @@ bool DoorSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
+	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
 		//logger.print(tag, "\n\t >>>> checkStatusChange - timeDiff > checkStatus_interval");
 		lastCheckStatus = currMillis;
-		
-		
+				
 		if (mode.equals(MODE_NORMAL)) {
 			if (digitalRead(pin) == LOW) {
 				setStatus(STATUS_DOOROPEN);
+				ret = Sensor::checkStatusChange();
 			}
 			else {
 				setStatus(STATUS_DOORCLOSED);
+				ret = Sensor::checkStatusChange();
 			}
 		}
 		else if (mode.equals(MODE_TEST)) {
+			ret = Sensor::checkStatusChange();
 		}
-
-		/*String oldStatus = status;
-		if (!status.equals(oldStatus)) {
-			if (status.equals(STATUS_DOOROPEN))
-				logger.print(tag, "\n\t >>>> DOOR OPEN");
-			else if (status.equals(STATUS_DOORCLOSED))
-				logger.print(tag, "\n\t >>>> DOOR CLOSED");
-			return true;
-		}*/
 	}
-	return false;
+	return ret;
 }
 
 bool DoorSensor::sendCommand(String command, String payload)

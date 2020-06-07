@@ -14,85 +14,85 @@
       <Extensions>xml;json;txt;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{c54f0c9a-4e67-4c64-988d-d5259ff56203}</UniqueIdentifier>
+      <UniqueIdentifier>{e97480a3-987d-42c8-b3dd-2f79395afce1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly">
-      <UniqueIdentifier>{b5733222-8541-46ed-ad44-533902542ba7}</UniqueIdentifier>
+      <UniqueIdentifier>{e711a1a7-e2e9-4e0a-ab63-5fa67e8e8826}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core">
-      <UniqueIdentifier>{7f387640-f78b-4676-ac98-3c59b516fb46}</UniqueIdentifier>
+      <UniqueIdentifier>{d22afa85-838d-4fb7-94f5-9fa63e0daf87}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\avr">
-      <UniqueIdentifier>{24112479-0b11-4b3b-91d0-3603133bcc3c}</UniqueIdentifier>
+      <UniqueIdentifier>{25e3ef38-d70a-4e22-992a-ea680b3bc3b8}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\libb64">
-      <UniqueIdentifier>{91384f81-05a4-4eb8-90e3-07ba3fabd509}</UniqueIdentifier>
+      <UniqueIdentifier>{bbc3d700-ccaf-42e7-ba1e-a3d7d8b91e46}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\spiffs">
-      <UniqueIdentifier>{027e1b97-e1ca-45e2-ae68-4947b5c7a717}</UniqueIdentifier>
+      <UniqueIdentifier>{94690851-bb4f-4dff-b9bb-27150b26d955}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\umm_malloc">
-      <UniqueIdentifier>{1475d884-03a8-4b7e-812a-9ba0d833c53d}</UniqueIdentifier>
+      <UniqueIdentifier>{67507cd4-7034-4f6a-94e6-31b207e48cdc}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\core\umm_malloc\dbglog">
-      <UniqueIdentifier>{bce2046b-9185-4856-80d0-4a7b4f801130}</UniqueIdentifier>
+      <UniqueIdentifier>{080ad95d-6c47-4dcd-9b0e-b3af3de94b48}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries">
-      <UniqueIdentifier>{9e7ea8aa-0f5b-4d85-b297-ed641b4a2e5a}</UniqueIdentifier>
+      <UniqueIdentifier>{69934df3-3563-46ca-b974-f307f77a36ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266WiFi">
-      <UniqueIdentifier>{4e4db97e-3dc6-4f22-8db5-7e61fb601d7f}</UniqueIdentifier>
+      <UniqueIdentifier>{39a16071-8d99-411f-854e-def7cd160582}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\WiFi">
-      <UniqueIdentifier>{335eb412-14cc-4fec-99bf-4e2ff8294e87}</UniqueIdentifier>
+      <UniqueIdentifier>{43b7f422-3343-4153-bd88-416f49696320}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266httpUpdate">
-      <UniqueIdentifier>{5d15ba95-8df4-404a-b6f3-6bef052ff4e1}</UniqueIdentifier>
+      <UniqueIdentifier>{1c0d5a3c-a460-4943-ae17-8c98f22372ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\AsyncTCP-master">
-      <UniqueIdentifier>{d5e493d8-de52-4514-b23f-a16f600831a9}</UniqueIdentifier>
+      <UniqueIdentifier>{4d3e302f-7a1f-4d05-a2ef-3c8d34b40dfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncTCP-master">
-      <UniqueIdentifier>{862e30fc-3f21-4b2a-98b6-060a81663099}</UniqueIdentifier>
+      <UniqueIdentifier>{1fa32b1a-7dbb-4580-8e17-fc2f1b3f11e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESPAsyncWebServer-master">
-      <UniqueIdentifier>{2ba52fc5-6263-4777-a4d3-3699517d92e4}</UniqueIdentifier>
+      <UniqueIdentifier>{51113408-7e58-4514-8bc9-e9917526197b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\esp32-http-update-master">
-      <UniqueIdentifier>{34edac5a-3bce-496f-96df-dc99ecf19238}</UniqueIdentifier>
+      <UniqueIdentifier>{8c4439d5-d19c-4c7d-8d9a-950d1300844b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\Time-master">
-      <UniqueIdentifier>{e1aef963-4b99-4de9-aa5b-d47f61808420}</UniqueIdentifier>
+      <UniqueIdentifier>{dbc91ab2-c6fd-4c97-ae05-2d138479327e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ArduinoJson">
-      <UniqueIdentifier>{1dfeebb2-7fe5-40f8-9995-d391f7100f30}</UniqueIdentifier>
+      <UniqueIdentifier>{b1723ba9-bac0-412a-9d37-9e45d84e90f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\PubSubClient">
-      <UniqueIdentifier>{e03f913d-e3c4-45c5-8d83-23cc784f4a4b}</UniqueIdentifier>
+      <UniqueIdentifier>{e4ea2e7f-5f3c-4a9b-adf2-c6465485cf1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\SimpleList-master">
-      <UniqueIdentifier>{fad2d73f-35ac-4505-867c-d73200e20d66}</UniqueIdentifier>
+      <UniqueIdentifier>{82dcd0a3-06e1-49c2-853a-7bf4e1d4216b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\Wire">
-      <UniqueIdentifier>{3b001dd9-1f8b-458a-b3c2-d9c33d37d041}</UniqueIdentifier>
+      <UniqueIdentifier>{b88f98a7-bf1a-45a7-858e-c443e67b081a}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display">
-      <UniqueIdentifier>{e28f6b76-7d56-43dc-abb1-9e7a0cc1c4e1}</UniqueIdentifier>
+      <UniqueIdentifier>{3b2acc64-f054-4749-8652-d53e38bc0e43}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\Hash">
-      <UniqueIdentifier>{1fec0746-369d-4531-99fe-a8d991354e23}</UniqueIdentifier>
+      <UniqueIdentifier>{b5940e39-0bda-466b-b971-762ff7a218a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\ESP8266HTTPClient">
-      <UniqueIdentifier>{19f1334d-7b6f-47ef-a2b3-ae4174818eb4}</UniqueIdentifier>
+      <UniqueIdentifier>{ba428f78-8832-46a0-b856-fd002b01b874}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\SPI">
-      <UniqueIdentifier>{faeaf019-172e-495f-a12e-6191ea57bbd5}</UniqueIdentifier>
+      <UniqueIdentifier>{bac560dd-4473-494a-966a-8ec542d51d9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\OneWire">
-      <UniqueIdentifier>{594ff297-9495-4506-bcfe-0631768a0fb4}</UniqueIdentifier>
+      <UniqueIdentifier>{795862b0-c30a-413a-8a66-85ce4a0c6fc7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\DallasTemperature">
-      <UniqueIdentifier>{fbb2caf3-b322-4ce4-9ac8-f0c05fd03c65}</UniqueIdentifier>
+      <UniqueIdentifier>{c2fba626-801a-4511-bdf0-6f5c9fa7046d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +240,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DoorSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HornSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\AddrList.h">
@@ -1265,9 +1268,6 @@
     <ClInclude Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.h">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
     </ClInclude>
-    <ClInclude Include="HornSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyLockSensor.cpp">
@@ -1301,6 +1301,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DoorSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HornSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.6.2\cores\esp8266\abi.cpp">
@@ -2055,9 +2058,6 @@
     </ClCompile>
     <ClCompile Include="E:\OneDrive\Documenti\Arduino\libraries\DallasTemperature\DallasTemperature.cpp">
       <Filter>src\_micro-api-readonly\libraries\DallasTemperature</Filter>
-    </ClCompile>
-    <ClCompile Include="HornSensor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

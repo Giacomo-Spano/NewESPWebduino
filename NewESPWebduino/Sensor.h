@@ -54,13 +54,14 @@ public:
 	int updateAvailabilityStatus_interval = 30000; // intervallo minimo di aggiornamentto 
 									// default 1 minuto
 	
-	void updateAvailabilityStatus();
-	void updateAttributes();
+	void updateAvailabilityStatus(String boardname);
+	void updateAttributes(String boardname);
 	virtual bool checkStatusChange();
-	virtual void sendStatusUpdate();
+	virtual void sendStatusUpdate(String boardname);
 
 	
 	void setStatus(String status);
+	String getStatus();
 	Sensor* getSensorFromId(int id);
 	virtual void getJson(JsonObject& json);
 	virtual void loadChildren(JsonArray& jsonarray);

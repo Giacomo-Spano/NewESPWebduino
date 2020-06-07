@@ -12,7 +12,7 @@ class Shield
 protected:
 	int localPort;
 
-	String name;
+	String boardName;
 	String serverName;//[serverNameLen];
 	int serverPort;
 	String mqttServer;
@@ -329,17 +329,17 @@ public:
 		logger.print(tag, "\n\t >> localPort=" + String(localPort));
 	}
 
-	String getName()
+	String getBoardName()
 	{
-		return String(name);
+		return String(boardName);
 	}
 
 	void setName(String _name)
 	{
 		logger.print(tag, "\n\t >>setName");
-		name = _name;
+		boardName = _name;
 		logger.print(tag, "\n\t name=");
-		logger.print(tag, name);
+		logger.print(tag, boardName);
 	}
 
 	String getServerName()

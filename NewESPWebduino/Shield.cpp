@@ -60,7 +60,7 @@ void Shield::writeConfig() {
 	logger.println(tag, F(">>writeConfig"));
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& json = jsonBuffer.createObject();
-	json["name"] = getName();
+	json["name"] = getBoardName();
 	json["http_server"] = getServerName();
 	json["http_port"] = getServerPort();
 	json["mqtt_server"] = getMQTTServer();
@@ -374,7 +374,7 @@ void Shield::parseMessageReceived(String topic, String message) {
 	logger.print(tag, "\n");
 
 	String subtopic = topic;
-	subtopic.replace("ESPWebduino/" + getName() + "/command/", "");
+	subtopic.replace("ESPWebduino/" + getBoardName() + "/command/", "");
 
 	int index = subtopic.indexOf('/');
 	if (index >= 0) {
@@ -688,9 +688,9 @@ void Shield::checkSensorStatus(Sensor* sensor)
 		if (!sensor->enabled) {
 			return;
 		}
-		sensor->updateAvailabilityStatus();
+		sensor->updateAvailabilityStatus(getBoardName());
 		if (sensor->checkStatusChange())
-			sensor->sendStatusUpdate();
+			sensor->sendStatusUpdate(getBoardName());
 		if (sensor->childsensors.size() > 0) {
 			for (int i = 0; i < sensor->childsensors.size(); i++)
 			{

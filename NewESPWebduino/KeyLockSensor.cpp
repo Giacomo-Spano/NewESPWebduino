@@ -94,7 +94,7 @@ void KeyLockSensor::getJson(JsonObject& json) {
 	json["secondlockthreshold"] = secondLockThreshold;
 	json["closedthreshold"] = closedThreshold;
 
-	json["lockstatus"] = status;
+	json["lockstatus"] = getStatus();
 	json["steppin"] = Shield::getStrPin(stepPin);
 	json["directionpin"] = Shield::getStrPin(directionPin);
 	json["enablepin"] = Shield::getStrPin(enablePin);
@@ -109,12 +109,12 @@ bool KeyLockSensor::checkStatusChange()
 
 	oldPositionStatus = position;
 		
-	if (status.equals(STATUS_STOPPING)) {
+	if (getStatus().equals(STATUS_STOPPING)) {
 		updateStatus();
 		logger.print(tag, F("\n\t STOPPED"));
 		enableMotor(false);
 
-	} else if (status.equals(STATUS_OPENING)) {
+	} else if (getStatus().equals(STATUS_OPENING)) {
 		if (position > openThreshold) {
 			rotateMotor();
 			if (countRotation++ > maxrotation || position < zeroThreshold) {
@@ -131,7 +131,7 @@ bool KeyLockSensor::checkStatusChange()
 			enableMotor(false);
 		}
 	}
-	else if (status.equals(STATUS_CLOSING)) {
+	else if (getStatus().equals(STATUS_CLOSING)) {
 		if (position < closedThreshold) {
 			rotateMotor();
 			if (countRotation++ > maxrotation || position > maxThreshold) {
@@ -149,7 +149,7 @@ bool KeyLockSensor::checkStatusChange()
 			enableMotor(false);
 		}
 	}
-	else if (status.equals(STATUS_MOVING)) {
+	else if (getStatus().equals(STATUS_MOVING)) {
 		if ((delta < 0 && position > targetpos) || (delta > 0 && position < targetpos)) {
 			rotateMotor();
 			if (countRotation++ > maxrotation) {

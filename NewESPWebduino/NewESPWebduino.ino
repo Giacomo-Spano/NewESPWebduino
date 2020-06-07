@@ -631,7 +631,7 @@ bool reconnect() {
 		if (mqttclient.connect(clientId, shield.getMQTTUser(), shield.getMQTTPassword())) {
 			logger.print(tag, F("\n\t connected"));
 			// Once connected, publish an announcement...
-			String topic = "ESPWebduino/" + shield.getName() + "/command/#";
+			String topic = "ESPWebduino/" + shield.getBoardName() + "/command/#";
 
 			logger.println(tag, String("\n\n\t Subscribing to topic = ") + topic);
 			if (mqttclient.subscribe(topic.c_str())) {
@@ -742,7 +742,7 @@ String processor(const String& var) {
 		return ledState;
 	}
 	else if (var == "NAME") {
-		return shield.getName();
+		return shield.getBoardName();
 	}
 	else if (var == "MQTT_SERVER") {
 		return shield.getMQTTServer();

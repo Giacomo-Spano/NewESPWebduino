@@ -73,7 +73,7 @@ bool HornSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	lastCheckStatus = currMillis;
 
-	if (status.equals(STATUS_ON)) {
+	if (getStatus().equals(STATUS_ON)) {
 		if ((currMillis - hornStartTime) > hornTimeout // timeout trascorso
 			|| (currMillis - hornStartTime) < 0) { // oppure currmill resettato
 
@@ -86,7 +86,7 @@ bool HornSensor::checkStatusChange() {
 			}
 			return true;
 		}
-	} else if (status.equals(STATUS_PAUSE)) {
+	} else if (getStatus().equals(STATUS_PAUSE)) {
 		if ((currMillis - hornPauseStartTime) > hornPauseTimeout // timeout trascorso
 			|| (currMillis - hornPauseStartTime) < 0) { // oppure currmill resettato
 
@@ -99,7 +99,7 @@ bool HornSensor::checkStatusChange() {
 			}
 			return true;
 		}
-	} else if (status.equals(STATUS_PAUSE) || status.equals(STATUS_IDLE)) {
+	} else if (getStatus().equals(STATUS_PAUSE) || getStatus().equals(STATUS_IDLE)) {
 		return false;
 	}
 	return false;
