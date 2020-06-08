@@ -51,7 +51,11 @@ public:
 									// default 1 secondo
 
 	unsigned lastUpdateAvailabilityStatus = 0;
-	int updateAvailabilityStatus_interval = 30000; // intervallo minimo di aggiornamentto 
+	int updateAvailabilityStatus_interval = 60000; // intervallo minimo di aggiornamentto 
+									// default 1 minuto
+
+	unsigned lastUpdateStatus = 0;
+	int updateStatus_interval = 60000; // intervallo minimo di aggiornamentto 
 									// default 1 minuto
 	
 	void updateAvailabilityStatus(String boardname);

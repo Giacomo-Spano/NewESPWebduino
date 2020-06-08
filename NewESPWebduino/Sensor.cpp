@@ -106,13 +106,23 @@ bool Sensor::checkStatusChange()
 		//sendStatusUpdate();
 		return true;
 		//updateAttributes();
-	} 	
+	}
+
+	unsigned long timeDiff = millis() - lastUpdateAvailabilityStatus;
+	if (timeDiff > updateStatus_interval || timeDiff < 0) { // se è passato troppo tempo aggiorna comunque
+		return true;
+	}
+
 	return false;
 }
 
 void Sensor::sendStatusUpdate(String boardname)
 {
 	logger.print(tag, F("\n\t>>Sensor::::sendStatusUpdate"));
+
+	unsigned long currMillis = millis();
+	lastUpdateStatus = currMillis;
+
 	String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/status";
 	if (mqtt_publish(topic, status))
 		oldStatus = status;
@@ -125,11 +135,10 @@ void Sensor::updateAvailabilityStatus(String boardname) {
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastUpdateAvailabilityStatus;
 	
-	if (timeDiff > updateAvailabilityStatus_interval) {
+	if (timeDiff > updateAvailabilityStatus_interval || timeDiff < 0) {
 		logger.print(tag, "\n\n\t >>>> send availability status update");
 		lastUpdateAvailabilityStatus = currMillis;
 		String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/availability";
-		//String topic = "ESPWebduino/myboard1/" + type + "/"+ sensorid + "/availability";
 		mqtt_publish(topic, "online");
 		logger.print(tag, "\n");
 	}
@@ -218,6 +227,7 @@ void Sensor::loadChildren(JsonArray& jsonarray)
 		//String subaddress = "sub-" + String(i);
 		Sensor* child = SensorFactory::createSensor(jsonarray[i]);
 		if (child != nullptr) {
+			child->init();
 			//child->id = id++;
 			childsensors.add(child);
 		}

@@ -44,8 +44,11 @@ Shield shield;
 
 extern bool mqtt_publish(String topic, String message);
 
-const char* ssid = "FASTWEB-C16E33";
-const char* password = "4GE4MEHHFG";
+//const char* ssid = "FASTWEB-C16E33";
+//const char* password = "4GE4MEHHFG";
+const char* ssid = "TP-LINK_3D88";//
+const char* password = "giacomobox";
+
 const char* http_username = "admin";
 const char* http_password = "admin";
 
@@ -66,9 +69,9 @@ const int sensor_command_size = 50;
 volatile char sensor_command[sensor_command_size];
 volatile bool sensor_command_received = false;
 
-const char* PARAM_INPUT_1 = "input1";
-const char* PARAM_INPUT_2 = "input2";
-const char* PARAM_INPUT_3 = "input3";
+//const char* PARAM_INPUT_1 = "input1";
+//const char* PARAM_INPUT_2 = "input2";
+//const char* PARAM_INPUT_3 = "input3";
 
 const char* PARAM_NAME = "name";
 const char* PARAM_MQTT_SERVER = "mqtt_server";
@@ -88,7 +91,7 @@ const char* PARAM_PIN = "pin";
 const char* PARAM_ACTION = "action";
 
 // HTML web page to handle 3 input fields (input1, input2, input3)
-const char index_html[] PROGMEM = R"rawliteral(
+/*const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html><head>
   <title>ESP Input Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -111,7 +114,7 @@ const char index_html[] PROGMEM = R"rawliteral(
     <input type="submit" value="Submit">
   </form>
 </body></html>)rawliteral";
-
+*/
 
 Logger logger;
 String tag = "Webduino";
@@ -218,7 +221,7 @@ void setup() {
 	}
 
 	// Initialize Shield
-	shield.readRebootReason();
+	//shield.readRebootReason();
 	shield.readConfig();
 	shield.init();
 
@@ -239,7 +242,11 @@ void setup() {
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
 
+
+
 	checkForSWUpdate();
+
+	initMQTTServer();
 
 	// attach AsyncWebSocket
 	ws.onEvent(onEvent);
@@ -291,10 +298,10 @@ void setup() {
 		});
 
 	// respond to GET requests on URL /home
-	asyncServer.on("/home", HTTP_GET, [](AsyncWebServerRequest* request) {
+	/*asyncServer.on("/home", HTTP_GET, [](AsyncWebServerRequest* request) {
 		logger.println(tag, "\n\n /home");
 		request->send_P(200, "text/html", index_html);
-		});
+		});*/
 
 	// respond to GET requests on URL /
 	asyncServer.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -493,17 +500,36 @@ void setup() {
 		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
 
 			logger.print(tag, "\n\t>>>postsensorcommand request received\n");
+			
+			logger.print(tag, "\nlen=" + String(len));
+			logger.print(tag, "\nindex=" + String(index));
+			logger.print(tag, "\ntotal=" + String(total));
+			logger.print(tag, "\n");
+			if (total >= maxPostData) {
+				logger.print(tag, "\n\t posData too big");
+			}
+			if (index == 0)
+				postDataCounter = 0;
+			for (size_t i = 0; i < len; i++) {
+				postData[postDataCounter++] = data[i];
+				Serial.write(postData[postDataCounter - 1]);
+			}
 
-			bool ret = postSensorCommand(len, index, total, data);
-
-			if (ret) {
-				logger.print(tag, "\n\t<<postsensorcommand request sent\n");
-				request->send(200, "text/html", "command received");
+			if (postDataCounter == total) {
+				bool ret = postSensorCommand(postDataCounter, postData);
+				if (ret) {
+					logger.print(tag, "\n\t<<postsensorcommand request sent\n");
+					request->send(200, "text/html", "command received");
+				}
+				else {
+					logger.print(tag, "\n\t<<postsensorcommand failed\n");
+					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
+				}
 			}
 			else {
-				logger.print(tag, "\n\t<<postsensorcommand failed\n");
-				request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
+				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
 			}
+
 
 		});
 
@@ -531,6 +557,10 @@ void setup() {
 				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
 				postData[postDataCounter] = 0;
 				postDataCounter = 0;
+
+				//StaticJsonBuffer<2000> jsonBuffer;
+				//JsonObject& json = jsonBuffer.createObject();
+				//StaticJsonBuffer<2000> jsonBuffer;
 				DynamicJsonBuffer jsonBuffer;
 				JsonObject& root = jsonBuffer.parseObject((const char*)postData);
 				if (root.success()) {
@@ -567,22 +597,22 @@ void setup() {
 	asyncServer.begin();
 
 	// Initialize MQTT
-	initMQTTServer();
+	//initMQTTServer();
 
 }
 
-bool postSensorCommand(const size_t& len, const size_t& index, const size_t& total, uint8_t* data)
+bool postSensorCommand(int counter, uint8_t* pdata)
 {
 	logger.print(tag, "\n\t>>postSensorCommand");
-	logger.print(tag, "\n\t len=" + String(len));
-	logger.print(tag, "\n\t index=" + String(index));
-	logger.print(tag, "\n\t total=" + String(total));
-	logger.print(tag, "\n\t");
-	for (size_t i = 0; i < len; i++) {
-		Serial.write(data[i]);
+	//logger.print(tag, "\n\t len=" + String(len));
+	//logger.print(tag, "\n\t index=" + String(index));
+	//logger.print(tag, "\n\t total=" + String(total));
+	//logger.print(tag, "\n\t");
+	for (size_t i = 0; i < counter; i++) {
+		Serial.write(pdata[i]);
 	}
 	DynamicJsonBuffer jsonBuffer;
-			JsonObject& json = jsonBuffer.parseObject((const char*)data);
+			JsonObject& json = jsonBuffer.parseObject(/*(char*)*/pdata);
 			if (json.success()) {
 				logger.print(tag, "\n\t command data parsed");
 				if (json.containsKey("sensorid")) {
@@ -611,7 +641,7 @@ bool postSensorCommand(const size_t& len, const size_t& index, const size_t& tot
 					}
 				}
 			}
-			logger.print(tag, "\n\tBAD data command received");
+			logger.print(tag, "\n\tcannot parse data command received");
 			logger.print(tag, "\n\t<<postSensorCommand");
 			return false;
 }
@@ -823,7 +853,23 @@ void listAllFiles() {
 
 	logger.print(tag, F("\n\n listAllFiles"));
 	logger.print(tag, F("\n\tname \t\tsize"));
-	/*Dir dir = SPIFFS.openDir("/");
+
+	File configFile = SPIFFS.open("/config.json", "r");
+	if (configFile) {
+		logger.print(tag, F("\n\t opened config file"));
+		String data = configFile.readString();
+		Serial.println(data);
+	}
+	File sensorFile = SPIFFS.open("/sensors.json", "r");
+	if (configFile) {
+		logger.print(tag, F("\n\t opened sensor file"));
+		String data = configFile.readString();
+		Serial.println(data);
+	}
+
+
+#ifdef ESP8266
+	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) {
 		//Serial.print(dir.fileName());
 		logger.print(tag, F("\n\t"));
@@ -842,7 +888,8 @@ void listAllFiles() {
 		f.close();
 		logger.print(tag, F("\n"));
 
-	}*/
+	}
+#endif
 	logger.print(tag, F("\n"));
 }
 
@@ -941,7 +988,8 @@ void checkForSWUpdate() {
 	logger.println(tag, F(">>checkForSWUpdate"));
 	//delay(2000);
 
-	String updatePath = "http://192.168.1.203:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
+	//String updatePath = "http://192.168.1.203:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
+	String updatePath = "http://giacomocasa.duckdns.org:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
 	logger.print(tag, "\n\t check for sw update " + updatePath);
 	logger.print(tag, "\n\t current version " + shield.swVersion);
 	t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath, shield.swVersion);

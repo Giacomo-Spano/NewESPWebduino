@@ -68,7 +68,7 @@ public:
 	bool writeSensorsToFile();
 	String getSensors();
 	bool updateSensor(JsonObject& json);
-	bool addSensor(JsonObject& json);
+	bool addJsonSensor(JsonObject& json);
 	void parseMessageReceived(String topic, String message);
 	void drawString(int x, int y, String txt, int size, int color);
 	void drawDateTime();

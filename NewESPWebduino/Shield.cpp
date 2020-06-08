@@ -86,6 +86,9 @@ void Shield::writeConfig() {
 	json.printTo(configFile);
 	configFile.close();
 	logger.println(tag, F("config file writtten"));
+
+	readConfig();
+
 	logger.println(tag, F("<<writeConfig"));
 }
 
@@ -843,7 +846,7 @@ bool Shield::updateSensor(JsonObject& json) {
 
 		if (sensorid == 0) {
 			//json["sensorid"] = getNextSensorId();
-			return addSensor(json);
+			return addJsonSensor(json);
 		}
 		else {
 			logger.println(tag, F("\n Update existing sensor\n"));
@@ -855,13 +858,13 @@ bool Shield::updateSensor(JsonObject& json) {
 					break;
 				}
 			}
-			return addSensor(json);
+			return addJsonSensor(json);
 		}
 		return false;
 	}
 }
 
-bool Shield::addSensor(JsonObject& json) {
+bool Shield::addJsonSensor(JsonObject& json) {
 	Sensor* sensor = SensorFactory::createSensor(json);
 	if (sensor == nullptr) {
 		logger.print(tag, "create Sensor Failed!");
@@ -869,6 +872,10 @@ bool Shield::addSensor(JsonObject& json) {
 	}
 	sensors.add(sensor);
 	writeSensorsToFile();
+
+	Serial.println("Restarting .....");
+	//delay(10000);
+	ESP.restart();
 	return true;
 }
 
@@ -881,21 +888,19 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 
 
 	for (int i = 0; i < jsonarray.size(); i++) {
-#ifdef ESP8266
-		ESP.wdtFeed();
-#endif // ESP8266
+
 		logger.print(tag, "\n\n\t SENSOR: " + String(i) + "\n");
 		jsonarray[i].printTo(Serial);
 		JsonObject& json = jsonarray[i];
-
 
 		Sensor* sensor = SensorFactory::createSensor(json);
 		if (sensor == nullptr) {
 			logger.print(tag, "create Sensor Failed!");
 			return false;
 		}
-		sensors.add(sensor);
 		sensor->init();
+		sensors.add(sensor);
+		
 
 	}
 

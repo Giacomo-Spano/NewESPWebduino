@@ -26,34 +26,34 @@ int SensorFactory::getNextSensorId() {
 	return res;
 }
 
-Sensor* SensorFactory::createSensor(JsonObject& json)
+Sensor* SensorFactory::createSensor(JsonObject& jsonref)
 {
 	logger.print(tag, F("\n\t >>SensorFactory::createSensor \njson = "));
-	json.printTo(Serial);
+	jsonref.printTo(Serial);
 
 	uint8_t pin = 0;
 	bool enabled = false;
 	String name = "";
-	if (!json.containsKey("type") || !json.containsKey("sensorid")) {
-		logger.print(tag, F("\n\t invalid address and typ="));
+	if (!jsonref.containsKey("type") || !jsonref.containsKey("sensorid")) {
+		logger.print(tag, F("\n\t invalidtype and sensorid"));
 		return nullptr;
 	}
-	String type = json["type"];
+	String type = jsonref["type"];
 	type.replace("\r\n", "");
 	
 	String address = "0";// json[F("subaddress")];
 	
-	int sensorid = json["sensorid"];
+	int sensorid = jsonref["sensorid"];
 
 	if (sensorid >= nextSensorID)
 		nextSensorID = sensorid + 1;
 
 	if (sensorid == 0) {
 		sensorid = getNextSensorId();
-		json["sensorid"] = sensorid;
+		jsonref["sensorid"] = sensorid;
 	}
 
-	if (json.containsKey(F("pin"))) {
+	/*if (json.containsKey(F("pin"))) {
 		String strPin = json[F("pin")];
 		strPin.replace("\r\n", ""); // importante!!
 		pin = Shield::pinFromStr(strPin);
@@ -64,42 +64,65 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	if (json.containsKey(F("name"))) {
 		String str = json["name"];
 		name = str;
-	}
-	logger.print(tag, "\n\t type=");
-	logger.print(tag, type);
-	logger.print(tag, F("\n\t addr="));
-	logger.print(tag, F("\n\t sensorid="));
-	logger.print(tag, sensorid);
-	logger.print(tag, F("\n\t pin="));
-	logger.print(tag, String(pin));
-	logger.print(tag, F("\n\t enabled="));
-	logger.print(tag, String(enabled));
-	logger.print(tag, F("\n\t name="));
-	logger.print(tag, name);
-
+	}*/
+	
+	DynamicJsonBuffer jbuff;
+	//String str;
+	//jsonref.printTo(str);
+	//jsonref.printTo(Serial);
+	/*JsonObject& root = jbuff.parseObject(str);	
+	if (!root.success()) {
+		return nullptr;
+	}*/
 	Sensor* sensor = nullptr;
+	
+	
 	if (type.equals(F("temperaturesensor"))) {
 		logger.print(tag, F("\n\t creating temperature sensor"));
-		sensor = new TemperatureSensor(json);
+		sensor = new TemperatureSensor(jsonref);
 	}
 	/*else if (type.equals("heatersensor")) {
 		logger.print(tag, F("\n\t creating heatersensor sensor"));
 		sensor = new HeaterSensor(sensorid, pin, enabled, address, name);
 	}*/
-	else if (type.equals(F("doorsensor"))) {
-		logger.print(tag, F("\n\t creating doorsensor sensor"));
-		sensor = new DoorSensor(json);
+	else if (type.equals("doorsensor")) {
+		logger.print(tag, "\n\t creating doorsensor sensor\n");
+		String str;
+		jsonref.printTo(str);
+		JsonObject& root = jbuff.parseObject(str);
+		if (root.success()) {
+			return new DoorSensor(root);
+		}
+		//sensor = new DoorSensor(json);
 	}
 	else if (type.equals(F("hornsensor"))) {
 		logger.print(tag, F("\n\t creating hornsensor sensor"));
-		sensor = new HornSensor(json);
+		String str;
+		jsonref.printTo(str);
+		JsonObject& root = jbuff.parseObject(str);
+		if (root.success()) {
+			return new HornSensor(root);
+		}
+		//sensor = new HornSensor(jsonref);
 	}
 	else if (type.equals(F("keylocksensor"))) {
 		logger.print(tag, F("\n\t creating keylocksensor sensor"));
-		sensor = new KeyLockSensor(json);
+		String str;
+		jsonref.printTo(str);
+		JsonObject& root = jbuff.parseObject(str);
+		if (root.success()) {
+			return new KeyLockSensor(root);
+		}
+		//sensor = new KeyLockSensor(jsonref);
 	}
 	else if (type.equals(F("onewiresensor"))) {
-		sensor = new OnewireSensor(json); 
+		String str;
+		jsonref.printTo(str);
+		JsonObject& root = jbuff.parseObject(str);
+		if (root.success()) {
+			return new OnewireSensor(root);
+		}
+		//sensor = new OnewireSensor(jsonref);
 	}
 	/*else if (type.equals(F("hornsensor"))) {
 		logger.print(tag, F("\n\t creating doorsensor sensor"));
@@ -120,7 +143,7 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	else {
 		return nullptr;
 	}
-	sensor->init();
+	//sensor->init();
 	/*if (json.containsKey("childsensors")) {
 
 		JsonArray& children = json["childsensors"];

@@ -21,7 +21,7 @@ DoorSensor::~DoorSensor()
 
 void DoorSensor::init()
 {
-	logger.print(tag, F("\n\t >>init DoorSensor"));
+	logger.print(tag, "\n\t >>init DoorSensor pin=" + String(pin));
 	pinMode(pin, INPUT);
 	mode = MODE_NORMAL;
 	logger.print(tag, F("\n\t <<init DoorSensor"));
@@ -39,15 +39,17 @@ bool DoorSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
-		//logger.print(tag, "\n\t >>>> checkStatusChange - timeDiff > checkStatus_interval");
+		logger.print(tag, "\nDoorSensor::checkStatusChange\n");
 		lastCheckStatus = currMillis;
 				
 		if (mode.equals(MODE_NORMAL)) {
 			if (digitalRead(pin) == LOW) {
+				logger.print(tag, "\nOPENn pin=" + String(pin));
 				setStatus(STATUS_DOOROPEN);
 				ret = Sensor::checkStatusChange();
 			}
 			else {
+				logger.print(tag, "\nCLOSED pin=" + String(pin));
 				setStatus(STATUS_DOORCLOSED);
 				ret = Sensor::checkStatusChange();
 			}
