@@ -44,10 +44,10 @@ Shield shield;
 
 extern bool mqtt_publish(String topic, String message);
 
-//const char* ssid = "FASTWEB-C16E33";
-//const char* password = "4GE4MEHHFG";
-const char* ssid = "TP-LINK_3D88";//
-const char* password = "giacomobox";
+const char* ssid = "FASTWEB-C16E33";
+const char* password = "4GE4MEHHFG";
+//const char* ssid = "TP-LINK_3D88";//
+//const char* password = "giacomobox";
 
 const char* http_username = "admin";
 const char* http_password = "admin";
@@ -927,19 +927,17 @@ String getFiles() {
 #ifdef ESP32
 String getFiles() {
 
-	logger.println(tag, F(">>Shield::getFiles\n"));
+	logger.println(tag, F(">>getFiles\n"));
 
-	//StaticJsonBuffer<1000> jsonArrayBuffer;
-	//JsonArray& jarray = jsonArrayBuffer.createArray();
-	//StaticJsonBuffer<1000> jsonBuffer;
+	StaticJsonBuffer<1000> jsonArrayBuffer;
+	JsonArray& jarray = jsonArrayBuffer.createArray();
+	StaticJsonBuffer<1000> jsonBuffer;
 
 	Serial.println("file opened");
 	if (!SPIFFS.begin()) {
 		logger.print(tag, F("\n\t error mounting file system"));
 		return "";
 	}
-
-
 
 	File root = SPIFFS.open("/");
 	File file = root.openNextFile();
@@ -951,23 +949,23 @@ String getFiles() {
 		Serial.print("FILE: ");
 		Serial.println(file.name());
 
-		//JsonObject& json = jsonBuffer.createObject();
+		JsonObject& json = jsonBuffer.createObject();
+		String name = file.name();
+		json["filename"] = name;
+		String filesize = "";
+		filesize += String(file.size());
+		json["size"] = filesize;
+		jarray.add(json);
+		file.close();
 
-
-		//json["filename"] = file.name();
-		//json["size"] = file.size();
-
-
-		//jarray.add(json);
-
-		//f.close();
+		file = root.openNextFile();
 	}
-	//root.close();
+	file.close();
 
 	//jarray.printTo(Serial);
 	String str;
-	//jarray.printTo(str);
-	logger.println(tag, F("<<Shield::getSensors"));
+	jarray.printTo(str);
+	logger.println(tag, F("<<getFiles"));
 	return str;
 }
 #endif
