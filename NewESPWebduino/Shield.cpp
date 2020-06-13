@@ -254,6 +254,10 @@ void Shield::init() {
 void Shield::clearAllSensors() {
 }
 
+Sensor* Shield::getSensor(int id) { // chiamata dall'esterno
+	return getSensorFromId(id, sensors);
+}
+
 Sensor* Shield::getSensorFromId(int id, SimpleList<Sensor*>& list) { 
 	logger.print(tag, "\n\t >>Shield::getSensorFromId id=" + String(id));
 	
@@ -898,10 +902,14 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 			logger.print(tag, "create Sensor Failed!");
 			return false;
 		}
-		sensor->init();
+		//sensor->init();
 		sensors.add(sensor);
-		
+	}
 
+	for (int i = 0; i < sensors.size(); i++)
+	{
+		Sensor* sensor = (Sensor*)sensors.get(i);
+		sensor->init();
 	}
 
 	logger.print(tag, F("\n\t<<loadSensors\n"));

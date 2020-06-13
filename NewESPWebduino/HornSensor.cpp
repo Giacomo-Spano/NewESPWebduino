@@ -4,7 +4,51 @@
 Logger HornSensor::logger;
 String HornSensor::tag = "HornSensor";
 
-HornSensor::HornSensor(JsonObject& json) : Sensor(json)
+HornSensor::HornSensor(String jsonStr) : Sensor(jsonStr)
+{
+	logger.print(tag, F("\n\t>>HornSensor::HornSensor"));
+	
+	//type = "alarmsensor";
+	DynamicJsonBuffer jbuff;
+	JsonObject& json = jbuff.parseObject(jsonStr);
+
+	if (json.success()) {
+				
+		if (!json.containsKey("horntimeout")) {
+			int timeout = json["horntimeout"];
+			hornTimeout = timeout * 1000;
+		}
+		else {
+			hornTimeout = 10 * 1000;
+		}
+
+		if (!json.containsKey("hornpausetimeout")) {
+			int timeout = json["hornpausetimeout"];
+			hornPauseTimeout = timeout * 1000;
+		}
+		else {
+			hornPauseTimeout = 10 * 1000;
+		}
+
+		if (!json.containsKey("horntally")) {
+			hornMaxTally = json["horntally"];
+		}
+		else {
+			hornMaxTally = 3;
+		}
+
+		checkStatus_interval = 1000;
+		lastCheckStatus = 0;
+
+	}
+	else {
+		logger.print(tag, F("\n\t BAD DATA - FAILED"));
+	}
+
+	logger.print(tag, F("\n\t<<HornSensor::HornSensor\n"));
+}
+
+/*HornSensor::HornSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>HornSensor::HornSensor"));
 
@@ -34,17 +78,9 @@ HornSensor::HornSensor(JsonObject& json) : Sensor(json)
 	else {
 		hornMaxTally = 3;
 	}
-
-	/*if (!json.containsKey("hornpausetimeout"))
-		return;
-	hornPauseTimeout = json["hornpausetimeout"] * 1000;
 	
-	if (!json.containsKey("horntally"))
-		return;
-	hornMaxTally = json["horntally"];*/
-		
 	logger.print(tag, F("\n\t<<HornSensor::HornSensor\n"));
-}
+}*/
 
 HornSensor::~HornSensor()
 {
@@ -53,7 +89,9 @@ HornSensor::~HornSensor()
 void HornSensor::init()
 {
 	logger.print(tag, F("\n\t >>init HornSensor"));
-	pinMode(pin, OUTPUT);
+	
+	Sensor::init();
+	//pinMode(pin, OUTPUT);
 
 
 	logger.print(tag, F("\n\t <<init HornSensor"));
@@ -61,9 +99,9 @@ void HornSensor::init()
 
 void HornSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
-	json["horntimeout"] = (int) hornTimeout / 1000;
+	/*json["horntimeout"] = (int) hornTimeout / 1000;
 	json["hornpausetimeout"] = (int) hornPauseTimeout / 1000;
-	json["horntally"] = hornMaxTally;
+	json["horntally"] = hornMaxTally;*/
 	//json.printTo(Serial);
 }
 
@@ -73,7 +111,7 @@ bool HornSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	lastCheckStatus = currMillis;
 
-	if (getStatus().equals(STATUS_ON)) {
+	/*if (getStatus().equals(STATUS_ON)) {
 		if ((currMillis - hornStartTime) > hornTimeout // timeout trascorso
 			|| (currMillis - hornStartTime) < 0) { // oppure currmill resettato
 
@@ -101,7 +139,7 @@ bool HornSensor::checkStatusChange() {
 		}
 	} else if (getStatus().equals(STATUS_PAUSE) || getStatus().equals(STATUS_IDLE)) {
 		return false;
-	}
+	}*/
 	return false;
 }
 

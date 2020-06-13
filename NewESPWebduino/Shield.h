@@ -123,6 +123,7 @@ public:
 	SimpleList<Sensor*> sensors = SimpleList<Sensor*>();
 
 	void sendSensorCommand(int id, String command, String payload);
+	Sensor* getSensor(int id);
 
 	Shield();
 	~Shield();
@@ -135,6 +136,7 @@ public:
 	bool requestTime();
 	String localIP;
 	void clearAllSensors();
+	
 	Sensor* getSensorFromId(int id, SimpleList<Sensor*>& sensors);
 
 	int getShieldId() {

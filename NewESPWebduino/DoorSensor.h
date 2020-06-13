@@ -22,6 +22,9 @@ private:
 	static String tag;
 	static Logger logger;
 
+	unsigned long lastTestModeTime;
+	const long TestModeTimeout = 30000;
+
 	String mode;
 	virtual void getJson(JsonObject& json);
 	
@@ -31,11 +34,15 @@ public:
 
 	const String MODE_NORMAL = "normal";
 	const String MODE_TEST = "test";
+	const String MODE_TESTOPEN = "testopen";
 
 
 	//DoorSensor(int id, uint8_t pin, bool enabled, String address, String name);
-	DoorSensor(JsonObject& json);
+	//DoorSensor(JsonObject& json);
+	DoorSensor(String jsonStr);
 	~DoorSensor();
+
+	//void IRAM_ATTR callMe();
 
 	virtual void init();
 	virtual bool checkStatusChange();

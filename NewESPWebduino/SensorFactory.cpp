@@ -4,7 +4,9 @@
 #include "OnewireSensor.h"
 #include "DoorSensor.h"
 #include "HornSensor.h"
+#include "AlarmSensor.h"
 #include "Shield.h"
+#include "SensorListener.h"
 
 //extern bool getNextSensorId();
 
@@ -40,9 +42,9 @@ Sensor* SensorFactory::createSensor(JsonObject& jsonref)
 	}
 	String type = jsonref["type"];
 	type.replace("\r\n", "");
-	
+
 	String address = "0";// json[F("subaddress")];
-	
+
 	int sensorid = jsonref["sensorid"];
 
 	if (sensorid >= nextSensorID)
@@ -65,18 +67,18 @@ Sensor* SensorFactory::createSensor(JsonObject& jsonref)
 		String str = json["name"];
 		name = str;
 	}*/
-	
+
 	DynamicJsonBuffer jbuff;
 	//String str;
 	//jsonref.printTo(str);
 	//jsonref.printTo(Serial);
-	/*JsonObject& root = jbuff.parseObject(str);	
+	/*JsonObject& root = jbuff.parseObject(str);
 	if (!root.success()) {
 		return nullptr;
 	}*/
 	Sensor* sensor = nullptr;
-	
-	
+
+
 	if (type.equals(F("temperaturesensor"))) {
 		logger.print(tag, F("\n\t creating temperature sensor"));
 		sensor = new TemperatureSensor(jsonref);
@@ -87,23 +89,33 @@ Sensor* SensorFactory::createSensor(JsonObject& jsonref)
 	}*/
 	else if (type.equals("doorsensor")) {
 		logger.print(tag, "\n\t creating doorsensor sensor\n");
-		String str;
-		jsonref.printTo(str);
-		JsonObject& root = jbuff.parseObject(str);
-		if (root.success()) {
-			return new DoorSensor(root);
-		}
-		//sensor = new DoorSensor(json);
+		String jsonstr;
+		jsonref.printTo(jsonstr);
+		sensor = new DoorSensor(jsonstr);
 	}
 	else if (type.equals(F("hornsensor"))) {
-		logger.print(tag, F("\n\t creating hornsensor sensor"));
-		String str;
+		logger.print(tag, F("\n\t creating hornsensor sensor."));
+		/*String str;
 		jsonref.printTo(str);
 		JsonObject& root = jbuff.parseObject(str);
 		if (root.success()) {
 			return new HornSensor(root);
-		}
-		//sensor = new HornSensor(jsonref);
+		}*/
+		String jsonstr;
+		logger.print(tag, F("\n\t step1"));
+		jsonref.printTo(jsonstr);
+		logger.print(tag, F("\n\t step1"));
+		sensor = new HornSensor(jsonstr);
+		logger.print(tag, F("\n\t step3"));
+	}
+	else if (type.equals(F("alarmsensor"))) {
+		logger.print(tag, F("\n\t creating alarmsensor sensor"));
+		String jsonstr;
+		logger.print(tag, F("\n\t step1"));
+		jsonref.printTo(jsonstr);
+		logger.print(tag, F("\n\t step2"));
+		sensor = new AlarmSensor(jsonstr);
+		logger.print(tag, F("\n\t step3"));
 	}
 	else if (type.equals(F("keylocksensor"))) {
 		logger.print(tag, F("\n\t creating keylocksensor sensor"));

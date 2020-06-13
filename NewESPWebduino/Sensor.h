@@ -14,12 +14,26 @@
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 //#include <LinkedList.h>
 #include <SimpleList.h>
+#include "SensorListener.h"
 
-class Sensor
+class AbstractCallBack {
+public:
+	virtual void callBack(int sensorid, String status, String oldstatus) {};
+};
+
+class Sensor : public AbstractCallBack
 {
 private:
 	static String tag;
 	static Logger logger;
+
+	
+	//SensorListener* listener;
+	/*void** listeners = 0;
+	int listenerCount = 0;
+	const int MAX_LISTENERS = 10;*/
+	AbstractCallBack* type0CallBackPointer = nullptr;
+	
 
 	String status = STATUS_IDLE;
 	String oldStatus = STATUS_IDLE;
@@ -28,11 +42,13 @@ protected:
 	DynamicJsonBuffer* jsonBuffer[];
 
 public:
-	//Sensor();
-	//Sensor(int id, uint8_t pin, bool enabled, String address, String name);
-	//Sensor(int id, uint8_t pin, bool enabled, String address, String name, JsonArray& children);
+	void addType0CallBack(AbstractCallBack*);
+	void callBack(int sensorid, String status, String oldstatus);
+	Sensor(String jsonStr);
 	Sensor(JsonObject& json);
 	~Sensor();
+
+	//void createSensorFromJson(String jsonStr);
 
 	const String STATUS_IDLE = "idle";
 	
@@ -43,6 +59,7 @@ public:
 	bool enabled;
 	uint8_t pin;
 	String address;
+
 	
 		
 	unsigned long lastCheckStatus;// = 0;//-flash_interval;
@@ -68,6 +85,7 @@ public:
 	String getStatus();
 	Sensor* getSensorFromId(int id);
 	virtual void getJson(JsonObject& json);
+	virtual void getStatusJson(JsonObject& json);
 	virtual void loadChildren(JsonArray& jsonarray);
 	virtual String toString();	
 	virtual void init();

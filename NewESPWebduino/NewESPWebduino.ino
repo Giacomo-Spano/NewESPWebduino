@@ -43,6 +43,7 @@
 Shield shield;
 
 extern bool mqtt_publish(String topic, String message);
+extern Sensor* getSensor(int id);
 
 const char* ssid = "FASTWEB-C16E33";
 const char* password = "4GE4MEHHFG";
@@ -51,6 +52,11 @@ const char* password = "4GE4MEHHFG";
 
 const char* http_username = "admin";
 const char* http_password = "admin";
+
+int reconnectTemptative = 0;
+const int maxReconnectTempative = 3;
+unsigned lastReconnectTemptativeTime = 0;
+const unsigned reconnectTemptativeTimeot = 30000;
 
 AsyncWebServer asyncServer(80);
 AsyncWebSocket ws("/ws"); // access at ws://[esp ip]/ws
@@ -718,8 +724,20 @@ void loop() {
 	}
 	else {
 		logger.println(tag, F("\n\n\tSERVER DISCONNECTED!!!\n"));
-		reconnect();
-		delay(5000);
+		unsigned long currMillis = millis();		
+		if (reconnectTemptative == 0 || (currMillis - lastReconnectTemptativeTime) > reconnectTemptativeTimeot || (currMillis - lastReconnectTemptativeTime) < 0) {
+			lastReconnectTemptativeTime = currMillis;
+			if (!reconnect()) {
+				if (++reconnectTemptative > maxReconnectTempative) {
+					Serial.println("\n\t>>TOO MANY RECONNECT TEMPTATIVE! try to reboot..");
+					Serial.println("Rebooting...");
+				}
+			}
+			else {
+				reconnectTemptative = 0;
+			}
+		}
+		//delay(5000);
 	}
 
 	if (shouldReboot) {
@@ -731,6 +749,10 @@ void loop() {
 	sprintf(temp, "Seconds since boot: %u", millis() / 1000);
 	events.send(temp, "time"); //send event "time"
 
+}
+
+Sensor* getSensor(int id) {
+	return shield.getSensor(id);
 }
 
 bool mqtt_publish(String topic, String message) {

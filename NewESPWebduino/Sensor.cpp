@@ -9,28 +9,69 @@ String Sensor::tag = "Sensor";
 
 extern bool mqtt_publish(String topic, String message);
 
-/*Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name)
-{
-	this->sensorid = id;
-	this->pin = pin;
-	this->enabled = enabled;
-	this->address = address;
-	this->sensorname = name;
+void Sensor::addType0CallBack(AbstractCallBack* ptr) {
+	type0CallBackPointer = ptr;
+}
 
-	checkStatus_interval = 10000;//60000; // 60 seconds
-	lastCheckStatus = 0;// = 0;//-flash_interval;
-}*/
+void Sensor::callBack(int sensorid, String status, String oldstatus) {
+	logger.print(tag, "\n\t >> Sensor::callBack sendor id=" + String(sensorid) + "status=" + status + "oldstatus=" + oldstatus);
+	logger.print(tag, "\n\t << Sensor::callBack");
+};
 
-/*Sensor::Sensor(int id, uint8_t pin, bool enabled, String address, String name, JsonArray& children)
-{
-	this->sensorid = id;
-	this->pin = pin;
-	this->enabled = enabled;
-	this->address = address;
-	this->sensorname = name;
+Sensor::Sensor(String jsonStr) {
+	logger.print(tag, F("\n\t >>Sensor::Sensor"));
 
-	checkStatus_interval = 10000;//60000; // 60 seconds
-	lastCheckStatus = 0;// = 0;//-flash_interval;
+	//listeners = new SensorListener * [MAX_LISTENERS];
+	status = STATUS_IDLE;
+
+	DynamicJsonBuffer jbuff;
+	JsonObject& json = jbuff.parseObject(jsonStr);
+	
+	if (json.success()) {
+		String type = json["type"];
+		type.replace("\r\n", "");
+		this->type = type;
+
+		this->sensorid = json["sensorid"];
+		logger.print(tag, "\n\t sensorid=" + String(sensorid));
+		if (json.containsKey(F("pin"))) {
+			String strPin = json[F("pin")];
+			strPin.replace("\r\n", ""); // importante!!
+			this->pin = Shield::pinFromStr(strPin);
+		}
+		logger.print(tag, "\n\t pin=" + String(pin));
+		if (json.containsKey("enabled"))
+			this->enabled = json["enabled"];
+
+		if (json.containsKey("name"))
+			this->sensorname = json["name"].asString();
+
+		if (json.containsKey("children")) {
+			String str = json["children"];
+			DynamicJsonBuffer jsonBuffer;
+			JsonArray& jsonarray = jsonBuffer.parseArray(str.c_str());
+			if (jsonarray.success()) {
+				logger.print(tag, F("\n\t parsed children json"));
+				jsonarray.printTo(Serial);
+				loadChildren(jsonarray);
+			}
+			else {
+				childsensors.clear();
+				logger.print(tag, F("\n\t failed to parsed children json"));
+			}
+		}
+
+		checkStatus_interval = 10000;//60000; // 60 seconds
+		lastCheckStatus = 0;// = 0;//-flash_interval;
+	}
+	else {
+		logger.print(tag, F("\n\t BAD DATA - FAILED"));
+	}
+	logger.print(tag, F("\n\t <<Sensor::Sensor"));
+}
+
+/*void createSensor(String& jsonStr) {
+
 }*/
 
 Sensor::Sensor(JsonObject& json)
@@ -90,6 +131,13 @@ void Sensor::setStatus(String _status) {
 	
 	oldStatus = status;
 	status = _status;
+
+	if (oldStatus != status) {
+		logger.print(tag, "\n\t STATUS CHANGE - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status + " oldstatus: " + oldStatus);
+		if (type0CallBackPointer != nullptr) {
+			type0CallBackPointer->callBack(sensorid, status, oldStatus);
+		}
+	}
 }
 
 String Sensor::getStatus() {
@@ -98,21 +146,16 @@ String Sensor::getStatus() {
 }
 
 bool Sensor::checkStatusChange()
-{
-	//logger.print(tag, F("\n\t\t checkStatusChange"));
+{	
 	if (!status.equals(oldStatus)) {
-		//oldStatus = status;
-		//logger.print(tag, F("\n\t\t SEND STATUS\n\n"));
-		//sendStatusUpdate();
+		//logger.print(tag, "\n\t STATUS CHANGE - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
 		return true;
-		//updateAttributes();
 	}
-
 	unsigned long timeDiff = millis() - lastUpdateAvailabilityStatus;
 	if (timeDiff > updateStatus_interval || timeDiff < 0) { // se è passato troppo tempo aggiorna comunque
+		logger.print(tag, "\n\t UPDATE STATUS TIMEOUT - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
 		return true;
 	}
-
 	return false;
 }
 
@@ -196,23 +239,38 @@ void Sensor::getJson(JsonObject& json) {
 	json["enabled"] = enabled;
 	json["type"] = type;
 
-	//logger.print(tag, "\n\tchildsensors.size()=" + String(childsensors.size()));
 	if (childsensors.size() > 0) {
 		JsonArray& children = json.createNestedArray("children");
 		for (int i = 0; i < childsensors.size(); i++) {
-			//logger.print(tag, "\n\n\t child sensor n=" + String(i));
 			Sensor* child = (Sensor*)childsensors.get(i);
 			JsonObject& childjson = jsonBuffer[i]->createObject();
 			child->getJson(childjson);
 			children.add(childjson);
 		}
 		boolean res = json.set("children", children);
-		//logger.print(tag, "\n\n\t children added\n");
 	}
-	//logger.print(tag, "\n\t printjson");
-	//json.printTo(Serial);
 	logger.print(tag, "\n\n\t<<Sensor::getJson sensorid=" + String(sensorid)  +" \n\n");
 }
+
+void Sensor::getStatusJson(JsonObject& json) {
+
+	logger.print(tag, "\n\t>>Sensor::getStatusJson id=" + String(sensorid) + " name=" + sensorname + " type=" + type);
+	json["sensorid"] = sensorid;
+	json["status"] = status;
+	
+	if (childsensors.size() > 0) {
+		JsonArray& children = json.createNestedArray("children");
+		for (int i = 0; i < childsensors.size(); i++) {
+			Sensor* child = (Sensor*)childsensors.get(i);
+			JsonObject& childjson = jsonBuffer[i]->createObject();
+			child->getStatusJson(childjson);
+			children.add(childjson);
+		}
+		boolean res = json.set("children", children);
+	}
+	logger.print(tag, "\n\n\t<<Sensor::getStatusJson sensorid=" + String(sensorid) + " \n\n");
+}
+
 
 void Sensor::loadChildren(JsonArray& jsonarray)
 {
@@ -238,6 +296,15 @@ void Sensor::loadChildren(JsonArray& jsonarray)
 
 void Sensor::init()
 {
+	status = STATUS_IDLE;
+	if (childsensors.size() == 0)
+		return;	
+	for (int i = 0; i < childsensors.size(); i++) {
+		Sensor* child = childsensors.get(i);
+		if (child != nullptr) {
+			child->init();
+		}
+	}
 }
 
 

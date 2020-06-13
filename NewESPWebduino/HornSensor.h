@@ -38,7 +38,8 @@ public:
 	const String STATUS_OFF = "hornoff";
 	const String STATUS_PAUSE = "hornpause";
 
-	HornSensor(JsonObject& json);
+	HornSensor(String jsonStr);
+	//HornSensor(JsonObject& json);
 	~HornSensor();
 
 	virtual void init();

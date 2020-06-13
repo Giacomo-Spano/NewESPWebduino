@@ -61,6 +61,8 @@
 
         <div class="grid-item name-item">Commands</div>
         <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('test','open')">Test open</button>
+            <button class="button" onclick="sendCommand('test','closed')">Test close</button>
             <button class="button" onclick="sendCommand('testmode','on')">Test mode on</button>
             <button class="button" onclick="sendCommand('testmode','off')">Test mode off</button>
             <button class="button" onclick="sendCommand('settestdoorstatus','open')">OPEN</button>
@@ -86,6 +88,23 @@
             <button class="button" onclick="sendCommand('set','on')">ON</button>
             <button class="button" onclick="sendCommand('set','off')">OFF</button>
             <button class="button" onclick="sendCommand('set','pause')">PAUSE</button>
+        </div>
+
+    </div>
+
+    <!--alarmsensor-->
+    <div class="grid-container" id="alarmsensor" hidden>
+
+        <div class="grid-item name-item">Test mode</div>
+        <div class="grid-item value-item" id="testmode">--</div>
+
+        <div class="grid-item name-item">Commands</div>
+        <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('set','disarmed')">disarmed</button>
+            <button class="button" onclick="sendCommand('set','armed_home')">armed_home</button>
+            <button class="button" onclick="sendCommand('set','armed_away')">armed_away</button>
+            <button class="button" onclick="sendCommand('set','armed_night')">armed_night</button>
+            <button class="button" onclick="sendCommand('set','triggered')">triggered</button>
         </div>
 
     </div>
