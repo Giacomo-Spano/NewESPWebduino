@@ -833,6 +833,9 @@
     <ClInclude Include="SensorListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SimSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyLockSensor.cpp">
@@ -1346,6 +1349,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SensorListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
