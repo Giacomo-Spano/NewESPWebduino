@@ -49,6 +49,8 @@ const char* ssid = "FASTWEB-C16E33";
 const char* password = "4GE4MEHHFG";
 //const char* ssid = "TP-LINK_3D88";//
 //const char* password = "giacomobox";
+//const char* ssid = "Vodafone-A48536771";//
+//const char* password = "uepu659xu9xaf8m4";
 
 const char* http_username = "admin";
 const char* http_password = "admin";
