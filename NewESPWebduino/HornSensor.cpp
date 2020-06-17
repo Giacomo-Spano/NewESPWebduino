@@ -4,14 +4,16 @@
 Logger HornSensor::logger;
 String HornSensor::tag = "HornSensor";
 
-HornSensor::HornSensor(String jsonStr) : Sensor(jsonStr)
+String HornSensor::STATUS_ON = "hornon";
+String HornSensor::STATUS_OFF = "hornoff";
+String HornSensor::STATUS_PAUSE = "hornpause";
+
+HornSensor::HornSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>HornSensor::HornSensor"));
 	
-	//type = "alarmsensor";
-	DynamicJsonBuffer jbuff;
-	JsonObject& json = jbuff.parseObject(jsonStr);
-
+	type = "hornsensor";
+	
 	if (json.success()) {
 				
 		if (!json.containsKey("horntimeout")) {
@@ -48,40 +50,6 @@ HornSensor::HornSensor(String jsonStr) : Sensor(jsonStr)
 	logger.print(tag, F("\n\t<<HornSensor::HornSensor\n"));
 }
 
-/*HornSensor::HornSensor(JsonObject& json) : Sensor(json)
-{
-	logger.print(tag, F("\n\t>>HornSensor::HornSensor"));
-
-	type = "hornsensor";
-	checkStatus_interval = 1000;
-	lastCheckStatus = 0;
-	
-	if (!json.containsKey("horntimeout")) {
-		int timeout = json["horntimeout"];
-		hornTimeout = timeout * 1000;
-	}
-	else {
-		hornTimeout = 10 * 1000;
-	}
-
-	if (!json.containsKey("hornpausetimeout")) {
-		int timeout = json["hornpausetimeout"];
-		hornPauseTimeout = timeout * 1000;
-	}
-	else {
-		hornPauseTimeout = 10 * 1000;
-	}
-
-	if (!json.containsKey("horntally")) {
-		hornMaxTally = json["horntally"];
-	}
-	else {
-		hornMaxTally = 3;
-	}
-	
-	logger.print(tag, F("\n\t<<HornSensor::HornSensor\n"));
-}*/
-
 HornSensor::~HornSensor()
 {
 }
@@ -99,10 +67,6 @@ void HornSensor::init()
 
 void HornSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
-	/*json["horntimeout"] = (int) hornTimeout / 1000;
-	json["hornpausetimeout"] = (int) hornPauseTimeout / 1000;
-	json["horntally"] = hornMaxTally;*/
-	//json.printTo(Serial);
 }
 
 bool HornSensor::checkStatusChange() {

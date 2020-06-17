@@ -34,12 +34,11 @@ private:
 	virtual void getJson(JsonObject& json);
 	
 public:
-	const String STATUS_ON = "hornon";
-	const String STATUS_OFF = "hornoff";
-	const String STATUS_PAUSE = "hornpause";
+	static String STATUS_ON;
+	static String STATUS_OFF;
+	static String STATUS_PAUSE;
 
-	HornSensor(String jsonStr);
-	//HornSensor(JsonObject& json);
+	HornSensor(JsonObject& json);
 	~HornSensor();
 
 	virtual void init();

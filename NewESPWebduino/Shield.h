@@ -67,7 +67,7 @@ public:
 	void readSensorFromFile();
 	bool writeSensorsToFile();
 	String getSensors();
-	bool updateSensor(JsonObject& json);
+	bool updateSensor(String jsonstr/*JsonObject& json*/);
 	bool addJsonSensor(JsonObject& json);
 	void parseMessageReceived(String topic, String message);
 	void drawString(int x, int y, String txt, int size, int color);
@@ -79,20 +79,11 @@ public:
 	void drawSWVersion();
 	void clearScreen();
 	void invalidateDisplay();
-	//bool getNextSensorId();
-	//int getNextId();
-	//void writeNextId(int nextid);
-
 	void checkTimeUpdateStatus();
-	
 	void readConfig();
 	void writeConfig();
 	void readRebootReason();
 	void writeRebootReason();
-
-	//void setLoRaGateway(bool enable, String address, bool serverenabled);
-	//bool sendLoRaMessage(String payload);
-
 	void setFreeMem(int mem);
 
 private:

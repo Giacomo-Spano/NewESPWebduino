@@ -5,6 +5,8 @@
 #include "MQTTMessage.h"
 #include "ESPDisplay.h"
 
+#include "DoorSensor.h"
+
 #ifndef ESP8266
 #include <FS.h> //this needs to be first, or it all crashes and burns...
 #include "SPIFFS.h"
@@ -238,8 +240,8 @@ void Shield::init() {
 	if (getOledDisplay()) {
 		espDisplay.init(D3, D4);
 	}
-	
-	
+
+
 	//espDisplay.init(SDA, SCL); //sda scl
 	//espDisplay.init(D4, D3); //sda scl
 #endif
@@ -258,9 +260,9 @@ Sensor* Shield::getSensor(int id) { // chiamata dall'esterno
 	return getSensorFromId(id, sensors);
 }
 
-Sensor* Shield::getSensorFromId(int id, SimpleList<Sensor*>& list) { 
+Sensor* Shield::getSensorFromId(int id, SimpleList<Sensor*>& list) {
 	logger.print(tag, "\n\t >>Shield::getSensorFromId id=" + String(id));
-	
+
 	logger.print(tag, String(F("\n\t list.size=")) + String(list.size()));
 	for (int i = 0; i < list.size(); i++)
 	{
@@ -645,12 +647,12 @@ void Shield::sendSensorCommand(int id, String command, String payload)
 	logger.print(tag, String(F("\n\t\ command=")) + command);
 	logger.print(tag, String(F("\n\t\ payload=")) + payload);
 
-	Sensor* sensor = getSensorFromId(id,sensors);
+	Sensor* sensor = getSensorFromId(id, sensors);
 	if (sensor != nullptr)
 		sensor->sendCommand(command, payload);
 
 	/*for (int i = 0; i < sensors.size(); i++) {
-		
+
 		Sensor* sensor = sensors.get(i);
 		if (sensor->sensorid == id) {
 			sensor->sendCommand(command, payload);
@@ -690,21 +692,21 @@ void Shield::checkSensorsStatus()
 }
 
 void Shield::checkSensorStatus(Sensor* sensor)
-{	
-		//Sensor* sensor = (Sensor*)sensors.get(i);
-		if (!sensor->enabled) {
-			return;
+{
+	//Sensor* sensor = (Sensor*)sensors.get(i);
+	if (!sensor->enabled) {
+		return;
+	}
+	sensor->updateAvailabilityStatus(getBoardName());
+	if (sensor->checkStatusChange())
+		sensor->sendStatusUpdate(getBoardName());
+	if (sensor->childsensors.size() > 0) {
+		for (int i = 0; i < sensor->childsensors.size(); i++)
+		{
+			Sensor* child = (Sensor*)sensor->childsensors.get(i);
+			checkSensorStatus(child);
 		}
-		sensor->updateAvailabilityStatus(getBoardName());
-		if (sensor->checkStatusChange())
-			sensor->sendStatusUpdate(getBoardName());
-		if (sensor->childsensors.size() > 0) {
-			for (int i = 0; i < sensor->childsensors.size(); i++)
-			{
-				Sensor* child = (Sensor*)sensor->childsensors.get(i);
-				checkSensorStatus(child);
-			}
-		}
+	}
 }
 
 bool Shield::requestTime() {
@@ -836,20 +838,26 @@ String Shield::getSensors() {
 	return result;
 }
 
-bool Shield::updateSensor(JsonObject& json) {
+bool Shield::updateSensor(String jsonstr/*JsonObject& json*/) {
 
 	logger.print(tag, F("\n\n\t>>Shield::updateSensor\n"));
 
+	DynamicJsonBuffer jsonBuffer;
+	JsonObject& json = jsonBuffer.parseObject(jsonstr);
+	if (!json.success()) {
+		logger.print(tag, F("\n\n\tfailed to parse json\n"));
+		return false;
+	}
+	int sensorid = json["sensorid"].as<int>();
+	String type = json["type"].asString();
+	logger.print(tag, "\n\tsensorid=" + String(sensorid));
+	logger.print(tag, "\n\ttype=" + type);
+
+
 	if (json.containsKey("sensorid") && json.containsKey("type") && json.containsKey("pin")) {
-
-		int sensorid = json["sensorid"].as<int>();
-		String type = json["type"].asString();
-
-		logger.print(tag, "\n\tsensorid=" + String(sensorid));
-		logger.print(tag, "\n\ttype=" + type);
-
 		if (sensorid == 0) {
-			//json["sensorid"] = getNextSensorId();
+			//sensorid = SensorFactory::getNextSensorId();
+			//json["sensorid"] = SensorFactory::getNextSensorId();
 			return addJsonSensor(json);
 		}
 		else {
@@ -864,11 +872,14 @@ bool Shield::updateSensor(JsonObject& json) {
 			}
 			return addJsonSensor(json);
 		}
-		return false;
 	}
+	else {
+		logger.print(tag, F("\n\n\tbad json\n"));
+	}
+	return false;
 }
 
-bool Shield::addJsonSensor(JsonObject& json) {
+/*bool Shield::addJsonSensor(JsonObject& json) {
 	Sensor* sensor = SensorFactory::createSensor(json);
 	if (sensor == nullptr) {
 		logger.print(tag, "create Sensor Failed!");
@@ -881,29 +892,74 @@ bool Shield::addJsonSensor(JsonObject& json) {
 	//delay(10000);
 	ESP.restart();
 	return true;
+}*/
+
+bool Shield::addJsonSensor(JsonObject& json) {
+
+	logger.printFreeMem(tag, "loadSensors");
+	
+	SensorFactory sf;
+	Sensor* sensor = sf.createSensor(json);
+	if (sensor == nullptr) {
+		logger.print(tag, "create Sensor Failed!");
+		return false;
+	}
+	
+	/*Sensor* sensor = nullptr;
+	sensor = createSensor(json);
+	if (sensor == nullptr) {
+		logger.print(tag, "create Sensor Failed!");
+		return false;
+	}*/
+	sensors.add(sensor);
+	writeSensorsToFile();
+	return true;
 }
 
 
 bool  Shield::loadSensors(JsonArray& jsonarray) {
 
 	logger.print(tag, F("\n\n\t>>loadSensors"));
+	logger.printFreeMem(tag, F("loadSensors"));
 
-	clearAllSensors(); // serve per inizializzare
-
+	//clearAllSensors(); // serve per inizializzare
 
 	for (int i = 0; i < jsonarray.size(); i++) {
 
 		logger.print(tag, "\n\n\t SENSOR: " + String(i) + "\n");
 		jsonarray[i].printTo(Serial);
-		JsonObject& json = jsonarray[i];
+		int sensorid = jsonarray[i]["sensorid"].as<int>();
+		String type = jsonarray[i]["type"].asString();
+		type.replace("\r\n", "");
 
-		Sensor* sensor = SensorFactory::createSensor(json);
+		logger.print(tag, "\n\tsensorid=" + String(sensorid));
+		logger.print(tag, "\n\ttype=" + type);
+
+		//String jsonstr;
+		//jsonarray[i].printTo(jsonstr);
+
+		//Sensor* sensor = nullptr;
+		//sensor = createSensor(/*sensorid, type, jsonstr*/jsonarray[i]);
+		//sensor->sensorid = sensorid;
+
+		SensorFactory sf;
+		Sensor* sensor = sf.createSensor(jsonarray[i]);
 		if (sensor == nullptr) {
 			logger.print(tag, "create Sensor Failed!");
-			return false;
+			continue;
+		} else {
+			sensors.add(sensor);
 		}
-		//sensor->init();
-		sensors.add(sensor);
+	
+		logger.printFreeMem(tag, "\n\n\tloadSensors i=" + String(i));
+		/*if (sensor != nullptr) {
+			//sensor->createSensor(jsonstr);
+			sensors.add(sensor);
+		}
+		else {
+			logger.print(tag, "create Sensor Failed!");
+			continue;
+		}*/
 	}
 
 	for (int i = 0; i < sensors.size(); i++)
@@ -915,18 +971,6 @@ bool  Shield::loadSensors(JsonArray& jsonarray) {
 	logger.print(tag, F("\n\t<<loadSensors\n"));
 	return true;
 }
-
-#ifdef dopo
-void Shield::addSensor(Sensor* pSensor) { // non è usata?????????
-
-	logger.print(tag, F("\n\t >>addSensor "));
-	logger.print(tag, pSensor->sensorname);
-	sensorList.add((Sensor*)pSensor);
-	//sensorList.show();
-	logger.print(tag, F("\n\t <<addSensor"));
-}
-#endif
-
 
 void Shield::writeRebootReason() {
 

@@ -27,16 +27,10 @@ private:
 	static String tag;
 	static Logger logger;
 
-	
-	//SensorListener* listener;
-	/*void** listeners = 0;
-	int listenerCount = 0;
-	const int MAX_LISTENERS = 10;*/
 	AbstractCallBack* type0CallBackPointer = nullptr;
-	
 
-	String status = STATUS_IDLE;
-	String oldStatus = STATUS_IDLE;
+	String status;
+	String oldStatus;
 
 protected:
 	DynamicJsonBuffer* jsonBuffer[];
@@ -44,13 +38,14 @@ protected:
 public:
 	void addType0CallBack(AbstractCallBack*);
 	void callBack(int sensorid, String status, String oldstatus);
-	Sensor(String jsonStr);
+	//Sensor(String jsonStr);
 	Sensor(JsonObject& json);
+	Sensor();
 	~Sensor();
 
-	//void createSensorFromJson(String jsonStr);
+	//virtual bool createSensor(JsonObject& json);
 
-	const String STATUS_IDLE = "idle";
+	static String STATUS_IDLE;
 	
 	SimpleList<Sensor*> childsensors = SimpleList<Sensor*>();
 	int sensorid;
@@ -58,9 +53,7 @@ public:
 	String type;
 	bool enabled;
 	uint8_t pin;
-	String address;
-
-	
+	//String address;
 		
 	unsigned long lastCheckStatus;// = 0;//-flash_interval;
 	int checkStatus_interval = 1000;	// il valore corretto per ogni tipo di sensore

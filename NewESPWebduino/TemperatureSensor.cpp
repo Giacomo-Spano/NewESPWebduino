@@ -4,6 +4,8 @@
 Logger TemperatureSensor::logger;
 String TemperatureSensor::tag = "TemperatureSensor";
 
+String TemperatureSensor::STATUS_UNAVAILABLE = "unavailable";
+
 
 /*TemperatureSensor::TemperatureSensor(int id, uint8_t pin, bool enabled, String address, String name) : Sensor(id,pin, enabled, address, name)
 {

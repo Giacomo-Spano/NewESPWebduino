@@ -18,14 +18,16 @@ private:
 	static String tag;
 	static Logger logger;
 	static int nextSensorID;
-	static int getNextSensorId();
+	
 public:
 	SensorFactory();
 	~SensorFactory();
 
 	//static Sensor* createSensor(int id, String type, uint8_t pin, bool enabled, String address, String name);
 	//static Sensor * createSensor(JSONObject* json);
-	static Sensor * createSensor(JsonObject& json);
+	//static Sensor * createSensor(JsonObject& json);
+	/*static*/ Sensor* createSensor(JsonObject& json);
+	static int getNextSensorId();
 };
 
 #endif

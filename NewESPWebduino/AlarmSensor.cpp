@@ -4,9 +4,19 @@
 Logger AlarmSensor::logger;
 String AlarmSensor::tag = "AlarmSensor";
 
+String AlarmSensor::STATUS_DISARMED = "disarmed";
+String AlarmSensor::STATUS_ARMED_HOME = "armed_home";
+String AlarmSensor::STATUS_ARMED_AWAY = "armed_away";
+String AlarmSensor::STATUS_ARMED_NIGHT = "armed_night";
+String AlarmSensor::STATUS_ARMED_CUSTOM_BYPASS = "armed_custom_bypass";
+String AlarmSensor::STATUS_PENDING = "pending";
+String AlarmSensor::STATUS_TRIGGERED = "triggered";
+String AlarmSensor::STATUS_ARMING = "arming";
+String AlarmSensor::STATUS_DISARMING = "disarming";
+
 extern Sensor* getSensor(int id);
 
-/*AlarmSensor::AlarmSensor(JsonObject& json) : Sensor(json)
+AlarmSensor::AlarmSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>AlarmSensor::AlarmSensor"));
 
@@ -15,31 +25,11 @@ extern Sensor* getSensor(int id);
 	lastCheckStatus = 0;
 
 	logger.print(tag, F("\n\t<<AlarmSensor::DooAlarmSensorrSensor\n"));
-}*/
-
-AlarmSensor::AlarmSensor(String jsonStr) : Sensor(jsonStr)
-{
-	logger.print(tag, F("\n\t>>AlarmSensor::AlarmSensor"));
-
-	type = "alarmsensor";
-	checkStatus_interval = 1000;
-	lastCheckStatus = 0;
-
-	logger.print(tag, F("\n\t<<AlarmSensor::AlarmSensor\n"));
 }
 
 AlarmSensor::~AlarmSensor()
 {
 }
-
-/*void* AlarmSensor::callbackmethod(String oldstatus, String newStatus) {
-
-}*/
-/*void AlarmSensor::callBack(String status)
-{
-	//_midiInCallback = midiInCallback;
-}*/
-
 
 void AlarmSensor::callBack(int sensorid, String status, String oldstatus) {
 	logger.print(tag, "\n\t >> AlarmSensor::callBack sendor id=" + String(sensorid) + "status=" + status + "oldstatus=" + oldstatus);
@@ -84,8 +74,11 @@ bool AlarmSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
-		//logger.print(tag, "\nDoorSensor::checkStatusChange\n");
 		lastCheckStatus = currMillis;
+
+		if (getStatus().equals(STATUS_IDLE))
+			setStatus(STATUS_DISARMED);
+
 				
 		ret = Sensor::checkStatusChange();
 	}
@@ -102,21 +95,21 @@ bool AlarmSensor::sendCommand(String command, String payload)
 	if (command.equals("set")) {
 		logger.print(tag, String(F("\n\t\t process command set")));
 
-		if (payload.equals("disarmed")) {
+		if (payload.equals("DISARM")) {
 			logger.print(tag, String(F("\n\t\t pSTATUS_DISARMED")));
 			setStatus(STATUS_DISARMED);
 		}
-		else if (payload.equals("armed_home")) {
+		else if (payload.equals("ARM_HOME")) {
 			logger.print(tag, String(F("\n\t\t STATUS_ARMED_HOME")));
 			setStatus(STATUS_ARMED_HOME);
 		}
-		else if (payload.equals("armed_away")) {
+		else if (payload.equals("ARM_AWAY")) {
 			setStatus(STATUS_ARMED_AWAY);
 		}
-		else if (payload.equals("armed_night")) {
+		else if (payload.equals("ARM_NIGHT")) {
 			setStatus(STATUS_ARMED_NIGHT);
 		}
-		else if (payload.equals("armed_custom_bypass")) {
+		else if (payload.equals("ARM_CUSTOM_BYPASS")) {
 			setStatus(STATUS_ARMED_CUSTOM_BYPASS);
 		}
 		else if (payload.equals("pending")) {

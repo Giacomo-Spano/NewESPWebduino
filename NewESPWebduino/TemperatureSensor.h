@@ -22,7 +22,7 @@ private:
 	virtual void getJson(JsonObject& json);
 
 public:
-	const String STATUS_UNAVAILABLE = "unavailable";
+	static String STATUS_UNAVAILABLE;
 
 	//TemperatureSensor(int id, uint8_t pin, bool enabled, String address, String name);
 	TemperatureSensor(JsonObject& json);

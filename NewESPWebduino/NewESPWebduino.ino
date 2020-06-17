@@ -77,6 +77,8 @@ const int sensor_command_size = 50;
 volatile char sensor_command[sensor_command_size];
 volatile bool sensor_command_received = false;
 
+volatile String jsonstr = "";
+
 //const char* PARAM_INPUT_1 = "input1";
 //const char* PARAM_INPUT_2 = "input2";
 //const char* PARAM_INPUT_3 = "input3";
@@ -557,33 +559,33 @@ void setup() {
 			}
 			if (index == 0)
 				postDataCounter = 0;
+
+			//String jsonstr = "";
 			for (size_t i = 0; i < len; i++) {
 				postData[postDataCounter++] = data[i];
 				Serial.write(postData[postDataCounter - 1]);
 			}
 			if (postDataCounter == total) {
 				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
+								
+				String jsonstr = "";
+				
+				for (size_t i = 0; i < postDataCounter; i++) {
+					jsonstr += char(postData[i]);
+					if (postData[i] == 0)
+						break;
+				}				
+				logger.print(tag, "\n\t jsonstr=" + jsonstr);
+				
 				postData[postDataCounter] = 0;
-				postDataCounter = 0;
-
-				//StaticJsonBuffer<2000> jsonBuffer;
-				//JsonObject& json = jsonBuffer.createObject();
-				//StaticJsonBuffer<2000> jsonBuffer;
-				DynamicJsonBuffer jsonBuffer;
-				JsonObject& root = jsonBuffer.parseObject((const char*)postData);
-				if (root.success()) {
-					if (root.containsKey("sensorid")) {
-						if (!shield.updateSensor(root)) {
-							request->send(200, "text/html", "Failed to save sensor <br><a href=\"/sensors\">Ok</a>");
-						}
-					}
+				postDataCounter = 0;				
+				
+				if (shield.updateSensor(jsonstr)) {
 					Serial.print(" \nsend response\n");
 					request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
-				}
-				else {
-					Serial.print("\n\n BAD JSON\n");
+					ESP.restart();
+				} else {
 					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
-					//request->send(404, "text/html", "");
 				}
 			}
 			else {
@@ -606,6 +608,23 @@ void setup() {
 
 	// Initialize MQTT
 	//initMQTTServer();
+
+}
+
+char* int2char(int iNumber) {
+	int iNumbersCount = 0;
+	int iTmpNum = iNumber;
+	while (iTmpNum) {
+		iTmpNum /= 10;
+		iNumbersCount++;
+	}
+	char* buffer = new char[iNumbersCount + 1];
+	for (int i = iNumbersCount - 1; i >= 0; i--) {
+		buffer[i] = (char)((iNumber % 10) | 48);
+		iNumber /= 10;
+	}
+	buffer[iNumbersCount] = '\0';
+	return buffer;
 
 }
 

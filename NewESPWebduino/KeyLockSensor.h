@@ -50,13 +50,13 @@ private:
 	bool motorEnabled = false;
 
 public:
-	const String STATUS_OPEN = "open";
-	const String STATUS_FIRSTLOCK = "firstlock";
-	const String STATUS_CLOSED = "closed";
-	const String STATUS_OPENING = "opening";
-	const String STATUS_CLOSING = "closing";
-	const String STATUS_MOVING = "moving";
-	const String STATUS_STOPPING = "stopping";
+	static String STATUS_OPEN;
+	static String STATUS_FIRSTLOCK;
+	static String STATUS_CLOSED;
+	static String STATUS_OPENING;
+	static String STATUS_CLOSING;
+	static String STATUS_MOVING;
+	static String STATUS_STOPPING;
 
 	// questi devono essere pubblic perche sono uisati dalla funzione di interrupt
 	static int outputAPin;// 2;// D1;

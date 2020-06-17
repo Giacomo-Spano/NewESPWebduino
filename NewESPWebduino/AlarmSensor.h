@@ -14,13 +14,6 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
-/*class Type0CallBack : public AbstractCallBack {
-public:
-	void callBack(void* = nullptr, void* = nullptr) {
-		Serial.println("prova");
-	};
-};*/
-
 class AlarmSensor :
 	public Sensor
 {
@@ -39,18 +32,17 @@ private:
 public:
 	void callBack(int sensorid, String status, String oldstatus);
 
-	const String STATUS_DISARMED = "disarmed";
-	const String STATUS_ARMED_HOME = "armed_home";
-	const String STATUS_ARMED_AWAY = "armed_away";
-	const String STATUS_ARMED_NIGHT = "armed_night";
-	const String STATUS_ARMED_CUSTOM_BYPASS = "armed_custom_bypass";
-	const String STATUS_PENDING = "pending";
-	const String STATUS_TRIGGERED = "triggered";
-	const String STATUS_ARMING = "arming";
-	const String STATUS_DISARMING = "disarming";
+	static String STATUS_DISARMED;
+	static String STATUS_ARMED_HOME;
+	static String STATUS_ARMED_AWAY;
+	static String STATUS_ARMED_NIGHT;
+	static String STATUS_ARMED_CUSTOM_BYPASS;
+	static String STATUS_PENDING;
+	static String STATUS_TRIGGERED;
+	static String STATUS_ARMING;
+	static String STATUS_DISARMING;
 
-	//AlarmSensor(JsonObject& json);
-	AlarmSensor(String jsonStr);
+	AlarmSensor(JsonObject& json);
 	~AlarmSensor();
 
 	virtual void init();

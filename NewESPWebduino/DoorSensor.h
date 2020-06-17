@@ -12,7 +12,6 @@
 #include "Sensor.h"
 #include <Arduino.h>
 #include "Logger.h"
-//#include "CommandResponse.h"
 #include <ArduinoJson.h> 
 
 class DoorSensor :
@@ -23,27 +22,21 @@ private:
 	static Logger logger;
 
 	unsigned long lastTestModeTime;
-	const long TestModeTimeout = 30000;
+	static const long TestModeTimeout = 30000;
 
 	String mode;
 	virtual void getJson(JsonObject& json);
 	
 public:
-	const String STATUS_DOOROPEN = "dooropen";
-	const String STATUS_DOORCLOSED = "doorclosed";
+	static String STATUS_DOOROPEN;
+	static String STATUS_DOORCLOSED;
 
-	const String MODE_NORMAL = "normal";
-	const String MODE_TEST = "test";
-	const String MODE_TESTOPEN = "testopen";
+	static String MODE_NORMAL;
+	static String MODE_TEST;
+	static String MODE_TESTOPEN;
 
-
-	//DoorSensor(int id, uint8_t pin, bool enabled, String address, String name);
-	//DoorSensor(JsonObject& json);
-	DoorSensor(String jsonStr);
+	DoorSensor(JsonObject& json);
 	~DoorSensor();
-
-	//void IRAM_ATTR callMe();
-
 	virtual void init();
 	virtual bool checkStatusChange();
 	virtual bool sendCommand(String command, String payload);

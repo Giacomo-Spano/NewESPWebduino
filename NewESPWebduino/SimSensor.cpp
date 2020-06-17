@@ -148,7 +148,7 @@ bool SimSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
-		logger.print(tag, "\nDoorSensor::checkStatusChange\n");
+		logger.print(tag, "\SimSensor::checkStatusChange\n");
 		lastCheckStatus = currMillis;
 
 		/*if (mode.equals(MODE_NORMAL)) {

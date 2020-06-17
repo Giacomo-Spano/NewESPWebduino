@@ -4,6 +4,14 @@
 Logger KeyLockSensor::logger;
 String KeyLockSensor::tag = "KeyLockSensor";
 
+String KeyLockSensor::STATUS_OPEN = "open";
+String KeyLockSensor::STATUS_FIRSTLOCK = "firstlock";
+String KeyLockSensor::STATUS_CLOSED = "closed";
+String KeyLockSensor::STATUS_OPENING = "opening";
+String KeyLockSensor::STATUS_CLOSING = "closing";
+String KeyLockSensor::STATUS_MOVING = "moving";
+String KeyLockSensor::STATUS_STOPPING = "stopping";
+
 #ifdef ESP8266
 int KeyLockSensor::outputAPin = D1;// 2;// D1;
 int KeyLockSensor::outputBPin = D2; // 4;// D2;

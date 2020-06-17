@@ -4,31 +4,25 @@
 Logger DoorSensor::logger;
 String DoorSensor::tag = "DoorSensor";
 
-/*DoorSensor::DoorSensor(JsonObject& json) : Sensor(json)
+String  DoorSensor::STATUS_DOOROPEN = "dooropen";
+String  DoorSensor::STATUS_DOORCLOSED = "doorclosed";
+
+String  DoorSensor::MODE_NORMAL = "normal";
+String  DoorSensor::MODE_TEST = "test";
+String  DoorSensor::MODE_TESTOPEN = "testopen";
+
+
+DoorSensor::DoorSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>DoorSensor::DoorSensor"));
-
+	
 	type = "doorsensor";
-	checkStatus_interval = 1000;
-	lastCheckStatus = 0;
-
-	logger.print(tag, F("\n\t<<DoorSensor::DoorSensor\n"));
-}*/
-
-DoorSensor::DoorSensor(String jsonStr) : Sensor(jsonStr)
-{
-	logger.print(tag, F("\n\t>>DoorSensor::DoorSensor"));
-
-	type = "doorsensor";
+	
 	checkStatus_interval = 1000;
 	lastCheckStatus = 0;
 
 	logger.print(tag, F("\n\t<<DoorSensor::DoorSensor\n"));
 }
-
-/*DoorSensor::~DoorSensor()
-{
-}*/
 
 void DoorSensor::init()
 {
@@ -43,7 +37,6 @@ void DoorSensor::init()
 void DoorSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
 	json["mode"] = mode;
-	//json.printTo(Serial);
 }
 
 bool DoorSensor::checkStatusChange() {
@@ -52,17 +45,14 @@ bool DoorSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
-		//logger.print(tag, "\nDoorSensor::checkStatusChange\n");
 		lastCheckStatus = currMillis;
 				
 		if (mode.equals(MODE_NORMAL)) {
 			if (digitalRead(pin) == LOW) {
-				//logger.print(tag, "\nOPENn pin=" + String(pin));
 				setStatus(STATUS_DOOROPEN);
 				ret = Sensor::checkStatusChange();
 			}
 			else {
-				//logger.print(tag, "\nCLOSED pin=" + String(pin));
 				setStatus(STATUS_DOORCLOSED);
 				ret = Sensor::checkStatusChange();
 			}
