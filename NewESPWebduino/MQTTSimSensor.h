@@ -1,5 +1,5 @@
-#ifndef _SIMSENSOR_h
-#define _SIMSENSOR_h
+#ifndef _MQTTSIMSENSOR_h
+#define _MQTTSIMSENSOR_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "arduino.h"
@@ -12,7 +12,7 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
-class SimSensor :
+class MQTTSimSensor :
 	public Sensor
 {
 private:
@@ -22,11 +22,11 @@ private:
 	virtual void getJson(JsonObject& json);
 
 public:
-	//const String STATUS_DOOROPEN = "dooropen";
-	//const String STATUS_DOORCLOSED = "doorclosed";
+	static String STATUS_DOOROPEN;// = "dooropen";
+	static String STATUS_DOORCLOSED;// = "doorclosed";
 
-	SimSensor(JsonObject& json);
-	~SimSensor();
+	MQTTSimSensor(JsonObject& json);
+	~MQTTSimSensor();
 
 	virtual void init();
 	virtual void checkStatusChange();

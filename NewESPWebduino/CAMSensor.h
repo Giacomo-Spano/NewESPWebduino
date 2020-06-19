@@ -1,7 +1,7 @@
 // DoorSensor.h
 
-#ifndef _DOORSENSOR_h
-#define _DOORSENSOR_h
+#ifndef _CAMSENSOR_h
+#define _CAMSENSOR_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -14,7 +14,7 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
-class DoorSensor :
+class CAMSensor :
 	public Sensor
 {
 private:
@@ -26,6 +26,9 @@ private:
 
 	String mode;
 	virtual void getJson(JsonObject& json);
+
+	bool checkPhoto(fs::FS& fs);
+	void capturePhotoSaveSpiffs(void);
 	
 public:
 	static String STATUS_DOOROPEN;
@@ -35,8 +38,8 @@ public:
 	static String MODE_TEST;
 	static String MODE_TESTOPEN;
 
-	DoorSensor(JsonObject& json);
-	~DoorSensor();
+	CAMSensor(JsonObject& json);
+	~CAMSensor();
 	virtual void init();
 	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);

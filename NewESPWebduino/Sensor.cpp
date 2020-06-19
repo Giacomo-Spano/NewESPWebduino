@@ -79,7 +79,7 @@ Sensor::~Sensor()
 }
 
 void Sensor::setStatus(String _status) {
-
+	
 	oldStatus = status;
 	status = _status;
 
@@ -88,6 +88,7 @@ void Sensor::setStatus(String _status) {
 		if (type0CallBackPointer != nullptr) {
 			type0CallBackPointer->callBack(sensorid, status, oldStatus);
 		}
+		sendStatusUpdate();
 	}
 }
 
@@ -96,35 +97,38 @@ String Sensor::getStatus() {
 	return status;
 }
 
-bool Sensor::checkStatusChange()
+void Sensor::checkStatusChange()
 {
+	bool res = false;
 	if (!status.equals(oldStatus)) {
 		//logger.print(tag, "\n\t STATUS CHANGE - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
-		return true;
+		res = true;
 	}
 	unsigned long timeDiff = millis() - lastUpdateAvailabilityStatus;
 	if (timeDiff > updateStatus_interval || timeDiff < 0) { // se è passato troppo tempo aggiorna comunque
 		logger.print(tag, "\n\t UPDATE STATUS TIMEOUT - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
-		return true;
+		res = true;
 	}
-	return false;
+	/*if (res)
+		sendStatusUpdate();*/
+	//return false;
 }
 
-void Sensor::sendStatusUpdate(String boardname)
+void Sensor::sendStatusUpdate(/*String boardname*/)
 {
 	logger.print(tag, F("\n\t>>Sensor::::sendStatusUpdate"));
 
 	unsigned long currMillis = millis();
 	lastUpdateStatus = currMillis;
 
-	String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/status";
+	String topic = /*"ESPWebduino/" + boardname + "/" + */type + "/" + sensorid + "/status";
 	if (mqtt_publish(topic, status))
 		oldStatus = status;
-	updateAttributes(boardname);
+	updateAttributes();
 	logger.print(tag, F("\n\t<<Sensor::::sendStatusUpdate"));
 }
 
-void Sensor::updateAvailabilityStatus(String boardname) {
+void Sensor::updateAvailabilityStatus() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastUpdateAvailabilityStatus;
@@ -132,18 +136,16 @@ void Sensor::updateAvailabilityStatus(String boardname) {
 	if (timeDiff > updateAvailabilityStatus_interval || timeDiff < 0) {
 		logger.print(tag, "\n\n\t >>>> send availability status update");
 		lastUpdateAvailabilityStatus = currMillis;
-		String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/availability";
+		String topic = /*"ESPWebduino/" + boardname + "/" + */type + "/" + sensorid + "/availability";
 		mqtt_publish(topic, "online");
 		logger.print(tag, "\n");
 	}
 }
 
-void Sensor::updateAttributes(String boardname) {
+void Sensor::updateAttributes() {
 
 	logger.print(tag, "\n\n\t >>>> send atttributes");
-	String topic = "ESPWebduino/" + boardname + "/" + type + "/" + sensorid + "/attributes";
-	//String topic = "ESPWebduino/myboard1/" + type + "/" + sensorid + "/attributes";
-	//String strJson = getStrJson();
+	String topic = /*"ESPWebduino/" + boardname + "/" + */type + "/" + sensorid + "/attributes";
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& json = jsonBuffer.createObject();
 	getJson(json);
@@ -160,7 +162,7 @@ String Sensor::toString()
 
 Sensor* Sensor::getSensorFromId(int id)
 {
-	logger.print(tag, F("\n\t >>Sensor::getSensorFromId "));
+	logger.print(tag, "\n\t >>Sensor::getSensorFromId " + String(id));
 
 	if (sensorid == id)
 		return (Sensor*)this;
@@ -283,7 +285,7 @@ bool Sensor::sendCommand(String command, String payload)
 	return false;
 }
 
-bool Sensor::receiveCommand(String command, int id, String uuid, String jsoncmd)
+/*bool Sensor::receiveCommand(String command, int id, String uuid, String jsoncmd)
 {
 	logger.print(tag, F("\n\t >>Sensor::receiveCommand"));
 	logger.print(tag, String(F("\n\t >>command=")) + command);
@@ -309,5 +311,5 @@ bool Sensor::sendCommandResponse(String uuid, String response)
 	String topic = "toServer/response/" + uuid + "/success";
 	String message = response;
 	return mqtt_publish(topic, message);
-}
+}*/
 

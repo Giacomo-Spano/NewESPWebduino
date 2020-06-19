@@ -14,7 +14,7 @@ OnewireSensor::OnewireSensor(JsonObject& json) : Sensor(json)
 	logger.print(tag, F("\n\t<<OnewireSensor::OnewireSensor json\n"));
 }
 
-bool OnewireSensor::createSensor() {
+void OnewireSensor::createSensor() {
 	logger.print(tag, F("\n\t>>OnewireSensor::createSensor"));
 
 	checkStatus_interval = 20000;//60000;
@@ -191,7 +191,7 @@ void OnewireSensor::getJson(JsonObject& json) {
 	logger.print(tag, F("\n\t<<OnewireSensor::getJson"));
 }
 
-bool OnewireSensor::checkStatusChange() {
+void OnewireSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
@@ -209,7 +209,8 @@ bool OnewireSensor::checkStatusChange() {
 		logger.println(tag, F("<<checkStatusChange()::checkTemperatures"));
 
 		//sendStatusUpdate();
-		return temperatureChanged;
+		//return temperatureChanged;
+		Sensor::checkStatusChange();
 	}
-	return false;
+	//return false;
 }

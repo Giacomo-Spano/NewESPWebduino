@@ -14,6 +14,14 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
+
+//#define maxhornsensor	10
+
+/*class Horn {
+public: 
+	int id;
+};*/
+
 class AlarmSensor :
 	public Sensor
 {
@@ -28,8 +36,18 @@ private:
 
 	String mode;
 	virtual void getJson(JsonObject& json);
+	virtual void setStatus(String status);
+
+	//SimpleList<Horn*> hornsensors = SimpleList<Horn*>();
+	int hornSensorsid;
+	int doorSensorsid;
 	
 public:
+	//SimpleList<Horn*> hornsensors = SimpleList<Horn*>();
+	//const int maxhornsensor = 10;
+	
+	//int hornsensoridnum;
+
 	void callBack(int sensorid, String status, String oldstatus);
 
 	static String STATUS_DISARMED;
@@ -46,7 +64,7 @@ public:
 	~AlarmSensor();
 
 	virtual void init();
-	virtual bool checkStatusChange();
+	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
 };
 #endif

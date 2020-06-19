@@ -30,20 +30,23 @@ private:
 	unsigned long hornPauseTimeout;
 	unsigned long hornMaxTally;
 
-	//String mode;
+	String mode;
 	virtual void getJson(JsonObject& json);
+	void setMode(String _mode);
 	
 public:
 	static String STATUS_ON;
 	static String STATUS_OFF;
-	static String STATUS_PAUSE;
+	static String MODE_PAUSE;
+	static String MODE_NORMAL;
 
 	HornSensor(JsonObject& json);
 	~HornSensor();
 
 	virtual void init();
-	virtual bool checkStatusChange();
+	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
+	virtual void setStatus(String status);
 };
 #endif
 

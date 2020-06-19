@@ -14,17 +14,26 @@ String AlarmSensor::STATUS_TRIGGERED = "triggered";
 String AlarmSensor::STATUS_ARMING = "arming";
 String AlarmSensor::STATUS_DISARMING = "disarming";
 
+
 extern Sensor* getSensor(int id);
 
 AlarmSensor::AlarmSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>AlarmSensor::AlarmSensor"));
+		
+	if (json.containsKey("hornsensorid")) {
+		hornSensorsid = json["hornsensorid"];
+	}
+	if (json.containsKey("doorsensorid")) {
+		doorSensorsid = json["doorsensorid"];
+	}
 
 	type = "alarmsensor";
 	checkStatus_interval = 1000;
 	lastCheckStatus = 0;
 
-	logger.print(tag, F("\n\t<<AlarmSensor::DooAlarmSensorrSensor\n"));
+	//logger.print(tag, "\n\t hornsensors,size=" + String(hornsensors.size()));
+	logger.print(tag, F("\n\t<<AlarmSensor::AlarmSensor\n"));
 }
 
 AlarmSensor::~AlarmSensor()
@@ -33,10 +42,10 @@ AlarmSensor::~AlarmSensor()
 
 void AlarmSensor::callBack(int sensorid, String status, String oldstatus) {
 	logger.print(tag, "\n\t >> AlarmSensor::callBack sendor id=" + String(sensorid) + "status=" + status + "oldstatus=" + oldstatus);
-	Serial.println("\n\t prova AlarmSensor");
-
+	
 	if (sensorid == doorsensordid) {
 		if (getStatus().equals(STATUS_ARMED_HOME) || getStatus().equals(STATUS_ARMED_AWAY) || getStatus().equals(STATUS_ARMED_NIGHT)) {
+			logger.print(tag, "\n\t >> AlarmSensor::callBack TRIGGER ALARM");
 			setStatus(STATUS_TRIGGERED);
 		}
 	}
@@ -52,7 +61,7 @@ void AlarmSensor::init()
 		
 	doorsensordid = 1;
 	Sensor* sensor = getSensor(doorsensordid);
-	if (sensor != nullptr) {
+	if (sensor != nullptr) { // si registra agli eventi del door sensor
 		logger.print(tag, "\n\t door sendor id " + String(doorsensordid) + "found");
 		sensor->addType0CallBack(this);
 	}
@@ -65,10 +74,11 @@ void AlarmSensor::init()
 
 void AlarmSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
-	//json["mode"] = mode;
+	json["hornsensorid"] = hornSensorsid;
+	json["doorsensorid"] = doorSensorsid;
 }
 
-bool AlarmSensor::checkStatusChange() {
+void AlarmSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
@@ -78,11 +88,21 @@ bool AlarmSensor::checkStatusChange() {
 
 		if (getStatus().equals(STATUS_IDLE))
 			setStatus(STATUS_DISARMED);
-
 				
-		ret = Sensor::checkStatusChange();
 	}
-	return ret;
+	Sensor::checkStatusChange();
+}
+
+void AlarmSensor::setStatus(String _status) {
+
+	Sensor::setStatus(_status);
+
+	if (getStatus().equals(STATUS_TRIGGERED)) {
+		Sensor* phorn = getSensor(hornSensorsid);
+		if (phorn != nullptr) {
+			phorn->sendCommand("set", "on");
+		}
+	}
 }
 
 bool AlarmSensor::sendCommand(String command, String payload)

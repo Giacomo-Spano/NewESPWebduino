@@ -39,7 +39,7 @@ void DoorSensor::getJson(JsonObject& json) {
 	json["mode"] = mode;
 }
 
-bool DoorSensor::checkStatusChange() {
+void DoorSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
@@ -50,29 +50,24 @@ bool DoorSensor::checkStatusChange() {
 		if (mode.equals(MODE_NORMAL)) {
 			if (digitalRead(pin) == LOW) {
 				setStatus(STATUS_DOOROPEN);
-				ret = Sensor::checkStatusChange();
 			}
 			else {
 				setStatus(STATUS_DOORCLOSED);
-				ret = Sensor::checkStatusChange();
 			}
 		}
 		else if (mode.equals(MODE_TEST)) {
-			ret = Sensor::checkStatusChange();
 		}
 		else if (mode.equals(MODE_TESTOPEN)) {			
 			unsigned long curr = millis();
 			if (curr - lastTestModeTime > TestModeTimeout || curr - lastTestModeTime < 0) {
 				setStatus(STATUS_DOORCLOSED);
-				ret = Sensor::checkStatusChange();
 				mode = MODE_NORMAL;
 			}
 			else {
-				ret = Sensor::checkStatusChange();
 			}
 		}
 	}
-	return ret;
+	Sensor::checkStatusChange();
 }
 
 bool DoorSensor::sendCommand(String command, String payload)

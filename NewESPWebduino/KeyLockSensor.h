@@ -75,7 +75,7 @@ public:
 	~KeyLockSensor();
 
 	virtual void init();
-	virtual bool checkStatusChange();
+	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
 	//virtual void sendStatusUpdate();
 

@@ -68,13 +68,13 @@ public:
 	int updateStatus_interval = 60000; // intervallo minimo di aggiornamentto 
 									// default 1 minuto
 	
-	void updateAvailabilityStatus(String boardname);
-	void updateAttributes(String boardname);
-	virtual bool checkStatusChange();
-	virtual void sendStatusUpdate(String boardname);
+	void updateAvailabilityStatus();
+	void updateAttributes();
+	virtual void checkStatusChange();
+	virtual void sendStatusUpdate();
 
 	
-	void setStatus(String status);
+	virtual void setStatus(String status);
 	String getStatus();
 	Sensor* getSensorFromId(int id);
 	virtual void getJson(JsonObject& json);
@@ -84,8 +84,8 @@ public:
 	virtual void init();
 	virtual String getStatusText();
 	virtual bool sendCommand(String command, String payload);
-	virtual bool receiveCommand(String command, int actuatorId, String uuid, String json);
-	bool sendCommandResponse(String uuid, String response);
+	//virtual bool receiveCommand(String command, int actuatorId, String uuid, String json);
+	//bool sendCommandResponse(String uuid, String response);
 };
 
 #endif

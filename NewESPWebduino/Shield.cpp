@@ -697,9 +697,10 @@ void Shield::checkSensorStatus(Sensor* sensor)
 	if (!sensor->enabled) {
 		return;
 	}
-	sensor->updateAvailabilityStatus(getBoardName());
-	if (sensor->checkStatusChange())
-		sensor->sendStatusUpdate(getBoardName());
+	sensor->updateAvailabilityStatus();
+	sensor->checkStatusChange();
+	/*if (sensor->checkStatusChange())
+		sensor->sendStatusUpdate(getBoardName());*/
 	if (sensor->childsensors.size() > 0) {
 		for (int i = 0; i < sensor->childsensors.size(); i++)
 		{
@@ -856,8 +857,6 @@ bool Shield::updateSensor(String jsonstr/*JsonObject& json*/) {
 
 	if (json.containsKey("sensorid") && json.containsKey("type") && json.containsKey("pin")) {
 		if (sensorid == 0) {
-			//sensorid = SensorFactory::getNextSensorId();
-			//json["sensorid"] = SensorFactory::getNextSensorId();
 			return addJsonSensor(json);
 		}
 		else {
@@ -879,21 +878,6 @@ bool Shield::updateSensor(String jsonstr/*JsonObject& json*/) {
 	return false;
 }
 
-/*bool Shield::addJsonSensor(JsonObject& json) {
-	Sensor* sensor = SensorFactory::createSensor(json);
-	if (sensor == nullptr) {
-		logger.print(tag, "create Sensor Failed!");
-		return false;
-	}
-	sensors.add(sensor);
-	writeSensorsToFile();
-
-	Serial.println("Restarting .....");
-	//delay(10000);
-	ESP.restart();
-	return true;
-}*/
-
 bool Shield::addJsonSensor(JsonObject& json) {
 
 	logger.printFreeMem(tag, "loadSensors");
@@ -905,14 +889,11 @@ bool Shield::addJsonSensor(JsonObject& json) {
 		return false;
 	}
 	
-	/*Sensor* sensor = nullptr;
-	sensor = createSensor(json);
-	if (sensor == nullptr) {
-		logger.print(tag, "create Sensor Failed!");
-		return false;
-	}*/
 	sensors.add(sensor);
 	writeSensorsToFile();
+
+	delay(300);
+	ESP.restart(); //riavvia dopo aggiunta di un sensore
 	return true;
 }
 

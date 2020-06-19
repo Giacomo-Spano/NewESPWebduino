@@ -142,7 +142,7 @@ void SimSensor::getJson(JsonObject& json) {
 	//json.printTo(Serial);
 }
 
-bool SimSensor::checkStatusChange() {
+void SimSensor::checkStatusChange() {
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
@@ -229,7 +229,7 @@ bool SimSensor::checkStatusChange() {
 
 
 	}
-	return ret;
+	Sensor::checkStatusChange();
 }
 
 bool SimSensor::sendCommand(String command, String payload)

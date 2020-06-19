@@ -583,7 +583,8 @@ void setup() {
 				if (shield.updateSensor(jsonstr)) {
 					Serial.print(" \nsend response\n");
 					request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
-					ESP.restart();
+					//delay(300);
+					//ESP.restart();
 				} else {
 					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
 				}
@@ -778,6 +779,7 @@ Sensor* getSensor(int id) {
 
 bool mqtt_publish(String topic, String message) {
 
+	topic = "ESPWebduino/" + shield.getBoardName() + "/" + topic;
 	logger.print(tag, String(F("\n\t >>mqtt_publish \n\t topic:")) + topic);
 	logger.print(tag, String(F("\n\t message:")) + message);
 

@@ -111,7 +111,7 @@ void KeyLockSensor::getJson(JsonObject& json) {
 	//json.printTo(Serial);
 }
 
-bool KeyLockSensor::checkStatusChange()
+void KeyLockSensor::checkStatusChange()
 {
 	//Sensor::checkStatusChange();
 
@@ -129,7 +129,6 @@ bool KeyLockSensor::checkStatusChange()
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO OPEN"));
 				updateStatus();
-				return Sensor::checkStatusChange();
 			}
 		}
 		else
@@ -146,7 +145,6 @@ bool KeyLockSensor::checkStatusChange()
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO CLOSE"));
 				updateStatus();
-				return Sensor::checkStatusChange();;
 			}
 		}
 		else
@@ -164,7 +162,6 @@ bool KeyLockSensor::checkStatusChange()
 				enableMotor(false);
 				logger.print(tag, F("\n\t FAILED TO SET POSITION"));
 				updateStatus();
-				return Sensor::checkStatusChange();;
 			}
 		}
 		else {
@@ -174,12 +171,7 @@ bool KeyLockSensor::checkStatusChange()
 		}
 	}
 
-	return Sensor::checkStatusChange();
-	/*if (!status.equals(oldStatus)) {
-		//logger.print(tag, F("\n\t\t SEND STATUS\n\n"));
-		sendStatusUpdate();
-		//updateAttributes();
-	}*/
+	Sensor::checkStatusChange();
 }
 
 void KeyLockSensor::updateStatus() {

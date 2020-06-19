@@ -6,7 +6,9 @@ String HornSensor::tag = "HornSensor";
 
 String HornSensor::STATUS_ON = "hornon";
 String HornSensor::STATUS_OFF = "hornoff";
-String HornSensor::STATUS_PAUSE = "hornpause";
+
+String  HornSensor::MODE_NORMAL = "normal";
+String  HornSensor::MODE_PAUSE = "pause";
 
 HornSensor::HornSensor(JsonObject& json) : Sensor(json)
 {
@@ -16,23 +18,23 @@ HornSensor::HornSensor(JsonObject& json) : Sensor(json)
 	
 	if (json.success()) {
 				
-		if (!json.containsKey("horntimeout")) {
+		if (json.containsKey("horntimeout")) {
 			int timeout = json["horntimeout"];
 			hornTimeout = timeout * 1000;
 		}
 		else {
-			hornTimeout = 10 * 1000;
+			hornTimeout = 10000;
 		}
 
-		if (!json.containsKey("hornpausetimeout")) {
+		if (json.containsKey("hornpausetimeout")) {
 			int timeout = json["hornpausetimeout"];
 			hornPauseTimeout = timeout * 1000;
 		}
 		else {
-			hornPauseTimeout = 10 * 1000;
+			hornPauseTimeout = 60000;
 		}
 
-		if (!json.containsKey("horntally")) {
+		if (json.containsKey("horntally")) {
 			hornMaxTally = json["horntally"];
 		}
 		else {
@@ -59,6 +61,8 @@ void HornSensor::init()
 	logger.print(tag, F("\n\t >>init HornSensor"));
 	
 	Sensor::init();
+	mode = MODE_NORMAL;
+	setStatus(STATUS_OFF);
 	//pinMode(pin, OUTPUT);
 
 
@@ -67,44 +71,74 @@ void HornSensor::init()
 
 void HornSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
+	json["mode"] = mode;
 }
 
-bool HornSensor::checkStatusChange() {
+void HornSensor::checkStatusChange() {
+
+	//logger.print(tag, F("\n\t >> HornSensor::checkStatusChange"));
 
 	unsigned long currMillis = millis();
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	lastCheckStatus = currMillis;
 
-	/*if (getStatus().equals(STATUS_ON)) {
-		if ((currMillis - hornStartTime) > hornTimeout // timeout trascorso
-			|| (currMillis - hornStartTime) < 0) { // oppure currmill resettato
+	if (mode.equals(MODE_NORMAL)) {
+		if (getStatus().equals(STATUS_ON)) {
+			if ((currMillis - hornStartTime) > hornTimeout // timeout trascorso
+				|| (currMillis - hornStartTime) < 0) { // oppure currmill resettato
 
-			if (hornTallyCounter < hornMaxTally) {
-				hornPauseStartTime = millis();
-				setStatus(STATUS_PAUSE);
-			}
-			else {
 				setStatus(STATUS_OFF);
+				logger.print(tag, "\n\t END HORN TIMEOUT tall=" + hornTallyCounter);
+				if (hornTallyCounter < hornMaxTally) {
+					hornPauseStartTime = millis();
+					setMode(MODE_PAUSE);
+				}
+				else {
+					setMode(MODE_NORMAL);
+				}
 			}
-			return true;
 		}
-	} else if (getStatus().equals(STATUS_PAUSE)) {
+	}
+	else if (mode.equals(MODE_PAUSE)) {
 		if ((currMillis - hornPauseStartTime) > hornPauseTimeout // timeout trascorso
 			|| (currMillis - hornPauseStartTime) < 0) { // oppure currmill resettato
 
+			logger.print(tag, "\n\t END HORN PAUSE TIMEOUT tall=" + hornTallyCounter);
 			if (hornTallyCounter < hornMaxTally) {
 				hornTallyCounter++;
-				hornStartTime = millis();
+				//hornStartTime = millis();
+				setMode(MODE_NORMAL);
 				setStatus(STATUS_ON);
-			} else {
-				setStatus(STATUS_OFF);
 			}
-			return true;
+			else {
+				setMode(MODE_NORMAL);
+			}
 		}
-	} else if (getStatus().equals(STATUS_PAUSE) || getStatus().equals(STATUS_IDLE)) {
-		return false;
-	}*/
-	return false;
+	}
+	Sensor::checkStatusChange();
+}
+
+void HornSensor::setMode(String _mode) {
+	mode = _mode;
+	if (_mode.equals(MODE_PAUSE)) {
+		mode = _mode;
+		//setStatus(STATUS_OFF);
+	}
+	else if (_mode.equals(MODE_NORMAL)) {
+		mode = _mode;
+		//setStatus(STATUS_OFF);
+	}
+}
+
+void HornSensor::setStatus(String _status) {
+		
+	if (_status.equals(STATUS_ON)) {
+		logger.print(tag, "\n\t STATUS HORN ON");
+		hornStartTime = millis();
+	} else if (_status.equals(STATUS_OFF)) {
+		logger.print(tag, "\n\t STATUS HORN OFF");
+	}
+	Sensor::setStatus(_status);
 }
 
 bool HornSensor::sendCommand(String command, String payload)
@@ -114,17 +148,23 @@ bool HornSensor::sendCommand(String command, String payload)
 	logger.print(tag, String(F("\n\t\tcommand=")) + command);
 	logger.print(tag, String(F("\n\t\tpayload=")) + payload);
 	if (command.equals("set")) {
-		if (payload.equals("on")) {
-			hornStartTime = millis();
+		logger.print(tag, "\n\t\t process set command");
+		if (payload.equals("hornon")) {
+			logger.print(tag, "\n\t\t hornon");
+			//hornStartTime = millis();
 			hornTallyCounter = 0;
 			setStatus(STATUS_ON);
+			setMode(MODE_NORMAL);
 		}
-		else if (payload.equals("off")) {
+		else if (payload.equals("hornon")) {
+			logger.print(tag, "\n\t\t hornoff");
 			setStatus(STATUS_OFF);
+			setMode(MODE_NORMAL);
 		}
 		else if (payload.equals("pause")) {
+			logger.print(tag, "\n\t\t pause");
 			hornPauseStartTime = millis();
-			setStatus(STATUS_PAUSE);
+			setMode(MODE_PAUSE);
 		}
 	}
 	

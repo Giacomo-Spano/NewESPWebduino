@@ -30,9 +30,9 @@ public:
 	static const int avTempsize = 10;
 
 	OnewireSensor(JsonObject& json);
-	bool createSensor();
+	void createSensor();
 	~OnewireSensor();
-	virtual bool checkStatusChange();
+	virtual void checkStatusChange();
 
 	void beginTemperatureSensors();
 	virtual void getJson(JsonObject& json);

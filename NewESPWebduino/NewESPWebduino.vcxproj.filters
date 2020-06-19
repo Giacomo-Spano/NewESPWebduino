@@ -836,6 +836,12 @@
     <ClInclude Include="SimSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MQTTSimSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAMSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyLockSensor.cpp">
@@ -1352,6 +1358,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MQTTSimSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAMSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -33,8 +33,18 @@
             </div>
 
             <div id="children">
-
             </div>
+
+            <div id="hornsensor">
+                <label for="name">Horn sensorid</label>
+                <input type="number" name="hornsensorid" id="hornsensorid"><br>
+            </div>
+
+            <div id="doorsensor">
+                <label for="name">Door sensorid</label>
+                <input type="number" name="doorsensorid" id="doorsensorid"><br>
+            </div>
+
         </div>
         <input type="submit" class="button" value="Save">
     </form>
@@ -117,7 +127,12 @@
                 } else if (sensor.type == "doorsensor") {
                 } else if (sensor.type == "hornsensor") {
                 } else if (sensor.type == "alarmsensor") {
+
+                    $("#hornsensorid").val(sensor.hornsensorid);
+                    $("#doorsensorid").val(sensor.doorsensorid);
+
                 } else if (sensor.type == "simsensor") {
+                } else if (sensor.type == "mqttsimsensor") {
                 }
 
             }
@@ -137,7 +152,6 @@
                     loadValue(model, sensorid);
                 } else { // add
                     addCustomSensorField(model, type);
-                    //addTemperatureSensor(0,"new " + type);
                 }
             }
         };
@@ -146,6 +160,10 @@
     }
 
     function addCustomSensorField(model, type) {
+
+        $("#doorsensor").hide();
+        $("#hornsensor").hide();
+
         if (type == "keylocksensor") {
             $("#pindiv").hide();
             // setp pin
@@ -208,9 +226,12 @@
         } else if (type == "doorsensor") {
         } else if (type == "hornsensor") {
         } else if (type == "alarmsensor") {
+            $("#doorsensor").show();
+            $("#hornsensor").show();
+            //addHornSensor(0, "new " + type);
         } else if (type == "simsensor") {
+        } else if (type == "mqttsimsensor") {
         }
-
     }
 
     var temperatureSensorNum = 0; 
@@ -235,7 +256,7 @@
     function removeTemperaturesensor(n) {
         $("temperaturesensor" + n).remove();
     }
-   
+        
     function pinList(model) {
         var list = "";
         if (model == "ESP8266") {
