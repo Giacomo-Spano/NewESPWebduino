@@ -14,6 +14,8 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
+
+
 class CAMSensor :
 	public Sensor
 {

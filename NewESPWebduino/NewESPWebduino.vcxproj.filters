@@ -1354,9 +1354,6 @@
     <ClCompile Include="AlarmSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SensorListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SimSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

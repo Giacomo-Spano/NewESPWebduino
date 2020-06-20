@@ -226,3 +226,5 @@ void CAMSensor::capturePhotoSaveSpiffs(void) {
 	} while (!ok);
 }
 
+
+

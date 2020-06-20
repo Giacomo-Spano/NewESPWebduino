@@ -14,7 +14,6 @@
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 //#include <LinkedList.h>
 #include <SimpleList.h>
-#include "SensorListener.h"
 
 class AbstractCallBack {
 public:
@@ -84,8 +83,7 @@ public:
 	virtual void init();
 	virtual String getStatusText();
 	virtual bool sendCommand(String command, String payload);
-	//virtual bool receiveCommand(String command, int actuatorId, String uuid, String json);
-	//bool sendCommandResponse(String uuid, String response);
+
 };
 
 #endif

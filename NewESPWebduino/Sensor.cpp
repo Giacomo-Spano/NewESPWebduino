@@ -21,10 +21,8 @@ void Sensor::callBack(int sensorid, String status, String oldstatus) {
 };
 
 Sensor::Sensor() {
-
 	status = STATUS_IDLE;
 	oldStatus = STATUS_IDLE;
-
 }
 
 Sensor::Sensor(JsonObject& json)
@@ -93,7 +91,6 @@ void Sensor::setStatus(String _status) {
 }
 
 String Sensor::getStatus() {
-
 	return status;
 }
 
@@ -109,9 +106,6 @@ void Sensor::checkStatusChange()
 		logger.print(tag, "\n\t UPDATE STATUS TIMEOUT - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
 		res = true;
 	}
-	/*if (res)
-		sendStatusUpdate();*/
-	//return false;
 }
 
 void Sensor::sendStatusUpdate(/*String boardname*/)
@@ -259,7 +253,6 @@ void Sensor::init()
 	}
 }
 
-
 String Sensor::getStatusText()
 {
 	return status;
@@ -284,32 +277,3 @@ bool Sensor::sendCommand(String command, String payload)
 	logger.print(tag, F("\n\t <<Sensor::receiveCommand"));
 	return false;
 }
-
-/*bool Sensor::receiveCommand(String command, int id, String uuid, String jsoncmd)
-{
-	logger.print(tag, F("\n\t >>Sensor::receiveCommand"));
-	logger.print(tag, String(F("\n\t >>command=")) + command);
-	if (command.equals("requestsensorstatus")) {// richiesta stato di un singolo sensore
-		logger.print(tag, F("\n\t requestsensorstatus"));
-		DynamicJsonBuffer jsonBuffer;
-		JsonObject& jsonresult = jsonBuffer.createObject();
-		getJson(jsonresult);
-		String jsonStr;
-		logger.printJson(jsonresult);
-		jsonresult.printTo(jsonStr);
-		logger.print(tag, F("\n\t jsonstr="));
-		logger.print(tag, jsonStr);
-		return sendCommandResponse(uuid, jsonStr);
-	}
-	logger.print(tag, F("\n\t <<Sensor::receiveCommand"));
-	return false;
-}
-
-bool Sensor::sendCommandResponse(String uuid, String response)
-{
-	logger.print(tag, "\n\t sendCommandResponse uuid=" + uuid + "response" + response);
-	String topic = "toServer/response/" + uuid + "/success";
-	String message = response;
-	return mqtt_publish(topic, message);
-}*/
-

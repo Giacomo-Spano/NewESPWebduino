@@ -1,3 +1,5 @@
+
+
 #include "SensorFactory.h"
 #include "TemperatureSensor.h"
 #include "KeylockSensor.h"
@@ -5,13 +7,13 @@
 #include "DoorSensor.h"
 #include "HornSensor.h"
 #include "AlarmSensor.h"
+#ifdef SIMSENSOR
 #include "SimSensor.h"
+#endif
 #include "MQTTSimSensor.h"
 #include "CAMSensor.h"
 #include "Shield.h"
 #include "SensorListener.h"
-
-//extern bool getNextSensorId();
 
 Logger SensorFactory::logger;
 String SensorFactory::tag = "SensorFactory";
@@ -67,10 +69,12 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 		logger.print(tag, F("\n\t creating alarmsensor sensor"));
 		sensor = new AlarmSensor(json);
 	}
+#ifdef  SIMSENSOR
 	else if (type.equals(F("simsensor"))) {
 		logger.print(tag, F("\n\t creating simsensor sensor"));
 		sensor = new SimSensor(json);
 	}
+#endif //  SIMSENSOR
 	else if (type.equals(F("mqttsimsensor"))) {
 		logger.print(tag, F("\n\t creating mqttsimsensor sensor"));
 		sensor = new MQTTSimSensor(json);

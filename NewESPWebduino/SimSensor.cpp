@@ -1,5 +1,11 @@
+#ifdef SIMSENSOR
+
+
 #include "SimSensor.h"
 #include "Shield.h"
+
+
+
 
 Logger SimSensor::logger;
 String SimSensor::tag = "SimSensor";
@@ -259,3 +265,6 @@ bool SimSensor::sendCommand(String command, String payload)
 	logger.print(tag, F("\n\t <<SimSensor::sendCommand"));
 	return false;
 }
+
+
+#endif

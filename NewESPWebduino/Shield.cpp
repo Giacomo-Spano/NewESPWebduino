@@ -2,25 +2,25 @@
 #include "Logger.h"
 #include "SensorFactory.h"
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
-#include "MQTTMessage.h"
+//#include "MQTTMessage.h"
 #include "ESPDisplay.h"
 
-#include "DoorSensor.h"
+//#include "DoorSensor.h"
 
 #ifndef ESP8266
 #include <FS.h> //this needs to be first, or it all crashes and burns...
 #include "SPIFFS.h"
 #endif
 
-const int command_open = 1;
-const int command_close = 2;
+//const int command_open = 1;
+//const int command_close = 2;
 
-extern void resetWiFiManagerSettings();
-extern bool mqtt_publish(MQTTMessage mqttmessage);
-extern bool mqtt_subscribe(String topic);
+//extern void resetWiFiManagerSettings();
+//extern bool mqtt_publish(MQTTMessage mqttmessage);
+//extern bool mqtt_subscribe(String topic);
 
 
-extern void reboot(String reason);
+//extern void reboot(String reason);
 
 Logger Shield::logger;
 String Shield::tag = "Shield";
@@ -39,14 +39,14 @@ Shield::Shield()
 	shieldName = "shieldName";
 	mqttUser = "giacomo";
 	mqttPassword = "giacomo";
-	mqttMode = true;// true;
+	//mqttMode = true;// true;
 	oleddisplay = false;
 	nexiondisplay =
 
-		loragatewayEnabled = false;
+		//loragatewayEnabled = false;
 
-	configMode = false;// true;
-	resetSettings = false;// true;
+	//configMode = false;// true;
+	//resetSettings = false;// true;
 	powerStatus = "on"; // da aggiungere
 	lastCheckHealth = 0;
 	rebootreason = "unknown";
@@ -75,7 +75,7 @@ void Shield::writeConfig() {
 	json["user2"] = getUser2();
 	json["password2"] = getPassword2();
 
-	json["resetsettings"] = getResetSettings();
+//	json["resetsettings"] = getResetSettings();
 	json["shieldid"] = getShieldId();
 	json["oled"] = getOledDisplay();
 
@@ -195,12 +195,12 @@ void Shield::readConfig() {
 						logger.print(tag, str);
 						setShieldId(json["shieldid"]);
 					}
-					if (json.containsKey("resetsettings")) {
+					/*if (json.containsKey("resetsettings")) {
 						logger.print(tag, F("\n\t resetsettings: "));
 						bool enabled = json["resetsettings"];
 						logger.print(tag, Logger::boolToString(enabled));
 						setResetSettings(json["resetsettings"]);
-					}
+					}*/
 					if (json.containsKey("oled")) {
 						logger.print(tag, F("\n\t oled: "));
 						bool enabled = json["oled"];
@@ -351,9 +351,9 @@ I think the array has to be defined as "PROGMEM" because the "drawXBitmap" funct
 the line "#include <avr/pgmspace.h>".After that, everything worked fine for me.*/
 
 //#include <avr/pgmspace.h>
-#define temperature_width 32
+/*#define temperature_width 32
 #define temperature_height 32
-static const uint8_t /*PROGMEM*/ temperature_bits[] = {
+static const uint8_t temperature_bits[] = {
 	0x00, 0x80, 0x01, 0x00, 0x00, 0xe0, 0x07, 0x00, 0x00, 0x70, 0x0e, 0x00,
 	0x00, 0x18, 0x18, 0x00, 0x00, 0x08, 0x18, 0x00, 0x00, 0x18, 0x18, 0x00,
 	0x00, 0x18, 0x10, 0x00, 0x00, 0x78, 0x10, 0x00, 0x00, 0x18, 0x10, 0x00,
@@ -364,7 +364,7 @@ static const uint8_t /*PROGMEM*/ temperature_bits[] = {
 	0x00, 0xc4, 0x23, 0x00, 0x00, 0xe6, 0x67, 0x00, 0x00, 0xe2, 0x67, 0x00,
 	0x00, 0xe6, 0x67, 0x00, 0x00, 0xe6, 0x67, 0x00, 0x00, 0xe6, 0x67, 0x00,
 	0x00, 0xce, 0x71, 0x00, 0x00, 0x0c, 0x30, 0x00, 0x00, 0x3c, 0x3c, 0x00,
-	0x00, 0xf0, 0x0f, 0x00, 0x00, 0xc0, 0x03, 0x00 };
+	0x00, 0xf0, 0x0f, 0x00, 0x00, 0xc0, 0x03, 0x00 };*/
 
 void Shield::clearScreen() {
 	if (getOledDisplay()) {
@@ -402,39 +402,6 @@ void Shield::parseMessageReceived(String topic, String message) {
 		}
 	}
 
-
-#ifdef prova
-	else if (topic.equals(str + F("/reboot"))) {
-		logger.print(tag, F("\n\t received reboot request"));
-		setEvent(F("<-received reboot request"));
-		reboot("reboot command");
-	}
-	else if (topic.equals(str + F("/resetsettings"))) {
-		logger.print(tag, F("\n\t RESET SETTINGS!!!!!!!!!!!!!!!!"));
-		setResetSettings(true);
-		writeConfig();
-		reboot("reset");
-	}
-	else if (topic.equals(str + F("/time"))) { // risposta a time
-		logger.print(tag, F("\n\t received time"));
-		setEvent(F("<-received time"));
-
-		lastTimeRequest = millis();
-		timeNeedToBeUpdated = false;
-		bool timeRequestInprogress = false;
-
-		time_t t = (time_t)atoll(message.c_str());
-		logger.print(tag, F("\n\t time="));
-		logger.print(tag, String(t));
-		setTime(t);
-	}
-	else if (topic.equals(str + F("/command"))) {
-		logger.print(tag, F("\n\t received command "));
-		logger.print(tag, message);
-		setEvent(F("<-received command"));
-		receiveCommand(message);
-	}
-#endif
 	else {
 		logger.print(tag, F("\n\t PARSE NOT FOUND"));
 	}
@@ -443,142 +410,12 @@ void Shield::parseMessageReceived(String topic, String message) {
 	logger.print(tag, F("\n\t <<parseMessageReceived\n"));
 }
 
-#ifdef dopo
-bool Shield::receiveCommand(String jsonStr) {
 
-	logger.print(tag, F("\n\t >>Shield::receiveCommand"));
-	logger.print(tag, jsonStr);
 
-	DynamicJsonBuffer jsonBuffer;
-	JsonObject& json = jsonBuffer.parseObject(jsonStr);
-	if (json.success()) {
-		logger.print(tag, F("\n\t command= \n"));
-		logger.printJson(json);
-	}
-	else {
-		logger.print(tag, F("\n\t failed to load json config"));
-		return false;
-	}
-
-	if (json.containsKey("command")) {
-		bool result = false;
-		String command = json["command"];
-		logger.print(tag, F("\n\t command="));
-		logger.print(tag, command);
-		setEvent("<-received command " + command);
-		if (command.equals(F("shieldsettings"))) { // risposta a loadsettting
-			result = onShieldSettingsCommand(json);
-			logger.print(tag, "\n\t <<receiveCommand result=" + String(result));
-			return result;
-		}
-		else if (command.equals(F("checkhealth"))) {
-			logger.printFreeMem(tag, F("++checkhealth"));
-
-			// uuid
-			String uuid = "";
-			if (json.containsKey("uuid")) {
-				String str = json["uuid"];
-				uuid = str;
-				logger.print(tag, F("\n\t uuid="));
-				logger.print(tag, uuid);
-			}
-			else {
-				logger.print(tag, F("\n\t uuid NOT FOUND!"));
-				return false;
-			}
-
-			lastCheckHealth = millis();
-			MQTTMessage mqttmessage;
-			mqttmessage.topic = "toServer/response/" + uuid + "/success";
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& json = jsonBuffer.createObject();
-			getJson(json);
-			//String str;
-			json.printTo(mqttmessage.message);
-			bool res = mqtt_publish(mqttmessage);
-
-			logger.print(tag, F("\n\t <<receiveCommand result="));
-			logger.print(tag, String(result));
-			return res;
-		}
-		else if (json.containsKey("sensorid") && json.containsKey("uuid")) {	// se c'è il campo actuatorid
-
-			logger.print(tag, F("\n\treceived actuator command"));
-			int id = json["sensorid"];
-			logger.print(tag, F("\n\t sensorid="));
-			logger.print(tag, String(id));
-			String uuid = json["uuid"];
-			Sensor* sensor = getSensorFromId(id);
-			if (sensor != nullptr) {
-				setEvent(F("<-received sensor command "));
-				setEvent(command);
-				return sensor->receiveCommand(command, id, uuid, jsonStr);
-			}
-			else {
-				logger.print(tag, F("\n\t sensor not found"));
-				logger.print(tag, F("\n\t <<receiveCommand result"));
-			}
-		}
-	}
-	logger.printFreeMem(tag, F("--receiveCommand"));
-	logger.print(tag, F("\n\t <<Shield::receiveCommand"));
-	return false;
-}
-#endif
-
-bool Shield::onShieldSettingsCommand(JsonObject& json)
-{
-	logger.print(tag, F("\n\t>>onShieldSettingsCommand"));
-
-	if (json.containsKey("localport")) {
-		int localPortr = json["localport"];
-		//logger.print(tag, "\n\t localport=" + localPort);
-		setLocalPort(localPort);
-	}
-	/*if (json.containsKey("shieldname")) {
-		String name = json["shieldname"];
-		//logger.print(tag, "\n\t shieldname=" + name);
-		setShieldName(name);
-	}*/
-	if (json.containsKey("servername")) {
-		String name = json["servername"];
-		//logger.print(tag, "\n\t servername=" + name);
-		setServerName(name);
-	}
-	if (json.containsKey("serverport")) {
-		int serverPort = json["serverport"];
-		//logger.print(tag, "\n\t serverport=" + serverPort);
-		setServerPort(serverPort);
-	}
-	logger.print(tag, F("\n\t <<onShieldSettingsCommand"));
-	return true;
-}
-
-bool Shield::onPowerCommand(JsonObject& json)
-{
-	logger.print(tag, F("\n\t>> onPowerCommand"));
-	bool res = false;
-
-	if (json.containsKey(F("status"))) {
-		String status = json["status"];
-		//logger.print(tag, "\n\t status=" + status);
-
-		if (status.equals(F("on"))) {
-			setPowerStatus(status);
-			res = true;
-		}
-		else if (status.equals(F("off"))) {
-			setPowerStatus(status);
-			res = true;
-		}
-	}
-	logger.print(tag, F("\n\t<< onPowerCommand"));
-	return true;
-}
 
 void Shield::getJson(JsonObject& json) {
 	logger.print(tag, F("\n\t >>Shield::getJson"));
-	json["MAC"] = getMACAddress();
+	//json["MAC"] = getMACAddress();
 	json["swversion"] = swVersion;
 	json["lastreboot"] = lastRestartDate;
 	json["lastcheckhealth"] = String(lastCheckHealth);
@@ -651,30 +488,8 @@ void Shield::sendSensorCommand(int id, String command, String payload)
 	if (sensor != nullptr)
 		sensor->sendCommand(command, payload);
 
-	/*for (int i = 0; i < sensors.size(); i++) {
-
-		Sensor* sensor = sensors.get(i);
-		if (sensor->sensorid == id) {
-			sensor->sendCommand(command, payload);
-			break;
-		}
-	}*/
 	logger.print(tag, F("\n\t <<Shield::sendSensorCommand"));
 }
-
-/*void Shield::checkSensorsStatus()
-{
-	for (int i = 0; i < sensors.size(); i++)
-	{
-		Sensor* sensor = (Sensor*)sensors.get(i);
-		if (!sensor->enabled) {
-			continue;
-		}
-		sensor->updateAvailabilityStatus();
-		if (sensor->checkStatusChange())
-			sensor->sendStatusUpdate();
-	}
-}*/
 
 void Shield::checkSensorsStatus()
 {

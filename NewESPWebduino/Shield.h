@@ -26,16 +26,16 @@ protected:
 	String shieldName;
 	bool nexiondisplay;
 	bool oleddisplay;
-	bool loragatewayEnabled;
+	//bool loragatewayEnabled;
 
-	bool mqttMode;
-	bool configMode;
-	bool resetSettings;
+	//bool mqttMode;
+	//bool configMode;
+	//bool resetSettings;
 	String mqttUser;
 	String mqttPassword;
 	String mqttTopic;
 	String rebootreason;
-	String loraMessage;
+	//String loraMessage;
 
 	
 
@@ -98,8 +98,8 @@ private:
 
 protected:
 
-	bool onShieldSettingsCommand(JsonObject& json);
-	bool onPowerCommand(JsonObject& json);
+	//bool onShieldSettingsCommand(JsonObject& json);
+	//bool onPowerCommand(JsonObject& json);
 	void checkSensorsStatus();
 	void checkSensorStatus(Sensor* sensor);
 
@@ -151,7 +151,7 @@ public:
 
 	}
 
-	String getMACAddress()
+	/*String getMACAddress()
 	{
 #ifdef ESP8266
 		//return WiFi.macAddress();
@@ -164,7 +164,7 @@ public:
 
 		return String(baseMacChr);
 #endif
-	}
+	}*/
 
 	String getSWVersion()
 	{
@@ -178,9 +178,9 @@ public:
 
 	void setServerPort(int port)
 	{
-		logger.print(tag, "\n\t >>setServerPort");
+		//logger.print(tag, "\n\t >>setServerPort");
 		serverPort = port;
-		logger.print(tag, "\n\t <<serverPort=" + String(serverPort));
+		//logger.print(tag, "\n\t <<serverPort=" + String(serverPort));
 	}
 
 	int getNextionDisplay()
@@ -206,9 +206,7 @@ public:
 		oleddisplay = enable;
 		logger.print(tag, "\n\t <<setOledDisplay=" + Logger::boolToString(oleddisplay));
 	}
-
-
-	
+		
 
 	static String getStrPin(uint8_t pin)
 	{
@@ -317,9 +315,9 @@ public:
 
 	void setLocalPort(int port)
 	{
-		logger.print(tag, "\n\t >>setLocalPort");
+		//logger.print(tag, "\n\t >>setLocalPort");
 		localPort = port;
-		logger.print(tag, "\n\t >> localPort=" + String(localPort));
+		//logger.print(tag, "\n\t >> localPort=" + String(localPort));
 	}
 
 	String getBoardName()
@@ -329,10 +327,10 @@ public:
 
 	void setName(String _name)
 	{
-		logger.print(tag, "\n\t >>setName");
+		//logger.print(tag, "\n\t >>setName");
 		boardName = _name;
-		logger.print(tag, "\n\t name=");
-		logger.print(tag, boardName);
+		//logger.print(tag, "\n\t name=");
+		//logger.print(tag, boardName);
 	}
 
 	String getServerName()
@@ -355,10 +353,10 @@ public:
 
 	void setUser(String _user)
 	{
-		logger.print(tag, "\n\t >>setUser");
+		//logger.print(tag, "\n\t >>setUser");
 		user = _user;
-		logger.print(tag, "\n\t setUser=");
-		logger.print(tag, user);
+		//logger.print(tag, "\n\t setUser=");
+		//logger.print(tag, user);
 	}
 
 	String getPassword()
@@ -381,10 +379,10 @@ public:
 
 	void setUser2(String _user)
 	{
-		logger.print(tag, "\n\t >>setUser2");
+		//logger.print(tag, "\n\t >>setUser2");
 		user2 = _user;
-		logger.print(tag, "\n\t setUse2r=");
-		logger.print(tag, user2);
+		//logger.print(tag, "\n\t setUse2r=");
+		//logger.print(tag, user2);
 	}
 
 	String getPassword2()
@@ -394,10 +392,10 @@ public:
 
 	void setPassword2(String _password)
 	{
-		logger.print(tag, "\n\t >>setPassword2");
+		//logger.print(tag, "\n\t >>setPassword2");
 		password2 = _password;
-		logger.print(tag, "\n\t setPassword2=");
-		logger.print(tag, password2);
+		//logger.print(tag, "\n\t setPassword2=");
+		//logger.print(tag, password2);
 	}
 
 
@@ -415,7 +413,7 @@ public:
 		logger.print(tag, shieldName);
 	}*/
 
-	String getPowerStatus()
+	/**String getPowerStatus()
 	{
 		return powerStatus;
 	}
@@ -425,14 +423,14 @@ public:
 		logger.print(tag, "\n\t>>setpowerStatus");
 		powerStatus = status;
 		logger.print(tag, "\n\t<< powerSatus=" + String(powerStatus));
-	}
+	}*/
 
-	bool getMQTTmode()
+	/*bool getMQTTmode()
 	{
 		return mqttMode;
-	}
+	}*/
 
-	void setMQTTMode(bool enabled)
+	/*void setMQTTMode(bool enabled)
 	{
 		logger.print(tag, "\n\t>> setMQTTMode");
 		mqttMode = enabled;
@@ -461,18 +459,18 @@ public:
 		logger.print(tag, "\n\t>> setResetSettings");
 		resetSettings = enabled;
 		logger.print(tag, "\n\t<< setResetSettings=" + String(resetSettings));
-	}
+	}*/
 
 	String getMQTTServer()
 	{
-		return /*"192.168.1.21";////*/  mqttServer /*serverName*/;
+		return mqttServer;
 	}
 
 	void setMQTTServer(String server)
 	{
-		logger.print(tag, "\n\t>> setMQTTServer");
+		//logger.print(tag, "\n\t>> setMQTTServer");
 		mqttServer = server;
-		logger.print(tag, "\n\t<< setMQTTServer=" + String(mqttServer));
+		//logger.print(tag, "\n\t<< setMQTTServer=" + String(mqttServer));
 	}
 
 	String getMQTTUser()
@@ -482,9 +480,9 @@ public:
 
 	void setMQTTUser(String user)
 	{
-		logger.print(tag, "\n\t>> setMQTTUser");
+		//logger.print(tag, "\n\t>> setMQTTUser");
 		mqttUser = user;
-		logger.print(tag, "\n\t<< setMQTTUser=" + String(mqttUser));
+		//logger.print(tag, "\n\t<< setMQTTUser=" + String(mqttUser));
 	}
 
 	String getMQTTPassword()
@@ -494,9 +492,9 @@ public:
 
 	void setMQTTPassword(String password)
 	{
-		logger.print(tag, "\n\t>> setMQTTPassword");
+		//logger.print(tag, "\n\t>> setMQTTPassword");
 		mqttPassword = password;
-		logger.print(tag, "\n\t<< setMQTTPassword=" + String(mqttPassword));
+		//logger.print(tag, "\n\t<< setMQTTPassword=" + String(mqttPassword));
 	}
 
 
@@ -507,9 +505,9 @@ public:
 
 	void setMQTTTopic(String topic)
 	{
-		logger.print(tag, "\n\t>> setMQTTTopic");
+		//logger.print(tag, "\n\t>> setMQTTTopic");
 		mqttTopic = topic;
-		logger.print(tag, "\n\t<< setMQTTTopic=" + String(mqttTopic));
+		//logger.print(tag, "\n\t<< setMQTTTopic=" + String(mqttTopic));
 	}
 
 	int getMQTTPort()
@@ -519,9 +517,9 @@ public:
 
 	void setMQTTPort(int port)
 	{
-		logger.print(tag, "\n\t>> setMQTTPort");
+		//logger.print(tag, "\n\t>> setMQTTPort");
 		mqttPort = port;
-		logger.print(tag, "\n\t<< setMQTTPort=" + String(mqttPort));
+		//logger.print(tag, "\n\t<< setMQTTPort=" + String(mqttPort));
 	}
 
 	String getRebootReason()

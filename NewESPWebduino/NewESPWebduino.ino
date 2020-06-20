@@ -612,23 +612,6 @@ void setup() {
 
 }
 
-char* int2char(int iNumber) {
-	int iNumbersCount = 0;
-	int iTmpNum = iNumber;
-	while (iTmpNum) {
-		iTmpNum /= 10;
-		iNumbersCount++;
-	}
-	char* buffer = new char[iNumbersCount + 1];
-	for (int i = iNumbersCount - 1; i >= 0; i--) {
-		buffer[i] = (char)((iNumber % 10) | 48);
-		iNumber /= 10;
-	}
-	buffer[iNumbersCount] = '\0';
-	return buffer;
-
-}
-
 bool postSensorCommand(int counter, uint8_t* pdata)
 {
 	logger.print(tag, "\n\t>>postSensorCommand");
@@ -1035,6 +1018,8 @@ void checkForSWUpdate() {
 	String updatePath = "http://giacomocasa.duckdns.org:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
 	logger.print(tag, "\n\t check for sw update " + updatePath);
 	logger.print(tag, "\n\t current version " + shield.swVersion);
+	
+
 	t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath, shield.swVersion);
 	//t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath);
 
@@ -1060,6 +1045,6 @@ void checkForSWUpdate() {
 		break;
 	}
 	logger.println(tag, F("<<checkForSWUpdate"));
-
 #endif
+
 }

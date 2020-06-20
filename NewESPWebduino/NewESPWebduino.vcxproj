@@ -548,7 +548,6 @@
     <ClCompile Include="OnewireSensor.cpp" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="SensorFactory.cpp" />
-    <ClCompile Include="SensorListener.cpp" />
     <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SimSensor.cpp" />
     <ClCompile Include="TemperatureSensor.cpp" />

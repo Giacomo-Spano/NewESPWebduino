@@ -7,6 +7,9 @@
 #include "WProgram.h"
 #endif
 
+#ifdef SIMSENSOR
+
+
 #include "Sensor.h"
 #include <Arduino.h>
 #include "Logger.h"
@@ -32,5 +35,7 @@ public:
 	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
 };
+#endif
+
 #endif
 
