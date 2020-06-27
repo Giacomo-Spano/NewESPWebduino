@@ -1,7 +1,7 @@
-#ifdef CAMSENSOR
+// DoorSensor.h
 
-#ifndef _CAMSENSOR_h
-#define _CAMSENSOR_h
+#ifndef _RFIDSENSOR_h
+#define _RFIDSENSOR_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -14,9 +14,7 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
-
-
-class CAMSensor :
+class RFIDSensor :
 	public Sensor
 {
 private:
@@ -28,9 +26,6 @@ private:
 
 	String mode;
 	virtual void getJson(JsonObject& json);
-
-	bool checkPhoto(fs::FS& fs);
-	void capturePhotoSaveSpiffs(void);
 	
 public:
 	static String STATUS_DOOROPEN;
@@ -40,13 +35,11 @@ public:
 	static String MODE_TEST;
 	static String MODE_TESTOPEN;
 
-	CAMSensor(JsonObject& json);
-	~CAMSensor();
+	RFIDSensor(JsonObject& json);
+	~RFIDSensor();
 	virtual void init();
 	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
 };
-#endif
-
 #endif
 

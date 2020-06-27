@@ -1,5 +1,6 @@
+#include "newespduino.h"
 
-
+#include "Sensor.h"
 #include "SensorFactory.h"
 #include "TemperatureSensor.h"
 #include "KeylockSensor.h"
@@ -10,10 +11,16 @@
 #ifdef SIMSENSOR
 #include "SimSensor.h"
 #endif
+#ifdef MQTTSIMSENSOR
 #include "MQTTSimSensor.h"
+#endif
+#include "RFIDSensor.h"
+#ifdef CAMSENSOR
 #include "CAMSensor.h"
+#endif
 #include "Shield.h"
 #include "SensorListener.h"
+
 
 Logger SensorFactory::logger;
 String SensorFactory::tag = "SensorFactory";
@@ -73,16 +80,25 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	else if (type.equals(F("simsensor"))) {
 		logger.print(tag, F("\n\t creating simsensor sensor"));
 		sensor = new SimSensor(json);
+		//ddd
 	}
 #endif //  SIMSENSOR
+#ifdef MQTTSIMSENSOR
 	else if (type.equals(F("mqttsimsensor"))) {
 		logger.print(tag, F("\n\t creating mqttsimsensor sensor"));
 		sensor = new MQTTSimSensor(json);
 	}
+#endif
+	else if (type.equals(F("rfidsensor"))) {
+		logger.print(tag, F("\n\t creating mqttsimsensor sensor"));
+		sensor = new RFIDSensor(json);
+	}
+#ifdef CAMSENSOR
 	else if (type.equals(F("camsensor"))) {
 		logger.print(tag, F("\n\t creating camsensor sensor"));
 		sensor = new CAMSensor(json);
 	}
+#endif
 	else if (type.equals(F("keylocksensor"))) {
 		logger.print(tag, F("\n\t creating keylocksensor sensor"));
 		String str;
@@ -90,36 +106,10 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	else if (type.equals(F("onewiresensor"))) {
 		sensor = new OnewireSensor(json);
 	}
-	/*else if (type.equals(F("hornsensor"))) {
-		logger.print(tag, F("\n\t creating doorsensor sensor"));
-		sensor = new HornSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("rfidsensor"))) {
-		logger.print(tag, F("\n\t creating rfidsensor sensor"));
-		sensor = new RFIDSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("irsensor"))) {
-		logger.print(tag, F("\n\t creating irsensor sensor"));
-		sensor = new IRSensor(sensorid, pin, enabled, address, name);
-	}
-	else if (type.equals(F("irreceivesensor"))) {
-		logger.print(tag, F("\n\t creating irreceivesensor sensor"));
-		sensor = new IRReceiveSensor(sensorid, pin, enabled, address, name);
-	}*/
 	else {
 		return nullptr;
 	}
-	//sensor->init();
-	/*if (json.containsKey("childsensors")) {
-
-		JsonArray& children = json["childsensors"];
-		logger.print(tag, F("\n\t children="));
-		//logger.print(tag, children);
-		children.printTo(Serial);
-		//JSONArray jarray(children);
-		sensor->loadChildren(children);
-	}*/
-
+	
 	logger.print(tag, F("\n\t<<SensorFactory::createSensor\n"));
 	return sensor;
 }

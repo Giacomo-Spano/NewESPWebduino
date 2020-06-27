@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <string.h>
 #include "Sensor.h"
+#include "MQTTSimSensor.h"
 #include <SimpleList.h>
 #include "ESPDisplay.h"
 
@@ -21,6 +22,8 @@ protected:
 	String password;
 	String user2;
 	String password2;
+	bool mqttsim;
+	
 	//
 
 	String shieldName;
@@ -40,6 +43,10 @@ protected:
 	
 
 public:
+#ifdef MQTTSIMSENSOR
+	MQTTSimSensor* pMQTTSensor;
+#endif
+
 	int freeMemory = 0;
 	int checkHealth_timeout = 86400000 / 2;  //12 ore
 	unsigned long lastCheckHealth;
@@ -67,7 +74,9 @@ public:
 	void readSensorFromFile();
 	bool writeSensorsToFile();
 	String getSensors();
-	bool updateSensor(String jsonstr/*JsonObject& json*/);
+	String getConfig();
+	bool setConfig(JsonObject& json);
+	bool updateSensor(String jsonstr);
 	bool addJsonSensor(JsonObject& json);
 	void parseMessageReceived(String topic, String message);
 	void drawString(int x, int y, String txt, int size, int color);
@@ -190,23 +199,32 @@ public:
 
 	void setNextionDisplay(bool enable)
 	{
-		logger.print(tag, "\n\t >>setnextionDisplay");
+		logger.print(tag, "\n\t >>setnextionDisplay " + Logger::boolToString(nexiondisplay));
 		nexiondisplay = enable;
-		logger.print(tag, "\n\t <<setnextionDisplay=" + Logger::boolToString(nexiondisplay));
 	}
 
 	bool getOledDisplay()
 	{
+		return true;
 		return oleddisplay;
+	}
+
+	bool getMQTTSIM() {
+		return mqttsim;
+	}
+
+	void setMQTTSIM(bool enabled) {
+
+		logger.print(tag, "\n\t >>setMQTTSIM " + Logger::boolToString(enabled));
+		mqttsim = enabled;
 	}
 
 	void setOledDisplay(bool enable)
 	{
-		logger.print(tag, "\n\t >>setOledDisplay");
+		logger.print(tag, "\n\t >>setOledDisplay " + Logger::boolToString(oleddisplay));
 		oleddisplay = enable;
-		logger.print(tag, "\n\t <<setOledDisplay=" + Logger::boolToString(oleddisplay));
 	}
-		
+
 
 	static String getStrPin(uint8_t pin)
 	{
@@ -325,7 +343,7 @@ public:
 		return String(boardName);
 	}
 
-	void setName(String _name)
+	void setBoardName(String _name)
 	{
 		//logger.print(tag, "\n\t >>setName");
 		boardName = _name;

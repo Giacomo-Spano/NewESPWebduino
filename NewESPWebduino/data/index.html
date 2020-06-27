@@ -9,38 +9,8 @@
 </head>
 <body>
 
-
-
-    <div class="field_wrapper">
-        <div>
-            <input type="text" name="field_name[]" value="" />
-            <a href="javascript:void(0);" class="add_button" title="Add field"><img src="add-icon.png" /></a>
-        </div>
-    </div>
-
-
-    <h1>ESP8266 Web Server</h1>
-    <p>GPIO state<strong> %STATE%</strong></p>
-    <p>
-        <a href="/open"><button class="button">OPEN</button></a>
-        <a href="/close"><button class="button button2">CLOSE</button></a>
-    </p>
-    <p>
-        <span class="sensor-labels">Temperature</span>
-        <span id="temperature">%TEMPERATURE%</span>
-        <sup class="units">&deg;C</sup>
-    </p>
-    <p>
-        <span class="sensor-labels">Humidity</span>
-        <span id="humidity">%HUMIDITY%</span>
-        <sup class="units">&#37;</sup>
-    </p>
-    <p>
-        <span class="sensor-labels">Pressure</span>
-        <span id="pressure">%PRESSURE%</span>
-        <sup class="units">hPa</sup>
-    </p>
-
+    <h1>ESP Web Server</h1>
+    
     <p>
         <a href="/config"><button class="button">CONFIG</button></a>
     </p>
@@ -61,8 +31,7 @@
 
     $(document).ready(function () {
 
-        //loadValue();
-
+        
         var maxField = 10; //Input fields increment limitation
         var addButton = $('.add_button'); //Add button selector
         var wrapper = $('.field_wrapper'); //Input field wrapper
@@ -85,50 +54,7 @@
             x--; //Decrement field counter
         });
     });
-
-    /*function loadValue(sensordid) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                model = this.responseText;
-                $("#sensors").attr("href", "/sensors");
-            }
-        };
-        xhttp.open("GET", "/getmodel", true);
-        xhttp.send();
-    }*/
-
-    setInterval(function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("temperature").innerHTML = this.responseText;
-            }
-        };
-        xhttp.open("GET", "/temperature", true);
-        xhttp.send();
-    }, 10000);
-
-    setInterval(function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("humidity").innerHTML = this.responseText;
-            }
-        };
-        xhttp.open("GET", "/humidity", true);
-        xhttp.send();
-    }, 10000);
-
-    setInterval(function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("pressure").innerHTML = this.responseText;
-            }
-        };
-        xhttp.open("GET", "/pressure", true);
-        xhttp.send();
-    }, 10000);
+       
+    
 </script>
 </html>

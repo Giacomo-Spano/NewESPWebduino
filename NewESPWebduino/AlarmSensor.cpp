@@ -20,16 +20,27 @@ extern Sensor* getSensor(int id);
 AlarmSensor::AlarmSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>AlarmSensor::AlarmSensor"));
-		
+
+	//String jsonstr;
+	//json.printTo(jsonstr);
+	//logger.print(tag, jsonstr);
+
 	if (json.containsKey("hornsensorid")) {
-		hornSensorsid = json["hornsensorid"];
+		hornSensorId = json["hornsensorid"].as<int>();
+		logger.print(tag, "\n\t hornsensorid:" + String(hornSensorId));
 	}
 	if (json.containsKey("doorsensorid")) {
-		doorSensorsid = json["doorsensorid"];
+		String str = json["doorsensorid"];
+		doorSensorId = json["doorsensorid"].as<int>();
+		logger.print(tag, "\n\t doorsensorid:" + String(doorSensorId));
+	}
+	if (json.containsKey("rfidsensorid")) {
+		rfidSensorId = json["rfidsensorid"].as<int>();
+		logger.print(tag, "\n\t rfidsensorid:" + String(rfidSensorId));
 	}
 
 	type = "alarmsensor";
-	checkStatus_interval = 1000;
+	checkStatus_interval = 500;
 	lastCheckStatus = 0;
 
 	//logger.print(tag, "\n\t hornsensors,size=" + String(hornsensors.size()));
@@ -42,8 +53,8 @@ AlarmSensor::~AlarmSensor()
 
 void AlarmSensor::callBack(int sensorid, String status, String oldstatus) {
 	logger.print(tag, "\n\t >> AlarmSensor::callBack sendor id=" + String(sensorid) + "status=" + status + "oldstatus=" + oldstatus);
-	
-	if (sensorid == doorsensordid) {
+
+	if (sensorid == doorSensorId) {
 		if (getStatus().equals(STATUS_ARMED_HOME) || getStatus().equals(STATUS_ARMED_AWAY) || getStatus().equals(STATUS_ARMED_NIGHT)) {
 			logger.print(tag, "\n\t >> AlarmSensor::callBack TRIGGER ALARM");
 			setStatus(STATUS_TRIGGERED);
@@ -53,20 +64,58 @@ void AlarmSensor::callBack(int sensorid, String status, String oldstatus) {
 	logger.print(tag, "\n\t << AlarmSensor::callBack");
 };
 
+void AlarmSensor::callBackEvent(int sensorid, String event, String param) {
+	logger.print(tag, "\n\t >> Sensor::callBackEvent sendor id=" + String(sensorid) + "event=" + event + "param=" + param);
+
+	if (sensorid == rfidSensorId && event.equals("cardread")) {
+		if (param == "A0 D1 16 7C" ||
+			param == "76 FD 97 BB" ||
+			param == "86 C8 96 BB") //change here the UID of the card/cards that you want to give access
+		{
+			logger.print(tag, "\n\t Authorized access - card " + param);
+			
+			if (getStatus().equals(STATUS_ARMED_HOME) || getStatus().equals(STATUS_ARMED_AWAY)
+				|| getStatus().equals(STATUS_ARMED_NIGHT) || getStatus().equals(STATUS_TRIGGERED)) {
+				
+				logger.print(tag, "\n\t >> AlarmSensor::callBack DISARM");
+				setStatus(STATUS_DISARMED);
+			}
+			else {
+				setStatus(STATUS_ARMED_HOME);
+			}
+		}
+		else {
+			Serial.println(" Access denied");
+			//delay(3000);
+		}
+	}
+	logger.print(tag, "\n\t << AlarmSensor::callBackEvent");
+};
+
+
 void AlarmSensor::init()
 {
 	logger.print(tag, "\n\t >>init AlarmSensor id=" + String(sensorid));
 
 	Sensor::init();
-		
-	doorsensordid = 1;
-	Sensor* sensor = getSensor(doorsensordid);
-	if (sensor != nullptr) { // si registra agli eventi del door sensor
-		logger.print(tag, "\n\t door sendor id " + String(doorsensordid) + "found");
-		sensor->addType0CallBack(this);
+
+	//doorsensordid = 1;
+	Sensor* doorsensor = getSensor(doorSensorId);
+	if (doorsensor != nullptr) { // si registra agli eventi del door sensor
+		logger.print(tag, "\n\t door sendor id " + String(doorSensorId) + "found");
+		doorsensor->addType0CallBack(this);
 	}
 	else {
-		logger.print(tag, "\n\t door sendor id " + String(doorsensordid) + "not found");
+		logger.print(tag, "\n\t door sendor id " + String(doorSensorId) + "not found");
+	}
+
+	Sensor* rfidsensor = getSensor(rfidSensorId);
+	if (rfidsensor != nullptr) { // si registra agli eventi del door sensor
+		logger.print(tag, "\n\t rfidsendorid " + String(rfidSensorId) + "found");
+		rfidsensor->addType0CallBack(this);
+	}
+	else {
+		logger.print(tag, "\n\t rfidsendorid " + String(rfidSensorId) + "not found");
 	}
 
 	logger.print(tag, F("\n\t <<init AlarmSensor"));
@@ -74,8 +123,9 @@ void AlarmSensor::init()
 
 void AlarmSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
-	json["hornsensorid"] = hornSensorsid;
-	json["doorsensorid"] = doorSensorsid;
+	json["hornsensorid"] = hornSensorId;
+	json["doorsensorid"] = doorSensorId;
+	json["rfidsensorid"] = rfidSensorId;
 }
 
 void AlarmSensor::checkStatusChange() {
@@ -88,7 +138,7 @@ void AlarmSensor::checkStatusChange() {
 
 		if (getStatus().equals(STATUS_IDLE))
 			setStatus(STATUS_DISARMED);
-				
+
 	}
 	Sensor::checkStatusChange();
 }
@@ -98,9 +148,15 @@ void AlarmSensor::setStatus(String _status) {
 	Sensor::setStatus(_status);
 
 	if (getStatus().equals(STATUS_TRIGGERED)) {
-		Sensor* phorn = getSensor(hornSensorsid);
+		Sensor* phorn = getSensor(hornSensorId);
 		if (phorn != nullptr) {
 			phorn->sendCommand("set", "on");
+		}
+	}
+	else if (getStatus().equals(STATUS_DISARMED)) {
+		Sensor* phorn = getSensor(hornSensorId);
+		if (phorn != nullptr) {
+			phorn->sendCommand("set", "off");
 		}
 	}
 }
@@ -111,7 +167,7 @@ bool AlarmSensor::sendCommand(String command, String payload)
 
 	logger.print(tag, String(F("\n\t\tcommand=")) + command);
 	logger.print(tag, String(F("\n\t\tpayload=")) + payload);
-	
+
 	if (command.equals("set")) {
 		logger.print(tag, String(F("\n\t\t process command set")));
 

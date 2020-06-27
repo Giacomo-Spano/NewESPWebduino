@@ -61,10 +61,10 @@ void HornSensor::init()
 	logger.print(tag, F("\n\t >>init HornSensor"));
 	
 	Sensor::init();
-	mode = MODE_NORMAL;
-	setStatus(STATUS_OFF);
-	//pinMode(pin, OUTPUT);
+	pinMode(pin, OUTPUT);
 
+	mode = MODE_NORMAL;
+	setStatus(STATUS_OFF);	
 
 	logger.print(tag, F("\n\t <<init HornSensor"));
 }
@@ -122,11 +122,9 @@ void HornSensor::setMode(String _mode) {
 	mode = _mode;
 	if (_mode.equals(MODE_PAUSE)) {
 		mode = _mode;
-		//setStatus(STATUS_OFF);
 	}
 	else if (_mode.equals(MODE_NORMAL)) {
 		mode = _mode;
-		//setStatus(STATUS_OFF);
 	}
 }
 
@@ -134,8 +132,10 @@ void HornSensor::setStatus(String _status) {
 		
 	if (_status.equals(STATUS_ON)) {
 		logger.print(tag, "\n\t STATUS HORN ON");
+		digitalWrite(pin, LOW);
 		hornStartTime = millis();
 	} else if (_status.equals(STATUS_OFF)) {
+		digitalWrite(pin, HIGH);
 		logger.print(tag, "\n\t STATUS HORN OFF");
 	}
 	Sensor::setStatus(_status);

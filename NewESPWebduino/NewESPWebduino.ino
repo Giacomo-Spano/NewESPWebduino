@@ -15,7 +15,7 @@
 #include "Logger.h"
 #include "MQTTClientClass.h"
 #include "Shield.h"
-#include "KeyLockSensor.h"
+//#include "KeyLockSensor.h"
 
 
 #ifdef ESP32
@@ -37,7 +37,8 @@
 #include <ESP8266httpUpdate.h>
 #else
 #include <ESP32httpUpdate.h>
-#include "E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Arduino.h"
+//#include "E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Arduino.h"
+#include "Arduino.h"
 #endif
 
 Shield shield;
@@ -66,7 +67,7 @@ AsyncEventSource events("/events"); // event source (Server-Sent events)
 //flag to use from web update to reboot the ESP
 bool shouldReboot = false;
 
-const int maxPostData = 200;
+const int maxPostData = 250;
 uint8_t postData[maxPostData];
 int postDataCounter = 0;
 
@@ -77,27 +78,9 @@ const int sensor_command_size = 50;
 volatile char sensor_command[sensor_command_size];
 volatile bool sensor_command_received = false;
 
-volatile String jsonstr = "";
+//volatile String jsonstr = "";
 
-//const char* PARAM_INPUT_1 = "input1";
-//const char* PARAM_INPUT_2 = "input2";
-//const char* PARAM_INPUT_3 = "input3";
-
-const char* PARAM_NAME = "name";
-const char* PARAM_MQTT_SERVER = "mqtt_server";
-const char* PARAM_MQTT_PORT = "mqtt_port";
-const char* PARAM_MQTT_USER = "mqtt_user";
-const char* PARAM_MQTT_PASSWORD = "mqtt_password";
-const char* PARAM_MQTT_TOPIC = "mqtt_topic";
-const char* PARAM_SERVER_NAME = "server_name";
-const char* PARAM_SERVER_PORT = "server_port";
-const char* PARAM_USER = "user";
-const char* PARAM_PASSWORD = "password";
-const char* PARAM_USER2 = "user2";
-const char* PARAM_PASSWORD2 = "password2";
 const char* PARAM_SENSORID = "sensorid";
-const char* PARAM_TYPE = "type";
-const char* PARAM_PIN = "pin";
 const char* PARAM_ACTION = "action";
 
 // HTML web page to handle 3 input fields (input1, input2, input3)
@@ -108,20 +91,20 @@ const char* PARAM_ACTION = "action";
   </head>
   <style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}
   .button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;
-	text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}      
+	text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}
   .button2 {background-color: #77878A;}</style></head>
   <body>
   <form action="/get">
-    input1: <input type="text" name="input1">
-    <input type="submit" value="Submit">
+	input1: <input type="text" name="input1">
+	<input type="submit" value="Submit">
   </form><br>
   <form action="/get">
-    input2: <input type="text" name="input2">
-    <input type="submit" value="Submit">
+	input2: <input type="text" name="input2">
+	<input type="submit" value="Submit">
   </form><br>
   <form action="/get">
-    input3: <input type="text" name="input3">
-    <input type="submit" value="Submit">
+	input3: <input type="text" name="input3">
+	<input type="submit" value="Submit">
   </form>
 </body></html>)rawliteral";
 */
@@ -133,14 +116,14 @@ MQTTClientClass mqttclient;
 WiFiClient client;
 WiFiServer server(80);
 // Variable to store the HTTP request
-String header;
+//String header;
 
-// Current time
+/*// Current time
 unsigned long currentTime = millis();
 // Previous time
 unsigned long previousTime = 0;
 // Define timeout time in milliseconds (example: 2000ms = 2s)
-const long timeoutTime = 2000;
+const long timeoutTime = 2000;*/
 
 void mqtt_messageReceived(char* topic, byte* payload, unsigned int length) {
 
@@ -228,6 +211,7 @@ void setup() {
 	}
 	else {
 		Serial.println(F("fail."));
+		SPIFFS.format();
 	}
 
 	// Initialize Shield
@@ -252,11 +236,11 @@ void setup() {
 	Serial.println(WiFi.localIP());
 	Serial.print("\n\n");
 
+	//checkForSWUpdate();
 
-
-	checkForSWUpdate();
-
-	initMQTTServer();
+	if (!shield.getMQTTSIM()) {
+		initMQTTServer();
+	}
 
 	// attach AsyncWebSocket
 	ws.onEvent(onEvent);
@@ -307,12 +291,6 @@ void setup() {
 		request->send(200, "text/html", "HTTP fw updated<br><a href=\"/\">Return to Home Page</a>");
 		});
 
-	// respond to GET requests on URL /home
-	/*asyncServer.on("/home", HTTP_GET, [](AsyncWebServerRequest* request) {
-		logger.println(tag, "\n\n /home");
-		request->send_P(200, "text/html", index_html);
-		});*/
-
 	// respond to GET requests on URL /
 	asyncServer.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
 		logger.println(tag, "\n\n /index.html");
@@ -324,7 +302,6 @@ void setup() {
 		logger.println(tag, "\n\n /config.html");
 		request->send(SPIFFS, "/config.html", String(), false, processor);
 		});
-
 
 	// Route to load style.css file
 	asyncServer.on("/style.css", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -340,7 +317,7 @@ void setup() {
 	asyncServer.on("/sensor.html", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(SPIFFS, "/sensor.html", String(), false, processor);
 		});
-		
+
 	asyncServer.on("/sensors", HTTP_GET, [](AsyncWebServerRequest* request) {
 		request->send(SPIFFS, "/sensors.html", String(), false, processor);
 		});
@@ -349,12 +326,76 @@ void setup() {
 		request->send(200, "text/html", shield.getModel());
 		});
 
+	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
+	asyncServer.on("/getconfig", HTTP_GET, [](AsyncWebServerRequest* request) {
+		Serial.print(" /getconfig request received\n");
+		request->send(200, "application/json", shield.getConfig());
+		return;
+		});
+
+	asyncServer.on("/setconfig", HTTP_POST, [](AsyncWebServerRequest* request) {
+		//nothing and dont remove it
+		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
+
+			Serial.print("\n\n>>>setconfig request received\n");
+
+			logger.print(tag, "\nlen=" + String(len));
+			logger.print(tag, "\nindex=" + String(index));
+			logger.print(tag, "\ntotal=" + String(total));
+			logger.print(tag, "\n");
+
+			if (total >= maxPostData) {
+				logger.print(tag, "\n\t posData too big");
+			}
+			if (index == 0)
+				postDataCounter = 0;
+
+			//String jsonstr = "";
+			for (size_t i = 0; i < len; i++) {
+				postData[postDataCounter++] = data[i];
+				Serial.write(postData[postDataCounter - 1]);
+			}
+			if (postDataCounter == total) {
+				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
+
+				String jsonstr = "";
+
+				for (size_t i = 0; i < postDataCounter; i++) {
+					jsonstr += char(postData[i]);
+					if (postData[i] == 0)
+						break;
+				}
+				logger.print(tag, "\n\t jsonstr=" + jsonstr);
+
+				postData[postDataCounter] = 0;
+				postDataCounter = 0;
+
+				DynamicJsonBuffer jsonBuffer;
+				JsonObject& json = jsonBuffer.parseObject(postData);
+				json.printTo(Serial);
+				if (json.success()) {
+					shield.setConfig(json);
+					shield.writeConfig();
+					request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
+				}
+				else {
+					logger.print(tag, F("\n\t failed to load json config"));
+					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
+				}
+			}
+			else {
+				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
+			}
+		});
+
+
+#ifdef dopo
 	asyncServer.on("/get", HTTP_GET, [](AsyncWebServerRequest* request) {
 		Serial.print("\n /get request received\n");
 
 		if (request->hasParam(PARAM_NAME)) {
 			String str = request->getParam(PARAM_NAME)->value();
-			shield.setName(str);
+			shield.setBoardName(str);
 		}
 		if (request->hasParam(PARAM_MQTT_SERVER)) {
 			String str = request->getParam(PARAM_MQTT_SERVER)->value();
@@ -404,6 +445,8 @@ void setup() {
 		shield.writeConfig();
 		request->send(200, "text/html", "HTTP GET request sent to your ESP on input field <br><a href=\"/\">Return to Home Page</a>");
 		});
+
+#endif
 
 	// Send a GET request to <ESP_IP>/get?input1=<inputMessage>
 	asyncServer.on("/sensor", HTTP_GET, [](AsyncWebServerRequest* request) {
@@ -510,7 +553,7 @@ void setup() {
 		}, NULL, [](AsyncWebServerRequest* request, uint8_t* data, size_t len, size_t index, size_t total) {
 
 			logger.print(tag, "\n\t>>>postsensorcommand request received\n");
-			
+
 			logger.print(tag, "\nlen=" + String(len));
 			logger.print(tag, "\nindex=" + String(index));
 			logger.print(tag, "\ntotal=" + String(total));
@@ -567,25 +610,26 @@ void setup() {
 			}
 			if (postDataCounter == total) {
 				logger.print(tag, "\n\t " + String(postDataCounter) + "received of " + String(total));
-								
+
 				String jsonstr = "";
-				
+
 				for (size_t i = 0; i < postDataCounter; i++) {
 					jsonstr += char(postData[i]);
 					if (postData[i] == 0)
 						break;
-				}				
+				}
 				logger.print(tag, "\n\t jsonstr=" + jsonstr);
-				
+
 				postData[postDataCounter] = 0;
-				postDataCounter = 0;				
-				
+				postDataCounter = 0;
+
 				if (shield.updateSensor(jsonstr)) {
 					Serial.print(" \nsend response\n");
 					request->send(200, "text/html", "Sensor saved <br><a href=\"/sensors\">Ok</a>");
 					//delay(300);
 					//ESP.restart();
-				} else {
+				}
+				else {
 					request->send(404, "text/html", "BAD JSON <br><a href=\"/sensors\">Ok</a>");
 				}
 			}
@@ -623,38 +667,38 @@ bool postSensorCommand(int counter, uint8_t* pdata)
 		Serial.write(pdata[i]);
 	}
 	DynamicJsonBuffer jsonBuffer;
-			JsonObject& json = jsonBuffer.parseObject(/*(char*)*/pdata);
-			if (json.success()) {
-				logger.print(tag, "\n\t command data parsed");
-				if (json.containsKey("sensorid")) {
-					sensor_command_id = json["sensorid"];
-					logger.print(tag, "\n\t keylockcommand_sensorid=" + String(sensor_command_id));
-					if (json.containsKey("command")) {
-						String command = json["command"];
-						for (int i = 0; i < command.length(); i++) {
-							sensor_command[i] = command.charAt(i);
-						}
-						sensor_command[command.length()] = 0;
-						logger.print(tag, "\n command=" + command);
-
-						String payload = json["payload"];
-						if (json.containsKey("payload")) {
-							//logger.print(tag, "\n payload=" + payload);
-							for (int i = 0; i < payload.length(); i++) {
-								sensor_command_payload[i] = payload.charAt(i);
-							}
-							sensor_command_payload[payload.length()] = 0;
-						}
-						logger.print(tag, "\n payload=" + payload);
-						sensor_command_received = true;
-						logger.print(tag, "\n\t<<postSensorCommand");
-						return true;
-					}
+	JsonObject& json = jsonBuffer.parseObject(/*(char*)*/pdata);
+	if (json.success()) {
+		logger.print(tag, "\n\t command data parsed");
+		if (json.containsKey("sensorid")) {
+			sensor_command_id = json["sensorid"];
+			logger.print(tag, "\n\t keylockcommand_sensorid=" + String(sensor_command_id));
+			if (json.containsKey("command")) {
+				String command = json["command"];
+				for (int i = 0; i < command.length(); i++) {
+					sensor_command[i] = command.charAt(i);
 				}
+				sensor_command[command.length()] = 0;
+				logger.print(tag, "\n command=" + command);
+
+				String payload = json["payload"];
+				if (json.containsKey("payload")) {
+					//logger.print(tag, "\n payload=" + payload);
+					for (int i = 0; i < payload.length(); i++) {
+						sensor_command_payload[i] = payload.charAt(i);
+					}
+					sensor_command_payload[payload.length()] = 0;
+				}
+				logger.print(tag, "\n payload=" + payload);
+				sensor_command_received = true;
+				logger.print(tag, "\n\t<<postSensorCommand");
+				return true;
 			}
-			logger.print(tag, "\n\tcannot parse data command received");
-			logger.print(tag, "\n\t<<postSensorCommand");
-			return false;
+		}
+	}
+	logger.print(tag, "\n\tcannot parse data command received");
+	logger.print(tag, "\n\t<<postSensorCommand");
+	return false;
 }
 
 bool reconnect() {
@@ -699,9 +743,8 @@ bool reconnect() {
 }
 
 void loop() {
-//#ifdef dopo
 	shield.checkStatus();
-//#endif
+
 	if (sensor_command_received) {
 		Serial.println("\n\t>> processing http COMMAND request.");
 		String strCommand = "";
@@ -722,27 +765,27 @@ void loop() {
 		sensor_command_received = false;
 	}
 
-	if (client.connected()) {
-		//shield.checkTimeUpdateStatus();
-		//shield.checkSettingResquestStatus();
-		mqttclient.loop();
-	}
-	else {
-		logger.println(tag, F("\n\n\tSERVER DISCONNECTED!!!\n"));
-		unsigned long currMillis = millis();		
-		if (reconnectTemptative == 0 || (currMillis - lastReconnectTemptativeTime) > reconnectTemptativeTimeot || (currMillis - lastReconnectTemptativeTime) < 0) {
-			lastReconnectTemptativeTime = currMillis;
-			if (!reconnect()) {
-				if (++reconnectTemptative > maxReconnectTempative) {
-					Serial.println("\n\t>>TOO MANY RECONNECT TEMPTATIVE! try to reboot..");
-					Serial.println("Rebooting...");
+	if (!shield.getMQTTSIM()) {
+
+		if (client.connected()) {
+			mqttclient.loop();
+		}
+		else {
+			logger.println(tag, F("\n\n\tSERVER DISCONNECTED!!!\n"));
+			unsigned long currMillis = millis();
+			if (reconnectTemptative == 0 || (currMillis - lastReconnectTemptativeTime) > reconnectTemptativeTimeot || (currMillis - lastReconnectTemptativeTime) < 0) {
+				lastReconnectTemptativeTime = currMillis;
+				if (!reconnect()) {
+					if (++reconnectTemptative > maxReconnectTempative) {
+						Serial.println("\n\t>>TOO MANY RECONNECT TEMPTATIVE! try to reboot..");
+						Serial.println("Rebooting...");
+					}
+				}
+				else {
+					reconnectTemptative = 0;
 				}
 			}
-			else {
-				reconnectTemptative = 0;
-			}
 		}
-		//delay(5000);
 	}
 
 	if (shouldReboot) {
@@ -750,10 +793,9 @@ void loop() {
 		delay(100);
 		ESP.restart();
 	}
-	static char temp[128];
-	sprintf(temp, "Seconds since boot: %u", millis() / 1000);
-	events.send(temp, "time"); //send event "time"
-
+	//static char temp[128];
+	//sprintf(temp, "Seconds since boot: %u", millis() / 1000);
+	//events.send(temp, "time"); //send event "time"
 }
 
 Sensor* getSensor(int id) {
@@ -761,6 +803,12 @@ Sensor* getSensor(int id) {
 }
 
 bool mqtt_publish(String topic, String message) {
+
+#ifdef MQTTSIMSENSOR
+	if (shield.getMQTTSIM()) {
+		return shield.pMQTTSensor->mqtt_publish(topic, message);		
+	}
+#endif
 
 	topic = "ESPWebduino/" + shield.getBoardName() + "/" + topic;
 	logger.print(tag, String(F("\n\t >>mqtt_publish \n\t topic:")) + topic);
@@ -786,94 +834,12 @@ bool mqtt_publish(String topic, String message) {
 
 // Replaces placeholder with LED state value
 String processor(const String& var) {
-	String ledState;
-	Serial.println(var);
-	if (var == "STATE") {
-		ledState = "ON";
-		/*if (digitalRead(ledPin)) {
-			ledState = "ON";
-		}
-		else {
-			ledState = "OFF";
-		}*/
-		Serial.print(ledState);
-		return ledState;
-	}
-	else if (var == "NAME") {
+	//String ledState;
+	//Serial.println(var);
+	if (var == "NAME")
 		return shield.getBoardName();
-	}
-	else if (var == "MQTT_SERVER") {
-		return shield.getMQTTServer();
-	}
-	else if (var == "MQTT_PORT") {
-		return String(shield.getMQTTPort());
-	}
-	else if (var == "MQTT_USER") {
-		return shield.getMQTTUser();
-	}
-	else if (var == "MQTT_PASSWORD") {
-		return String(shield.getMQTTPassword());
-	}
-	else if (var == "MQTT_TOPIC") {
-		return String(shield.getMQTTTopic());
-	}
-	else if (var == "SERVER_NAME") {
-		return shield.getServerName();
-	}
-	else if (var == "SERVER_PORT") {
-		return String(shield.getServerPort());
-	}
-	else if (var == "USER") {
-		return shield.getUser();
-	}
-	else if (var == "PASSWORD") {
-		return shield.getPassword();
-	}
-	else if (var == "USER2") {
-		return shield.getUser2();
-	}
-	else if (var == "PASSWORD2") {
-		return shield.getPassword2();
-	}
 
-
-
-	else if (var == "TEMPERATURE") {
-		return "20";
-		//return getTemperature();
-	}
-	else if (var == "HUMIDITY") {
-		return "20%";
-		//return getHumidity();
-	}
-	else if (var == "PRESSURE") {
-		return "20PA";
-		//return getPressure();
-	}
-	else if (var == "KEYLOCK") {
-		return "false";
-		//return getPressure();
-	}
-	/*else if (var == "SENSORS") {
-
-		String str = "";
-		for (int i = 0; i < shield.sensors.size(); i++)
-		{
-			Sensor* sensor = (Sensor*)shield.sensors.get(i);
-
-			if (!sensor->enabled) {
-				continue;
-			}
-			str +=
-				"<form action = '/sensor'>" \
-				+ sensor->sensorname +
-				"	<input type = 'text' name = '" + PARAM_SENSORID + "' value='" + sensor->sensorid + "'>" \
-				"   <input type = 'submit' name='" + PARAM_SUBMITBUTTON + "' value = 'edit'>" \
-				"   <input type = 'submit' name='" + PARAM_SUBMITBUTTON + "' value = 'delete'>" \
-				"</form><br>";
-		}*/
 	return "";
-	//return getPressure();
 }
 
 
@@ -1018,7 +984,7 @@ void checkForSWUpdate() {
 	String updatePath = "http://giacomocasa.duckdns.org:8080/webduino/ota";// + /*shield.getServerName() +*/  "//webduino/ota";
 	logger.print(tag, "\n\t check for sw update " + updatePath);
 	logger.print(tag, "\n\t current version " + shield.swVersion);
-	
+
 
 	t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath, shield.swVersion);
 	//t_httpUpdate_return ret = ESPhttpUpdate.update(updatePath);

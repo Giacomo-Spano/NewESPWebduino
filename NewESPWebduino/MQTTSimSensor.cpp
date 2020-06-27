@@ -1,5 +1,9 @@
+#ifdef MQTTSIMSENSOR
+
 #include "MQTTSimSensor.h"
 #include "Shield.h"
+
+void mqtt_messageReceived(char* topic, byte* payload, unsigned int length);
 
 Logger MQTTSimSensor::logger;
 String MQTTSimSensor::tag = "MQTTSimSensor";
@@ -158,23 +162,22 @@ bool xxsetPowerBoostKeepOn(int en) {
 }
 
 
-
-
-
-
-
-
-
-
 MQTTSimSensor::MQTTSimSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>MQTTSimSensor::SimSensor"));
+
+	
 
 	type = "mqttsimsensor";
 	checkStatus_interval = 10000;
 	lastCheckStatus = 0;
 
 	logger.print(tag, F("\n\t<<MQTTSimSensor::SimSensor\n"));
+}
+
+void MQTTSimSensor::setBoardName(String name)
+{
+	boardName = name;
 }
 
 MQTTSimSensor::~MQTTSimSensor()
@@ -265,7 +268,9 @@ void MQTTSimSensor::init()
 
 	// MQTT Broker setup
 	xxmqtt.setServer(broker, 1883);
-	xxmqtt.setCallback(xxmqttCallback);
+	//xxmqtt.setCallback(xxmqttCallback);
+	xxmqtt.setCallback(mqtt_messageReceived);	
+
 	logger.print(tag, F("\n\t <<init SimSensor"));
 }
 
@@ -299,7 +304,7 @@ void MQTTSimSensor::checkStatusChange() {
 		}
 		xxmqtt.loop();	
 	}
-	Sensor:checkStatusChange();
+	//Sensor:checkStatusChange();
 }
 
 bool MQTTSimSensor::sendCommand(String command, String payload)
@@ -329,3 +334,29 @@ bool MQTTSimSensor::sendCommand(String command, String payload)
 	logger.print(tag, F("\n\t <<SimSensor::sendCommand"));
 	return false;
 }
+
+bool MQTTSimSensor::mqtt_publish(String topic, String message) {
+
+	topic = "ESPWebduino/" + boardName + "/" + topic;
+	logger.print(tag, String(F("\n\t >> MQTTSimSensor::>mqtt_publish \n\t topic:")) + topic);
+	logger.print(tag, String(F("\n\t message:")) + message);
+
+	bool res = false;
+	if (!xxmqtt.connected()) {
+		logger.print(tag, F("\n\t OFFLINE - payload NOT sent!!!\n"));
+	}
+	else {
+		res = xxmqtt.publish(topic.c_str(), message.c_str());
+		if (!res) {
+			logger.print(tag, F("\n\t MQTT Message not sent!!!\n"));
+			return false;
+		}
+		else {
+			logger.print(tag, F("\n\t MQTT Message sent!!!\n"));
+		}
+	}
+	logger.print(tag, F("\n\t << MQTTSimSensor::mqtt_publish"));
+	return true;
+}
+
+#endif

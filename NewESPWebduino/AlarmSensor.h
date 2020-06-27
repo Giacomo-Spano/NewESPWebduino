@@ -29,8 +29,6 @@ private:
 	static String tag;
 	static Logger logger;
 
-	int doorsensordid;
-
 	unsigned long lastTestModeTime;
 	const long TestModeTimeout = 30000;
 
@@ -39,8 +37,9 @@ private:
 	virtual void setStatus(String status);
 
 	//SimpleList<Horn*> hornsensors = SimpleList<Horn*>();
-	int hornSensorsid;
-	int doorSensorsid;
+	int hornSensorId;
+	int doorSensorId;
+	int rfidSensorId;
 	
 public:
 	//SimpleList<Horn*> hornsensors = SimpleList<Horn*>();
@@ -49,6 +48,7 @@ public:
 	//int hornsensoridnum;
 
 	void callBack(int sensorid, String status, String oldstatus);
+	void callBackEvent(int sensorid, String event, String param);
 
 	static String STATUS_DISARMED;
 	static String STATUS_ARMED_HOME;

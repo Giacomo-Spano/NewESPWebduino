@@ -45,6 +45,11 @@
                 <input type="number" name="doorsensorid" id="doorsensorid"><br>
             </div>
 
+            <div id="rfidsensor">
+                <label for="name">rfidsensor sensorid</label>
+                <input type="number" name="rfidsensorid" id="rfidsensorid"><br>
+            </div>
+
         </div>
         <input type="submit" class="button" value="Save">
     </form>
@@ -130,6 +135,7 @@
 
                     $("#hornsensorid").val(sensor.hornsensorid);
                     $("#doorsensorid").val(sensor.doorsensorid);
+                    $("#rfidsensorid").val(sensor.rfidsensorid);
 
                 } else if (sensor.type == "simsensor") {
                 } else if (sensor.type == "mqttsimsensor") {
@@ -163,6 +169,7 @@
 
         $("#doorsensor").hide();
         $("#hornsensor").hide();
+        $("#rfidsensor").hide();
 
         if (type == "keylocksensor") {
             $("#pindiv").hide();
@@ -228,6 +235,7 @@
         } else if (type == "alarmsensor") {
             $("#doorsensor").show();
             $("#hornsensor").show();
+            $("#rfidsensor").show();
             //addHornSensor(0, "new " + type);
         } else if (type == "simsensor") {
         } else if (type == "mqttsimsensor") {

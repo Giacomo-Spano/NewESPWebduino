@@ -1,3 +1,6 @@
+#ifdef CAMSENSOR
+
+
 #include "CAMSensor.h"
 #include "Shield.h"
 
@@ -227,4 +230,4 @@ void CAMSensor::capturePhotoSaveSpiffs(void) {
 }
 
 
-
+#endif

@@ -1,7 +1,7 @@
-#ifdef CAMSENSOR
+// DoorSensor.h
 
-#ifndef _CAMSENSOR_h
-#define _CAMSENSOR_h
+#ifndef _SwitchSENSOR_h
+#define _SwitchSENSOR_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -14,9 +14,7 @@
 #include "Logger.h"
 #include <ArduinoJson.h> 
 
-
-
-class CAMSensor :
+class SwitchSensor :
 	public Sensor
 {
 private:
@@ -26,27 +24,24 @@ private:
 	unsigned long lastTestModeTime;
 	static const long TestModeTimeout = 30000;
 
+	unsigned long timerOnStartTime;
+	unsigned long timerOnTimeout;
+
+
 	String mode;
 	virtual void getJson(JsonObject& json);
-
-	bool checkPhoto(fs::FS& fs);
-	void capturePhotoSaveSpiffs(void);
 	
 public:
-	static String STATUS_DOOROPEN;
-	static String STATUS_DOORCLOSED;
+	static String STATUS_RELE_ON;
+	static String STATUS_RELE_OFF;
+	static String STATUS_RELE_TIMERON;
 
-	static String MODE_NORMAL;
-	static String MODE_TEST;
-	static String MODE_TESTOPEN;
-
-	CAMSensor(JsonObject& json);
-	~CAMSensor();
+	SwitchSensor(JsonObject& json);
+	~SwitchSensor();
 	virtual void init();
 	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
+	virtual void setStatus(String status);
 };
-#endif
-
 #endif
 

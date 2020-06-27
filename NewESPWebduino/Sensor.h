@@ -7,6 +7,8 @@
 #include "WProgram.h"
 #endif
 
+//#define SIMSENSOR
+
 
 
 #include "Logger.h"
@@ -18,6 +20,7 @@
 class AbstractCallBack {
 public:
 	virtual void callBack(int sensorid, String status, String oldstatus) {};
+	virtual void callBackEvent(int sensorid, String event, String param) {};
 };
 
 class Sensor : public AbstractCallBack
@@ -26,7 +29,7 @@ private:
 	static String tag;
 	static Logger logger;
 
-	AbstractCallBack* type0CallBackPointer = nullptr;
+	
 
 	String status;
 	String oldStatus;
@@ -35,8 +38,10 @@ protected:
 	DynamicJsonBuffer* jsonBuffer[];
 
 public:
+	AbstractCallBack* type0CallBackPointer = nullptr;
 	void addType0CallBack(AbstractCallBack*);
 	void callBack(int sensorid, String status, String oldstatus);
+	void callBackEvent(int sensorid, String event, String param);
 	//Sensor(String jsonStr);
 	Sensor(JsonObject& json);
 	Sensor();

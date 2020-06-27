@@ -20,6 +20,11 @@ void Sensor::callBack(int sensorid, String status, String oldstatus) {
 	logger.print(tag, "\n\t << Sensor::callBack");
 };
 
+void Sensor::callBackEvent(int sensorid, String event, String param) {
+	logger.print(tag, "\n\t >> Sensor::callBackEvent sendor id=" + String(sensorid) + "event=" + event + "param=" + param);
+	logger.print(tag, "\n\t << Sensor::callBackEvent");
+};
+
 Sensor::Sensor() {
 	status = STATUS_IDLE;
 	oldStatus = STATUS_IDLE;

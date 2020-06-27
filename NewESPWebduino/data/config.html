@@ -5,130 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.5.0.min.js"></script>
+    <script src="espduino.js"></script>
+    <script src="jquery.serializejson.min.js"></script>
 </head>
 <body>
-    <h1>Configuration</h1>
+    <h1>Configuration </h1>
 
-
-    <form action="/get">
-        <table class="formtable" >
-            <tbody>
-                <tr>
-                    <td>
-                        <label class="formlabel">First Name:</label>
-                    </td>
-                    <td>
-                        <input class="forminput" type="text" name="first">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class='formlabel'>Name:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="name" name="name" value="%NAME%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class='formlabel'>MQTT server:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="mqtt_server" name="mqtt_server" value="%MQTT_SERVER%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class='formlabel' for="mqtt_port">MQTT port:</label>
-                    </td>
-                    <td>
-                        <input class='FBInput' type="number" min="0" max="9999" step="1" id="mqtt_port" name="mqtt_port" value="%MQTT_PORT%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="mqtt_user">MQTT user:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="mqtt_user" name="mqtt_user" value="%MQTT_USER%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="mqtt_password">MQTT password:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="mqtt_password" name="mqtt_password" value="%MQTT_PASSWORD%">
-                    <td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="mqtt_topic">MQTT topic:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="mqtt_topic" name="mqtt_topic" value="%MQTT_TOPIC%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="server_name">Server name:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="server_name" name="server_name" value="%SERVER_NAME%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="server_port">Server port:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="number" min="0" max="9999" step="1" id="server_port" name="server_port" value="%SERVER_PORT%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="user">User:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="user" name="user" value="%USER%">
-                    <td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="password">Password:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="password" name="password" value="%PASSWORD%">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="user2">User2:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="user2" name="user2" value="%USER2%">
-                </tr>
-                <tr>
-                    <td>
-                        <label class="formlabel" for="password2">Password2:</label>
-                    </td>
-                    <td>
-                        <input class='forminput' type="text" id="password2" name="password2" value="%PASSWORD2%">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <input class="button" type="submit" value="Save">
-
-
+    <form action="/setconfig" id="inputForm">
+        <div id="inputlist">
+            <label for='name'>Board Name:</label>
+            <input type="text" id="name" name="name"><br />
+            <label for='mqtt_server'>MQTT server:</label>
+            <input type="text" id="mqtt_server" name="mqtt_server"><br />
+            <label for='mqtt_server'>MQTT port:</label>
+            <input type="number" min="0" max="9999" step="1" id="mqtt_port" name="mqtt_port" /><br />
+            <label for='name'>MQTT user:</label>
+            <input type="text" id="mqtt_user" name="mqtt_user"><br />
+            <label for='name'>MQTT password:</label>
+            <input type="text" id="mqtt_password" name="mqtt_password"><br />
+            <label for='name'>MQTT topic:</label>
+            <input type="text" id="mqtt_topic" name="mqtt_topic"><br />
+            <label for='name'>Server name:</label>
+            <input type="text" id="server_name" name="server_name"><br />
+            <label for='name'>Server port:</label>
+            <input type="number" min="0" max="9999" step="1" id="server_port" name="server_port"><br />
+            <label for='name'>User:</label>
+            <input type="text" id="user" name="user"><br />
+            <label for='name'>Password:</label>
+            <input type="text" id="password" name="password"><br />
+            <div class="form-field form-required" id="mqttsimdiv">
+                <label for="type">MQTT SIM</label>
+                <select name="mqttsim" id="mqttsim">
+                    <option value=true>abilitato</option>
+                    <option value="false">disabilitato</option>
+                </select><br>
+            </div>
+        </div>
+        <input type="submit" class="button" value="Save">
     </form>
-
-
-
 </body>
 <script>
+
+    $(document).ready(function () {
+        loadData();
+
+        $("#inputForm").submit(function (event) {
+
+            event.preventDefault(); // inibisce invio submit
+            
+            var result = $('#inputForm').serializeJSON({ useIntKeysAsArrayIndex: true });
+            //console.log(JSON.stringify(obj));
+
+            xhr = new XMLHttpRequest();
+            var url = "/setconfig";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //var json = JSON.parse(xhr.responseText);
+                    console.log("config saved");
+                    //$(location).attr('/sensors.html', url);
+                    window.location.href = '/index.html';
+                }
+            }
+            var data = JSON.stringify(result);
+            xhr.send(data);
+        });
+    });
+        
+    function loadData() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var config = JSON.parse(this.responseText);
+                $("#http_server").val(config.http_server);
+                $("#http_port").val(config.http_port);
+                $("#mqtt_server").val(config.mqtt_server);
+                $("#mqtt_port").val(config.mqtt_port);
+                $("#mqtt_user").val(config.mqtt_user);
+                $("#mqtt_password").val(config.mqtt_password);
+                $("#mqtt_topic").val(config.mqtt_topic);
+                $("#user").val(config.user);
+                $("#password").val(config.password);
+            }
+        };
+        xhttp.open("GET", "/getconfig", true);
+        xhttp.send();
+    }
+        
+
+    (function (jQuery) {
+        jQuery.fn.serializeObject = function () {
+            var raw = this.serializeArray().map(function (input) {
+                return [input.name, input.value]
+            })
+            var obj = {}
+
+            raw.forEach(function (pair) {
+                var key = pair[0],
+                    value = pair[1]
+                if (hasPeriod(key)) {
+                    var keys = key.split('.')
+                    nest(keys, value, obj)
+                } else {
+                    obj[key] = value
+                }
+            })
+
+            return obj
+        }
+
+        function hasPeriod(str) {
+            return /\./.test(str);
+        }
+
+        function nest(keys, value, obj) {
+            if (keys.length > 0) {
+
+                var key = keys.shift()
+
+                if (obj[key] === undefined) {
+                    if (keys.length === 0) {
+                        obj[key] = value
+                    } else {
+                        obj[key] = {}
+                    }
+                }
+                var nestingBookmark = obj[key]
+            }
+
+            if (keys.length !== 0) {
+                nest(keys, value, nestingBookmark)
+            }
+        }
+    }($))
 
 </script>
 </html>

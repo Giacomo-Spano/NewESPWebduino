@@ -39,14 +39,10 @@ Shield::Shield()
 	shieldName = "shieldName";
 	mqttUser = "giacomo";
 	mqttPassword = "giacomo";
-	//mqttMode = true;// true;
 	oleddisplay = false;
-	nexiondisplay =
+	nexiondisplay = false;
+	mqttsim = false;
 
-		//loragatewayEnabled = false;
-
-	//configMode = false;// true;
-	//resetSettings = false;// true;
 	powerStatus = "on"; // da aggiungere
 	lastCheckHealth = 0;
 	rebootreason = "unknown";
@@ -74,6 +70,7 @@ void Shield::writeConfig() {
 	json["password"] = getPassword();
 	json["user2"] = getUser2();
 	json["password2"] = getPassword2();
+	json["mqttsim"] = getMQTTSIM();
 
 //	json["resetsettings"] = getResetSettings();
 	json["shieldid"] = getShieldId();
@@ -116,97 +113,7 @@ void Shield::readConfig() {
 				if (json.success()) {
 					logger.print(tag, F("\n\t parsed json"));
 
-					if (json.containsKey("name")) {
-						logger.print(tag, F("\n\t name: "));
-						String str = json["name"];
-						logger.print(tag, str);
-						setName(str);
-					}
-					if (json.containsKey("http_server")) {
-						logger.print(tag, F("\n\t http_server: "));
-						String str = json["http_server"];
-						logger.print(tag, str);
-						setServerName(str);
-					}
-					if (json.containsKey("http_port")) {
-						logger.print(tag, F("\n\t http_port: "));
-						String str = json["http_port"];
-						logger.print(tag, str);
-						setServerPort(json["http_port"]);
-					}
-					if (json.containsKey("mqtt_server")) {
-						logger.print(tag, "\n\t mqtt_server: ");
-						String str = json["mqtt_server"];
-						logger.print(tag, str);
-						setMQTTServer(json["mqtt_server"]);
-					}
-					if (json.containsKey("mqtt_port")) {
-						logger.print(tag, F("\n\t mqtt_port: "));
-						String str = json["mqtt_port"];
-						logger.print(tag, str);
-						setMQTTPort(json["mqtt_port"]);
-					}
-					if (json.containsKey("mqtt_user")) {
-						logger.print(tag, F("\n\t mqtt_user: "));
-						String str = json["mqtt_user"];
-						logger.print(tag, str);
-						setMQTTUser(json["mqtt_user"]);
-					}
-					if (json.containsKey("mqtt_password")) {
-						logger.print(tag, F("\n\t mqtt_password: "));
-						String str = json["mqtt_password"];
-						logger.print(tag, str);
-						setMQTTPassword(json["mqtt_password"]);
-					}
-					if (json.containsKey("mqtt_topic")) {
-						logger.print(tag, F("\n\t mqtt_topic: "));
-						String str = json["mqtt_topic"];
-						logger.print(tag, str);
-						setMQTTTopic(json["mqtt_topic"]);
-					}
-					if (json.containsKey("user")) {
-						logger.print(tag, F("\n\t user: "));
-						String str = json["user"];
-						logger.print(tag, str);
-						setUser(json["user"]);
-					}
-					if (json.containsKey("password")) {
-						logger.print(tag, F("\n\t password: "));
-						String str = json["password"];
-						logger.print(tag, str);
-						setPassword(json["password"]);
-					}
-					if (json.containsKey("user2")) {
-						logger.print(tag, F("\n\t user2: "));
-						String str = json["user2"];
-						logger.print(tag, str);
-						setUser2(json["user2"]);
-					}
-					if (json.containsKey("password2")) {
-						logger.print(tag, F("\n\t password2: "));
-						String str = json["password2"];
-						logger.print(tag, str);
-						setPassword2(json["password2"]);
-					}
-
-					if (json.containsKey("shieldid")) {
-						logger.print(tag, F("\n\t shieldid: "));
-						String str = json["shieldid"];
-						logger.print(tag, str);
-						setShieldId(json["shieldid"]);
-					}
-					/*if (json.containsKey("resetsettings")) {
-						logger.print(tag, F("\n\t resetsettings: "));
-						bool enabled = json["resetsettings"];
-						logger.print(tag, Logger::boolToString(enabled));
-						setResetSettings(json["resetsettings"]);
-					}*/
-					if (json.containsKey("oled")) {
-						logger.print(tag, F("\n\t oled: "));
-						bool enabled = json["oled"];
-						logger.print(tag, Logger::boolToString(enabled));
-						setOledDisplay(json["oled"]);
-					}
+					setConfig(json);
 				}
 				else {
 					logger.print(tag, F("\n\t failed to load json config"));
@@ -216,6 +123,9 @@ void Shield::readConfig() {
 				}
 			}
 		}
+		else {
+			logger.print(tag, F("\n\t json config does not exist"));
+		}
 	}
 	else {
 		logger.print(tag, F("\n failed to mount FS"));
@@ -223,8 +133,137 @@ void Shield::readConfig() {
 	logger.print(tag, F("\n<<readConfig"));
 }
 
+String Shield::getConfig() {
+
+	logger.print(tag, F("\n>>Shield::getConfig\n"));
+	DynamicJsonBuffer jsonBuffer;
+	JsonObject& json = jsonBuffer.createObject();
+	
+	json["name"] = getBoardName();
+	json["http_server"] = getServerName();
+	json["http_port"] = getServerPort();
+	json["mqtt_server"] = getMQTTServer();
+	json["mqtt_port"] = getMQTTPort();
+	json["mqtt_user"] = getMQTTUser();
+	json["mqtt_password"] = getMQTTPassword();
+	json["mqtt_topic"] = getMQTTTopic();
+	json["user"] = getUser();
+	json["password"] = getPassword();
+	json["user2"] = getUser2();
+	json["password2"] = getPassword2();
+	json["mqttsim"] = getMQTTSIM();
+	json["shieldid"] = getShieldId();
+	json["oled"] = getOledDisplay();
+	
+	String str;
+	json.printTo(str);
+	logger.print(tag, F("\n<<Shield::getConfig\n"));
+	return str;
+}
+
+bool Shield::setConfig(JsonObject& json) {
+
+	logger.print(tag, F("\n>>Shield::setConfig\n"));
+	
+	if (json.containsKey("name")) {
+		logger.print(tag, F("\n\t name: "));
+		String str = json["name"];
+		logger.print(tag, str);
+		setBoardName(str);
+	}
+	if (json.containsKey("http_server")) {
+		logger.print(tag, F("\n\t http_server: "));
+		String str = json["http_server"];
+		logger.print(tag, str);
+		setServerName(str);
+	}
+	if (json.containsKey("http_port")) {
+		logger.print(tag, F("\n\t http_port: "));
+		String str = json["http_port"];
+		logger.print(tag, str);
+		setServerPort(json["http_port"]);
+	}
+	if (json.containsKey("mqtt_server")) {
+		logger.print(tag, "\n\t mqtt_server: ");
+		String str = json["mqtt_server"];
+		logger.print(tag, str);
+		setMQTTServer(json["mqtt_server"]);
+	}
+	if (json.containsKey("mqtt_port")) {
+		logger.print(tag, F("\n\t mqtt_port: "));
+		String str = json["mqtt_port"];
+		logger.print(tag, str);
+		setMQTTPort(json["mqtt_port"]);
+	}
+	if (json.containsKey("mqtt_user")) {
+		logger.print(tag, F("\n\t mqtt_user: "));
+		String str = json["mqtt_user"];
+		logger.print(tag, str);
+		setMQTTUser(json["mqtt_user"]);
+	}
+	if (json.containsKey("mqtt_password")) {
+		logger.print(tag, F("\n\t mqtt_password: "));
+		String str = json["mqtt_password"];
+		logger.print(tag, str);
+		setMQTTPassword(json["mqtt_password"]);
+	}
+	if (json.containsKey("mqtt_topic")) {
+		logger.print(tag, F("\n\t mqtt_topic: "));
+		String str = json["mqtt_topic"];
+		logger.print(tag, str);
+		setMQTTTopic(json["mqtt_topic"]);
+	}
+	if (json.containsKey("user")) {
+		logger.print(tag, F("\n\t user: "));
+		String str = json["user"];
+		logger.print(tag, str);
+		setUser(json["user"]);
+	}
+	if (json.containsKey("password")) {
+		logger.print(tag, F("\n\t password: "));
+		String str = json["password"];
+		logger.print(tag, str);
+		setPassword(json["password"]);
+	}
+	if (json.containsKey("user2")) {
+		logger.print(tag, F("\n\t user2: "));
+		String str = json["user2"];
+		logger.print(tag, str);
+		setUser2(json["user2"]);
+	}
+	if (json.containsKey("password2")) {
+		logger.print(tag, F("\n\t password2: "));
+		String str = json["password2"];
+		logger.print(tag, str);
+		setPassword2(json["password2"]);
+	}
+	if (json.containsKey("mqttsim")) {
+		logger.print(tag, F("\n\t mqttsim: "));
+		bool enabled = json["mqttsim"];
+		logger.print(tag, Logger::boolToString(mqttsim));
+		setMQTTSIM(json["mqttsim"]);
+	}
+
+	if (json.containsKey("shieldid")) {
+		logger.print(tag, F("\n\t shieldid: "));
+		String str = json["shieldid"];
+		logger.print(tag, str);
+		setShieldId(json["shieldid"]);
+	}
+	if (json.containsKey("oled")) {
+		logger.print(tag, F("\n\t oled: "));
+		bool enabled = json["oled"];
+		logger.print(tag, Logger::boolToString(enabled));
+		setOledDisplay(json["oled"]);
+	}
+
+	return true;
+}
+
 
 void Shield::init() {
+
+	logger.print(tag, F("\n\t >> Shield::init"));
 
 	setOledDisplay(false);
 
@@ -236,8 +275,22 @@ void Shield::init() {
 	status = "restart";
 	shieldEvent = "";
 
+	if (getMQTTSIM()) {
+		DynamicJsonBuffer jsonBuffer;
+		JsonObject& json = jsonBuffer.createObject();
+		json["type"] = "simsensor";
+		json["sensorid"] = 0;
+		json["sensorid"] = 0;	
+#ifdef MQTTSIMSENSOR
+		pMQTTSensor = new MQTTSimSensor(json);
+		pMQTTSensor->setBoardName(getBoardName());
+		pMQTTSensor->init();
+#endif
+	}
+
 #ifdef ESP8266
 	if (getOledDisplay()) {
+		logger.print(tag, F("\n\t init ole display"));
 		espDisplay.init(D3, D4);
 	}
 
@@ -251,6 +304,8 @@ void Shield::init() {
 #endif
 
 	//espDisplay.init(SDA, SCL);
+
+	logger.print(tag, F("\n\t << Shield::init"));
 }
 
 void Shield::clearAllSensors() {
@@ -280,6 +335,7 @@ Sensor* Shield::getSensorFromId(int id, SimpleList<Sensor*>& list) {
 		}
 	}
 	logger.print(tag, String(F("\n\t <<>Shield::getSensorFromId - NOT found!")));
+
 	return nullptr;
 }
 
@@ -464,6 +520,12 @@ void Shield::setFreeMem(int mem)
 
 void Shield::checkStatus()
 {
+#ifdef MQTTSIMSENSOR
+	if (getMQTTSIM() && pMQTTSensor != nullptr) {
+		pMQTTSensor->checkStatusChange();
+	}	
+#endif
+
 	checkSensorsStatus();
 
 	unsigned long currMillis = millis();
@@ -508,14 +570,9 @@ void Shield::checkSensorsStatus()
 
 void Shield::checkSensorStatus(Sensor* sensor)
 {
-	//Sensor* sensor = (Sensor*)sensors.get(i);
-	if (!sensor->enabled) {
-		return;
-	}
 	sensor->updateAvailabilityStatus();
 	sensor->checkStatusChange();
-	/*if (sensor->checkStatusChange())
-		sensor->sendStatusUpdate(getBoardName());*/
+
 	if (sensor->childsensors.size() > 0) {
 		for (int i = 0; i < sensor->childsensors.size(); i++)
 		{
