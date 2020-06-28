@@ -8,6 +8,7 @@
 #endif
 
 //#define SIMSENSOR
+//#define MQTTSIMSENSOR
 
 
 

@@ -1,3 +1,5 @@
+#include "Sensor.h"
+
 #ifdef MQTTSIMSENSOR
 
 #include "MQTTSimSensor.h"
@@ -37,9 +39,6 @@ const int  xxport = 8080;                             // server port number
 #define MODEM_RX             26
 #define I2C_SDA              21
 #define I2C_SCL              22
-// BME280 pins
-//#define I2C_SDA_2            18
-//#define I2C_SCL_2            19
 
 // Set serial for debug console (to Serial Monitor, default speed 115200)
 #define xxSerialMon Serial
@@ -105,12 +104,9 @@ TwoWire xxI2CPower = TwoWire(0);
 TinyGsmClient xxclient(xxmodem);
 PubSubClient xxmqtt(xxclient);
 
-//#define LED_PIN 13
-//int ledStatus = LOW;
-
 uint32_t lastReconnectAttempt = 0;
 
-void xxmqttCallback(char* topic, byte * payload, unsigned int len) {
+void xxmqttCallback(char* topic, byte* payload, unsigned int len) {
 	xxSerialMon.print("Message arrived [");
 	xxSerialMon.print(topic);
 	xxSerialMon.print("]: ");
@@ -130,7 +126,7 @@ boolean xxmqttConnect() {
 	xxSerialMon.print(broker);
 
 	// Connect to MQTT Broker
-	boolean status = xxmqtt.connect("GsmClientTest","giacomo","giacomo");
+	boolean status = xxmqtt.connect("GsmClientTest", "giacomo", "giacomo");
 
 	// Or, if you want to authenticate MQTT:
 	//boolean status = mqtt.connect("GsmClientName", "mqtt_user", "mqtt_pass");
@@ -166,7 +162,6 @@ MQTTSimSensor::MQTTSimSensor(JsonObject& json) : Sensor(json)
 {
 	logger.print(tag, F("\n\t>>MQTTSimSensor::SimSensor"));
 
-	
 
 	type = "mqttsimsensor";
 	checkStatus_interval = 10000;
@@ -187,14 +182,6 @@ MQTTSimSensor::~MQTTSimSensor()
 void MQTTSimSensor::init()
 {
 	logger.print(tag, "\n\t >>init MQTTSimSensor pin=" + String(pin));
-
-
-	/*xxSerialMon.println("Wait...");
-	// Set GSM module baud rate
-	// TinyGsmAutoBaud(SerialAT,GSM_AUTOBAUD_MIN,GSM_AUTOBAUD_MAX);
-	xxSerialAT.begin(9600);
-	delay(6000);*/
-
 
 	// Start I2C communication
 	xxI2CPower.begin(I2C_SDA, I2C_SCL, 400000);
@@ -217,62 +204,120 @@ void MQTTSimSensor::init()
 	delay(3000);
 
 
+	connectGPRS();
 
-
-
-
-	// Restart takes quite some time
-	// To skip it, call init() instead of restart()
-	xxSerialMon.println("Initializing modem...");
-	xxmodem.restart();
-	// modem.init();
-
-	String modemInfo = xxmodem.getModemInfo();
-	xxSerialMon.print("Modem Info: ");
-	xxSerialMon.println(modemInfo);
-
-#if TINY_GSM_USE_GPRS
-	// Unlock your SIM card with a PIN if needed
-	if (GSM_PIN && xxmodem.getSimStatus() != 3) {
-		xxmodem.simUnlock(GSM_PIN);
-	}
-#endif
-
-	xxSerialMon.print("Waiting for network...");
-	if (!xxmodem.waitForNetwork()) {
-		xxSerialMon.println(" fail");
-		delay(10000);
-		return;
-	}
-	xxSerialMon.println(" success");
-
-	if (xxmodem.isNetworkConnected()) {
-		xxSerialMon.println("Network connected");
-	}
-
-#if TINY_GSM_USE_GPRS
-	// GPRS connection parameters are usually set after network registration
-	xxSerialMon.print(F("Connecting to "));
-	xxSerialMon.print(xxapn);
-	if (!xxmodem.gprsConnect(xxapn, xxgprsUser, xxgprsPass)) {
-		xxSerialMon.println(" fail");
-		delay(10000);
-		return;
-	}
-	xxSerialMon.println(" success");
-
-	if (xxmodem.isGprsConnected()) {
-		xxSerialMon.println("GPRS connected");
-	}
-#endif
 
 	// MQTT Broker setup
 	xxmqtt.setServer(broker, 1883);
 	//xxmqtt.setCallback(xxmqttCallback);
-	xxmqtt.setCallback(mqtt_messageReceived);	
+	xxmqtt.setCallback(mqtt_messageReceived);
 
 	logger.print(tag, F("\n\t <<init SimSensor"));
 }
+
+
+bool MQTTSimSensor::connectGPRS() {
+
+	logger.print(tag, F("\n\t>> MQTTSimSensor::connectGPRS"));
+
+	// Restart takes quite some time
+	// To skip it, call init() instead of restart()
+	logger.print(tag, "\n\t Initializing modem...");
+	//xxmodem.restart();
+	xxmodem.init();
+
+	String name = xxmodem.getModemName();
+	logger.print(tag, "\n\t modem name: " + name);
+
+	String modemInfo = xxmodem.getModemInfo();
+	logger.print(tag, "\n\t modem info: " + modemInfo);
+
+	// Unlock your SIM card with a PIN if needed
+	if (GSM_PIN && xxmodem.getSimStatus() != 3) {
+		xxmodem.simUnlock(GSM_PIN);
+	}
+
+	logger.print(tag, "\n\t Waiting for network...");
+	if (!xxmodem.waitForNetwork()) {
+		logger.print(tag, "\n\t network fail");
+		delay(10000);
+		logger.print(tag, F("\n\t<< MQTTSimSensor::connectGPRS - fail"));
+		return false;
+	}
+	logger.print(tag, "\n\t network success");
+
+	if (xxmodem.isNetworkConnected()) {
+		logger.print(tag, "\n\t network connected");
+	}
+
+	// GPRS connection parameters are usually set after network registration
+	logger.print(tag, "\n\t Connecting to APN " + String(xxapn));
+	if (!xxmodem.gprsConnect(xxapn, xxgprsUser, xxgprsPass)) {
+		logger.print(tag, "\n\t connection to APN fail");
+		delay(10000);
+		logger.print(tag, F("\n\t<< MQTTSimSensor::connectGPRS - fail"));
+		return false;
+	}
+	logger.print(tag, "\n\t connection to APN success");
+
+	if (xxmodem.isGprsConnected()) {
+		logger.print(tag, "\n\t GPRS connected");
+	}
+	else {
+		logger.print(tag, "\n\t GPRS NOT connected");
+		return false;
+	}
+		
+	String ccid = xxmodem.getSimCCID();
+	logger.print(tag, "\n\t SIM CCID" + ccid);
+
+	String imei = xxmodem.getIMEI();
+	logger.print(tag, "\n\t IMEI: " + imei);
+
+	String imsi = xxmodem.getIMSI();
+	logger.print(tag, "\n\t IMSI: " + imsi);
+
+	String cop = xxmodem.getOperator();
+	logger.print(tag, "\n\t Operator: " + cop);
+
+	IPAddress local = xxmodem.localIP();
+	logger.print(tag, "\n\t Local IP:" + local.toString());
+
+	int csq = xxmodem.getSignalQuality();
+	logger.print(tag, "\n\t Signal quality:" + String(csq));
+
+	/// localtion
+	float lat = 0;
+	float lon = 0;
+	float accuracy = 0;
+	int   year = 0;
+	int   month = 0;
+	int   day = 0;
+	int   hour = 0;
+	int   min = 0;
+	int sec = 0;
+	for (int8_t i = 15; i; i--) {
+		logger.print(tag, "\n\t Requesting current GSM location");
+		if (xxmodem.getGsmLocation(&lat, &lon, &accuracy, &year, &month, &day, &hour,
+			&min, &sec)) {
+			logger.print(tag, "\n\t Latitude: " + String(lat, 8) + "1n\tLongitude:" + String(lon, 8));
+			logger.print(tag, "\n\t Accuracy: " + String(accuracy));
+			logger.print(tag, "\n\t Year: " + String(year) + "\tMonth:" + String(month) + "\tDay:" + String(day));
+			logger.print(tag, "\n\t Hour: " + String(hour) + "\tMinute: " + String(min) + "\tSecond:" + String(sec));
+			break;
+		}
+		else {
+			logger.print(tag, "\n\t Couldn't get GSM location");
+		}
+	}
+	logger.print(tag, "\n\t Retrieving GSM location again as a string");
+	String location = xxmodem.getGsmLocation();
+	logger.print(tag, "\n\t GSM Based Location String: " + location);
+
+	logger.print(tag, F("\n\t<< MQTTSimSensor::connectGPRS"));
+	return true;
+}
+
 
 void MQTTSimSensor::getJson(JsonObject& json) {
 	Sensor::getJson(json);
@@ -286,11 +331,20 @@ void MQTTSimSensor::checkStatusChange() {
 	unsigned long timeDiff = currMillis - lastCheckStatus;
 	bool ret = false;
 	if (timeDiff > checkStatus_interval) {
-		logger.print(tag, "\SimSensor::checkStatusChange\n");
+		logger.print(tag, "\n\t  SimSensor::checkStatusChange\n");
 		lastCheckStatus = currMillis;
 
+		if (!xxmodem.isGprsConnected()) {
+			if (!connectGPRS()) {
+				logger.print(tag, "\n\t check statuschange failed");
+				return;
+			}
+		}
+
+		logger.print(tag, "\n\t GPRS connected");
+
 		if (!xxmqtt.connected()) {
-			xxSerialMon.println("=== MQTT NOT CONNECTED ===");
+			logger.print(tag, "\n\t === MQTT NOT CONNECTED ===");
 			// Reconnect every 10 seconds
 			uint32_t t = millis();
 			if (t - lastReconnectAttempt > 10000L) {
@@ -299,12 +353,12 @@ void MQTTSimSensor::checkStatusChange() {
 					lastReconnectAttempt = 0;
 				}
 			}
-			delay(100);
+			//delay(100);
 			return;
 		}
-		xxmqtt.loop();	
+		xxmqtt.loop();
 	}
-	//Sensor:checkStatusChange();
+
 }
 
 bool MQTTSimSensor::sendCommand(String command, String payload)

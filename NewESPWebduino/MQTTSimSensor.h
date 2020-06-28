@@ -23,6 +23,7 @@ private:
 	String boardName;
 
 	virtual void getJson(JsonObject& json);
+	bool connectGPRS();
 
 public:
 	static String STATUS_DOOROPEN;// = "dooropen";

@@ -16,7 +16,10 @@
 #include "Logger.h"
 #include "MQTTClientClass.h"
 #include "Shield.h"
-//#include "KeyLockSensor.h"
+#include "Sensor.h"
+
+
+
 
 
 #ifdef ESP32
@@ -41,6 +44,29 @@
 //#include "E:\OneDrive\Documenti\Arduino\libraries\PubSubClient\tests\src\lib\Arduino.h"
 #include "Arduino.h"
 #endif
+
+
+////   wifimanager
+/*#if defined(ESP8266)
+#include <ESP8266WiFi.h>          
+#else
+#include <WiFi.h>          
+#endif
+//needed for library
+#include <DNSServer.h>
+#if defined(ESP8266)
+#include <ESP8266WebServer.h>
+#else
+#include <WebServer.h>
+#endif
+#include <WiFiManager.h>         */
+///endwifimanager
+
+
+
+
+
+
 
 Shield shield;
 
