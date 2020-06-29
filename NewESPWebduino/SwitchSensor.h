@@ -30,11 +30,16 @@ private:
 
 	String mode;
 	virtual void getJson(JsonObject& json);
+  void setMode(String _mode);
+
+	static String MODE_NORMAL;
+	static String MODE_TIMER_ON;
+  
 	
 public:
 	static String STATUS_RELE_ON;
 	static String STATUS_RELE_OFF;
-	static String STATUS_RELE_TIMERON;
+	//static String STATUS_RELE_TIMERON;
 
 	SwitchSensor(JsonObject& json);
 	~SwitchSensor();
@@ -42,6 +47,7 @@ public:
 	virtual void checkStatusChange();
 	virtual bool sendCommand(String command, String payload);
 	virtual void setStatus(String status);
+  virtual String getStatusText();
+  //void set_mode(String _mode);
 };
 #endif
-

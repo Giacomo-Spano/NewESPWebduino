@@ -15,6 +15,7 @@
 #include "MQTTSimSensor.h"
 #endif
 #include "RFIDSensor.h"
+#include "SwitchSensor.h"
 #ifdef CAMSENSOR
 #include "CAMSensor.h"
 #endif
@@ -90,8 +91,12 @@ Sensor* SensorFactory::createSensor(JsonObject& json)
 	}
 #endif
 	else if (type.equals(F("rfidsensor"))) {
-		logger.print(tag, F("\n\t creating mqttsimsensor sensor"));
+		logger.print(tag, F("\n\t creating rfidsensor sensor"));
 		sensor = new RFIDSensor(json);
+	}
+	else if (type.equals(F("switchsensor"))) {
+		logger.print(tag, F("\n\t creating switchsensor sensor"));
+		sensor = new SwitchSensor(json);
 	}
 #ifdef CAMSENSOR
 	else if (type.equals(F("camsensor"))) {

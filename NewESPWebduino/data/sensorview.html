@@ -109,6 +109,32 @@
 
     </div>
 
+    <!--switchsensor-->
+    <div class="grid-container" id="switchsensor" hidden>
+
+        <div class="grid-item name-item">Test mode</div>
+        <div class="grid-item value-item" id="testmode">--</div>
+        <div class="grid-item name-item">Timeout timer</div>
+        <div class="grid-item value-item" id="switchtimeout">--</div>
+        <div class="grid-item name-item">Remaining</div>
+        <div class="grid-item value-item" id="switchremaining">--</div>
+
+        <div class="grid-item name-item">Commands</div>
+        <div class="grid-item value-item">
+            <button class="button" onclick="sendCommand('set','on')">ON</button>
+            <button class="button" onclick="sendCommand('set','off')">OFF</button>
+            <button class="button" onclick="sendCommand('timer',300)">TIMER</button>
+        </div>
+
+        <div class="grid-item name-item">Position</div>
+        <div class="grid-item value-item slidecontainer">
+            <form action="/setsensor" id="inputForm">
+                <input type="range" min="0" max="100" value="50" class="slider" id="position" name="position">
+            </form>
+        </div>
+
+    </div>
+
 </body>
 <script>
     var sensorid;
@@ -146,6 +172,8 @@
                 $("#temperaturesensor").hide();
                 $("#doorsensor").hide();
                 $("#hornsensor").hide();
+                $("#alarmsensor").hide();
+
 
                 if (sensor.type == "keylocksensor") {
                     $("#positionvalue").text(sensor.position);
@@ -172,6 +200,10 @@
                     $("#hornpausetimeout").text(sensor.hornpausetimeout);
                     $("#hornmaxtally").text(sensor.hornmaxtally);
                     $("#hornsensor").show();
+                } else if (sensor.type == "switchsensor") {
+                    $("#switchtimeout").text(sensor.timerduration);
+                    $("#switchremaining").text(sensor.timerremaining);
+                    $("#switchsensor").show();
                 }
             }
         };

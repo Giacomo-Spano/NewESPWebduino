@@ -101,16 +101,16 @@ String Sensor::getStatus() {
 
 void Sensor::checkStatusChange()
 {
-	bool res = false;
-	if (!status.equals(oldStatus)) {
-		//logger.print(tag, "\n\t STATUS CHANGE - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
-		res = true;
-	}
-	unsigned long timeDiff = millis() - lastUpdateAvailabilityStatus;
-	if (timeDiff > updateStatus_interval || timeDiff < 0) { // se è passato troppo tempo aggiorna comunque
-		logger.print(tag, "\n\t UPDATE STATUS TIMEOUT - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
-		res = true;
-	}
+  /*bool res = false;
+  if (!status.equals(oldStatus)) {
+    //logger.print(tag, "\n\t STATUS CHANGE - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
+    res = true;
+  }*/
+  unsigned long timeDiff = millis() - lastUpdateStatus;
+  if (timeDiff > updateStatus_interval || timeDiff < 0) { // se ï¿½ passato troppo tempo aggiorna comunque
+    logger.print(tag, "\n\t UPDATE STATUS TIMEOUT - sensorid: " + String(sensorid) + " name: " + sensorname + " status: " + status);
+    sendStatusUpdate();
+  }
 }
 
 void Sensor::sendStatusUpdate(/*String boardname*/)
@@ -148,8 +148,15 @@ void Sensor::updateAttributes() {
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& json = jsonBuffer.createObject();
 	getJson(json);
-	String str = "";
-	json.printTo(str);
+	//String str = "";
+	//json.printTo(str);
+
+  DynamicJsonBuffer jsonAttributesBuffer;
+  JsonObject& jsonAttributes = jsonAttributesBuffer.createObject();
+  jsonAttributes["Attributes"] = json;
+  String str = "";
+  jsonAttributes.printTo(str);
+  
 	mqtt_publish(topic, str/*strJson*/);
 }
 

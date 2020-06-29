@@ -534,7 +534,7 @@ void Shield::checkStatus()
 	if (timeDiff > 1000) {
 		//logger.print(tag, "Shield::checkStatus");
 		lastTimeUpdate = currMillis;
-		//invalidateDisplay();
+		invalidateDisplay();
 	}
 }
 
